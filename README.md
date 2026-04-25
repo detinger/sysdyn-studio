@@ -2,7 +2,6 @@
 
 **System Dynamics Studio** is a high-fidelity, interactive platform designed for modeling, simulating, and understanding complex biological, social, and economic systems. Built for both educators and students, it provides a "cockpit" environment where users can visualize feedback loops, analyze system behavior through real-time numerical integration, and export models for professional research.
 
-![System Dynamics Studio Mockup](https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000)
 
 ## ✨ Key Features
 
