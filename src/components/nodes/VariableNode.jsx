@@ -7,23 +7,22 @@ const VariableNode = ({ id, data }) => {
   const updateNodeData = useStore((state) => state.updateNodeData);
 
   return (
-    <div className="min-w-[140px] bg-card/90 backdrop-blur-md border border-border rounded-lg shadow-xl overflow-hidden transition-all hover:border-yellow-500/50">
-      <div className="bg-yellow-500/10 px-3 py-2 flex items-center gap-2 border-b border-border">
-        <Variable size={16} className="text-yellow-500" />
-        <span className="font-semibold text-sm text-foreground">Variable</span>
-      </div>
-      <div className="p-3 flex flex-col gap-2">
+    <div className="px-4 py-3 shadow-xl rounded-lg bg-card border-2 border-yellow-500 min-w-[150px]">
+      <div className="flex items-center gap-3 mb-2">
+        <div className="p-2 bg-yellow-500/10 rounded-md">
+          <Variable className="w-5 h-5 text-yellow-500" />
+        </div>
         <input
-          className="bg-transparent border-b border-border focus:border-yellow-500 outline-none text-sm text-foreground px-1 py-0.5"
+          className="bg-transparent font-bold text-sm outline-none w-full"
           value={data.label}
           onChange={(e) => updateNodeData(id, { label: e.target.value })}
-          placeholder="Name"
         />
+      </div>
+      <div className="flex items-center gap-2 bg-secondary/50 p-1.5 rounded border border-border/50">
         <input
-          type="text"
-          className="bg-background border border-border rounded px-2 py-1 text-xs w-full text-foreground outline-none focus:border-yellow-500 font-mono"
-          value={data.equation || data.value || ''}
-          onChange={(e) => updateNodeData(id, { equation: e.target.value, value: e.target.value })}
+          className="bg-transparent text-xs outline-none w-full text-center"
+          value={data.value || data.equation}
+          onChange={(e) => updateNodeData(id, { value: e.target.value, equation: e.target.value })}
           placeholder="Value or Eq"
         />
       </div>

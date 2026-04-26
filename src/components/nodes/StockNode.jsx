@@ -7,25 +7,27 @@ const StockNode = ({ id, data }) => {
   const updateNodeData = useStore((state) => state.updateNodeData);
 
   return (
-    <div className="min-w-[150px] bg-card/90 backdrop-blur-md border border-border rounded-lg shadow-xl overflow-hidden transition-all hover:border-primary/50">
-      <div className="bg-primary/10 px-3 py-2 flex items-center gap-2 border-b border-border">
-        <Database size={16} className="text-primary" />
-        <span className="font-semibold text-sm text-foreground">Stock</span>
-      </div>
-      <div className="p-3 flex flex-col gap-2">
-        <input 
-          className="bg-transparent border-b border-border focus:border-primary outline-none text-sm text-foreground px-1 py-0.5" 
-          value={data.label} 
+    <div className="px-4 py-3 shadow-xl rounded-lg bg-card border-2 border-primary min-w-[150px]">
+      <div className="flex items-center gap-3 mb-2">
+        <div className="p-2 bg-primary/10 rounded-md">
+          <Database className="w-5 h-5 text-primary" />
+        </div>
+        <input
+          className="bg-transparent font-bold text-sm outline-none w-full"
+          value={data.label}
           onChange={(e) => updateNodeData(id, { label: e.target.value })}
-          placeholder="Name"
         />
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground w-12">Initial:</span>
-          <input 
+      </div>
+      
+      <div className="space-y-1">
+        <label className="text-[10px] uppercase text-muted-foreground font-semibold">Initial Value</label>
+        <div className="flex items-center gap-2 bg-secondary/50 p-1.5 rounded border border-border/50">
+          <input
             type="number"
-            className="bg-background border border-border rounded px-2 py-1 text-xs w-full text-foreground outline-none focus:border-primary"
-            value={data.value || 0}
-            onChange={(e) => updateNodeData(id, { value: parseFloat(e.target.value) })}
+            className="bg-transparent text-xs outline-none w-full"
+            value={data.value}
+            onChange={(e) => updateNodeData(id, { value: e.target.value })}
+            placeholder="0"
           />
         </div>
       </div>
