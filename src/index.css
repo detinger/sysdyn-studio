@@ -45,3 +45,8 @@
 .react-flow__handle {
   @apply w-3 h-3 bg-primary border-2 border-background;
 }
+
+.info-edge .react-flow__edge-path {
+  stroke: orange;
+  stroke-dasharray: 5,5;
+}

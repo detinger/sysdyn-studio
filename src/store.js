@@ -33,9 +33,55 @@ const useStore = create((set, get) => {
         edges: applyEdgeChanges(changes, get().edges),
       });
     },
-    onConnect: (connection) => {
+    onConnect: (params) => {
+      const { nodes, edges } = get();
+      let connection = { ...params };
+      const sourceNode = nodes.find(n => n.id === connection.source);
+      const targetNode = nodes.find(n => n.id === connection.target);
+
+      if (!sourceNode || !targetNode) return;
+
+      // Smart direction flipping
+      // 1. If dragging from a Stock to a Flow's inflow handle, it's correct.
+      // 2. If dragging from a Variable to anything, it's correct (source).
+      // 3. If dragging from a Stock's target handle (inflow), it might be backwards.
+      
+      let shouldFlip = false;
+
+      // If source is a Stock and we are connecting to a Flow, 
+      // check if we are using the 'outflow' source handle.
+      if (sourceNode.type === 'stock' && targetNode.type === 'flow') {
+        // If they dragged from an inflow handle, they probably meant the other way
+        if (connection.sourceHandle === 'inflow') shouldFlip = true;
+      }
+
+      // If source is a Flow and we are connecting to a Stock,
+      // check if we are using the target handle of the flow
+      if (sourceNode.type === 'flow' && targetNode.type === 'stock') {
+        if (connection.targetHandle !== 'inflow') shouldFlip = true;
+      }
+
+      if (shouldFlip) {
+        connection = {
+          source: params.target,
+          target: params.source,
+          sourceHandle: params.targetHandle,
+          targetHandle: params.sourceHandle,
+        };
+      }
+
+      const isInfo = 
+        sourceNode?.type === 'variable' || 
+        targetNode?.type === 'variable' || 
+        connection.sourceHandle === 'info' || 
+        connection.targetHandle === 'info';
+
       set({
-        edges: addEdge({ ...connection, animated: true }, get().edges),
+        edges: addEdge({ 
+          ...connection, 
+          animated: true,
+          className: isInfo ? 'info-edge' : ''
+        }, edges),
       });
     },
     addNode: (node) => {

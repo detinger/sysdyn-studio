@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Database, MoveRight, Variable, FileCode, FolderOpen, X, Copy, Check, Code, Trash2, BookOpen } from 'lucide-react';
+import { Database, MoveRight, Variable, FileCode, FolderOpen, X, Copy, Check, Code, Trash2, BookOpen, Sigma } from 'lucide-react';
 import useStore from '../store';
 import { generatePythonCode } from '../pythonExporter';
 import { generateRCode } from '../rExporter';
-import { PREDATOR_PREY, SIR_MODEL, ADOPTION_MODEL, CARRYING_CAPACITY, INVENTORY_CONTROL } from '../examples';
+import { POPULATION_EXTENDED, PREDATOR_PREY, SIR_MODEL, ADOPTION_MODEL, CARRYING_CAPACITY, INVENTORY_CONTROL, WORLD3_MODEL } from '../examples';
+import EquationsModal from './EquationsModal';
 
 import Prism from 'prismjs';
 import 'prismjs/components/prism-python';
@@ -14,6 +15,7 @@ const Sidebar = () => {
   const { clearCanvas } = useStore();
   const [showModal, setShowModal] = useState(false);
   const [showTheoryModal, setShowTheoryModal] = useState(false);
+  const [showEquationsModal, setShowEquationsModal] = useState(false);
   const [code, setCode] = useState('');
   const [lang, setLang] = useState('python');
   const [copied, setCopied] = useState(false);
@@ -72,6 +74,14 @@ const Sidebar = () => {
           </button>
 
           <button
+            onClick={() => setShowEquationsModal(true)}
+            className="flex-1 flex items-center justify-center gap-2 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 border border-yellow-500/20 py-2 rounded-md text-xs font-semibold transition-all uppercase tracking-wider"
+          >
+            <Sigma size={14} />
+            Eqs
+          </button>
+
+          <button
             onClick={clearCanvas}
             className="flex-1 flex items-center justify-center gap-2 bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/20 py-2 rounded-md text-xs font-semibold transition-all uppercase tracking-wider"
           >
@@ -92,9 +102,9 @@ const Sidebar = () => {
             </div>
           </div>
 
-          <div className="bg-background border border-border p-3 rounded-lg cursor-grab hover:border-blue-500/50 hover:bg-blue-500/5 transition-colors flex items-center gap-3 shadow-sm"
+          <div className="bg-background border border-border p-3 rounded-lg cursor-grab hover:border-red-500/50 hover:bg-red-500/5 transition-colors flex items-center gap-3 shadow-sm"
             onDragStart={(event) => onDragStart(event, 'flow')} draggable>
-            <div className="p-2 bg-blue-500/10 rounded-md"><MoveRight size={18} className="text-blue-500" /></div>
+            <div className="p-2 bg-red-500/10 rounded-md"><MoveRight size={18} className="text-red-500" /></div>
             <div>
               <div className="text-sm font-medium">Flow</div>
               <div className="text-xs text-muted-foreground">Rate of change</div>
@@ -114,6 +124,9 @@ const Sidebar = () => {
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">Examples</h2>
           <div className="flex flex-col gap-2">
+            <button onClick={() => loadExample(POPULATION_EXTENDED)} className="w-full flex items-center gap-2 bg-background border border-border hover:border-primary/50 hover:text-primary transition-colors p-2 rounded-md text-sm text-left">
+              <FolderOpen size={16} className="text-muted-foreground" /> Population
+            </button>
             <button onClick={() => loadExample(PREDATOR_PREY)} className="w-full flex items-center gap-2 bg-background border border-border hover:border-primary/50 hover:text-primary transition-colors p-2 rounded-md text-sm text-left">
               <FolderOpen size={16} className="text-muted-foreground" /> Predator-Prey
             </button>
@@ -128,6 +141,9 @@ const Sidebar = () => {
             </button>
             <button onClick={() => loadExample(INVENTORY_CONTROL)} className="w-full flex items-center gap-2 bg-background border border-border hover:border-primary/50 hover:text-primary transition-colors p-2 rounded-md text-sm text-left">
               <FolderOpen size={16} className="text-muted-foreground" /> Inventory Control
+            </button>
+            <button onClick={() => loadExample(WORLD3_MODEL)} className="w-full flex items-center gap-2 bg-background border border-border hover:border-primary/50 hover:text-primary transition-colors p-2 rounded-md text-sm text-left">
+              <FolderOpen size={16} className="text-muted-foreground" /> World3 (Club of Rome)
             </button>
           </div>
         </div>
@@ -204,7 +220,7 @@ const Sidebar = () => {
                     <p className="text-sm">Stocks represent accumulations within the system. They describe the current state of the system and generate the information upon which decisions and actions are based. They provide "memory" to a system.<br /><br /><strong className="text-foreground text-xs">Examples:</strong> Population, water in a tub, bank balance, inventory.</p>
                   </div>
                   <div className="bg-secondary/30 p-5 rounded-lg border border-border">
-                    <h4 className="font-bold flex items-center gap-2 mb-2 text-foreground"><MoveRight size={16} className="text-blue-500" /> Flows (Rates)</h4>
+                    <h4 className="font-bold flex items-center gap-2 mb-2 text-foreground"><MoveRight size={16} className="text-red-500" /> Flows (Rates)</h4>
                     <p className="text-sm">Flows represent the rate of change of the stocks over time. They are the <i>only</i> way stocks can change. If time stops, flows disappear, but stocks remain.<br /><br /><strong className="text-foreground text-xs">Examples:</strong> Birth rate (inflow), water draining (outflow), spending.</p>
                   </div>
                 </div>
@@ -232,6 +248,8 @@ const Sidebar = () => {
           </div>
         </div>
       )}
+
+      {showEquationsModal && <EquationsModal onClose={() => setShowEquationsModal(false)} />}
     </>
   );
 };
