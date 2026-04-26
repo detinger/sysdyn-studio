@@ -9,6 +9,7 @@
 *   **Drag-and-Drop Interface**: Seamlessly build models using standard System Dynamics primitives: **Stocks**, **Flows**, and **Variables**.
 *   **Intelligent Connections**: Visual feedback loops (dotted orange lines) help distinguish information flows from physical material flows.
 *   **Live Equations**: Define complex mathematical relationships directly within node properties.
+*   **MathJax Equation View**: Open the **Eqs** panel to inspect stocks, flows, and variables as rendered mathematical notation.
 
 ### 🧪 Real-time Simulation Engine
 *   **RK4 Integration**: Uses the 4th-order Runge-Kutta method for high-precision numerical stability.
@@ -21,12 +22,14 @@
     *   Reinforcing vs. Balancing Feedback Loops.
     *   Numerical Integration Methods (Euler vs. RK4).
     *   Real-world modeling best practices.
-*   **Example Library**: 5 curated classic models ready for simulation:
+*   **Example Library**: 7 curated classic models ready for simulation:
+    *   **Population Dynamics (Extended)**: Births, deaths, immigration, and exodus in one stock-and-flow model.
     *   **Predator-Prey (Lotka-Volterra)**: Biological oscillations.
     *   **SIR Epidemic Model**: Disease spread dynamics.
     *   **Innovation Adoption (Bass Model)**: Market diffusion.
     *   **Carrying Capacity**: Limits to growth.
     *   **Inventory Control**: Supply chain management.
+    *   **World3 (Limits to Growth)**: Overshoot-and-collapse dynamics across population, industry, resources, and pollution.
 
 ### 💻 Research-Grade Code Export
 *   **Python (SciPy)**: One-click export to production-ready Python code using `scipy.integrate.odeint` and `matplotlib`.
@@ -69,7 +72,7 @@
 *   **State Management**: Zustand (for high-performance simulation state).
 *   **Canvas Engine**: React Flow (with custom node implementations).
 *   **Styling**: Tailwind CSS (Dark Mode optimized).
-*   **Math/Charts**: Chart.js for data visualization.
+*   **Math/Charts**: Recharts for data visualization, MathJax for rendered model equations, and Math.js for expression parsing.
 *   **Integration**: Custom RK4 engine implemented in JavaScript.
 
 ---
@@ -78,9 +81,10 @@
 
 1.  **Select a Model**: Use the Sidebar to load one of the built-in examples or start with a blank canvas.
 2.  **Define Equations**: Click on any Flow or Variable node to edit its mathematical expression or constant value.
-3.  **Run Simulation**: Hit the **Play** button in the Simulation Panel. Observe how variables interact in real-time.
-4.  **Analyze**: Use the line charts to spot oscillations, delays, or exponential growth patterns.
-5.  **Export**: Click the **Code** icon in the sidebar to generate Python or R scripts to take your model into a notebook environment.
+3.  **Review Equation Notation**: Click **Eqs** in the sidebar to see the current model rendered with MathJax, including stock derivatives and flow or variable formulas.
+4.  **Run Simulation**: Hit the **Play** button in the Simulation Panel. Observe how variables interact in real-time.
+5.  **Analyze**: Use the line charts to spot oscillations, delays, or exponential growth patterns.
+6.  **Export**: Click the Python or R export buttons in the sidebar to generate scripts for a notebook environment.
 
 ---
 
