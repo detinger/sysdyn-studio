@@ -1,95 +1,96 @@
-import React, { useCallback, useRef, useState } from 'react';
-import ReactFlow, { Background, Controls, ReactFlowProvider } from 'reactflow';
-import 'reactflow/dist/style.css';
+import { useEffect, useState } from 'react';
+import { ReactFlowProvider } from 'reactflow';
 import useStore from './store';
 import Sidebar from './components/Sidebar';
 import SimulationPanel from './components/SimulationPanel';
+import Toasts from './components/ui/Toasts';
+import Canvas from './features/modeler/Canvas';
+import ModelerToolbar from './features/modeler/ModelerToolbar';
+import Inspector from './features/modeler/Inspector';
+import EquationsView from './features/equations/EquationsView';
+import TheoryView from './features/learning/TheoryView';
+import LibraryView from './features/library/LibraryView';
+import { restoreDraft, startAutosave } from './state/persistence';
 
-import StockNode from './components/nodes/StockNode';
-import FlowNode from './components/nodes/FlowNode';
-import VariableNode from './components/nodes/VariableNode';
+const COLLAPSE_KEY = 'sds.sidebar.collapsed';
 
-const nodeTypes = {
-  stock: StockNode,
-  flow: FlowNode,
-  variable: VariableNode,
-};
+const isTyping = (el) => el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable);
 
-const Flow = () => {
-  const reactFlowWrapper = useRef(null);
-  const [reactFlowInstance, setReactFlowInstance] = useState(null);
-
-  const nodes = useStore((state) => state.nodes);
-  const edges = useStore((state) => state.edges);
-  const onNodesChange = useStore((state) => state.onNodesChange);
-  const onEdgesChange = useStore((state) => state.onEdgesChange);
-  const onConnect = useStore((state) => state.onConnect);
-  const addNode = useStore((state) => state.addNode);
-
-  const onDragOver = useCallback((event) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
-  }, []);
-
-  const onDrop = useCallback(
-    (event) => {
-      event.preventDefault();
-
-      const type = event.dataTransfer.getData('application/reactflow');
-      if (typeof type === 'undefined' || !type) {
+function useShortcuts() {
+  useEffect(() => {
+    const onKey = (e) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod) return;
+      const s = useStore.getState();
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        s.runSimulation();
         return;
       }
-
-      const position = reactFlowInstance.screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      });
-
-      const newNode = {
-        id: `node_${Math.random().toString(36).substr(2, 9)}`,
-        type,
-        position,
-        data: { label: `${type.charAt(0).toUpperCase() + type.slice(1)} Node` },
-      };
-
-      addNode(newNode);
-    },
-    [reactFlowInstance, addNode]
-  );
-
-  return (
-    <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
-      <Sidebar />
-      <div className="flex-1 flex flex-col relative h-full">
-        <div className="flex-1 w-full h-full relative" ref={reactFlowWrapper}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onInit={setReactFlowInstance}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            nodeTypes={nodeTypes}
-            proOptions={{ hideAttribution: true }}
-            fitView
-            className="bg-dot-pattern"
-          >
-            {/* <Background color="hsl(var(--muted-foreground))" gap={16} size={1} /> */}
-            <Controls className="bg-secondary/80 backdrop-blur-md border border-primary/50 fill-primary shadow-2xl rounded-lg" />
-          </ReactFlow>
-        </div>
-        <SimulationPanel />
-      </div>
-    </div>
-  );
-};
+      if (isTyping(document.activeElement)) return; // keep native text undo inside fields
+      if (e.key.toLowerCase() === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        s.undo();
+      } else if ((e.key.toLowerCase() === 'z' && e.shiftKey) || e.key.toLowerCase() === 'y') {
+        e.preventDefault();
+        s.redo();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+}
 
 export default function App() {
+  const route = useStore((s) => s.view_route);
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem(COLLAPSE_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+  useShortcuts();
+
+  useEffect(() => {
+    restoreDraft();
+    return startAutosave();
+  }, []);
+
+  const toggle = () => {
+    setCollapsed((c) => {
+      try {
+        localStorage.setItem(COLLAPSE_KEY, c ? '0' : '1');
+      } catch {
+        /* ignore */
+      }
+      return !c;
+    });
+  };
+
   return (
-    <ReactFlowProvider>
-      <Flow />
-    </ReactFlowProvider>
+    <>
+      <a href="#main" className="skip-link">Skip to content</a>
+      <div className={`shell${collapsed ? ' collapsed' : ''}`}>
+        <Sidebar collapsed={collapsed} onToggle={toggle} />
+        <main id="main" className="main" tabIndex={-1}>
+          {/* The modeler stays mounted so the canvas viewport survives page switches. */}
+          <ReactFlowProvider>
+            <div className={route === 'modeler' ? undefined : 'offstage'} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }} aria-hidden={route !== 'modeler'} inert={route !== 'modeler'}>
+              <ModelerToolbar />
+              <div className="modeler">
+                <Canvas />
+                <Inspector />
+                <SimulationPanel />
+              </div>
+            </div>
+          </ReactFlowProvider>
+          {route === 'equations' && <EquationsView />}
+          {route === 'theory' && <TheoryView />}
+          {route === 'library' && <LibraryView />}
+        </main>
+      </div>
+      <Toasts />
+    </>
   );
 }

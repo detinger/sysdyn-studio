@@ -1,42 +1,29 @@
-import React from 'react';
+import { memo } from 'react';
 import { Handle, Position } from 'reactflow';
-import { Database } from 'lucide-react';
-import useStore from '../../store';
+import { fmtNum } from '../../utils/format';
+import { IssueMarker } from './nodeCommon';
+import { usePlaybackValue, useRunStale } from './hooks';
 
-const StockNode = ({ id, data }) => {
-  const updateNodeData = useStore((state) => state.updateNodeData);
-
+/** Stock (level): a plain rectangle. Material enters left (inflow) and leaves right (outflow). */
+const StockNode = ({ id, data, selected }) => {
+  const value = usePlaybackValue(id);
+  const stale = useRunStale();
+  const showValue = value !== undefined && !stale;
   return (
-    <div className="px-4 py-3 shadow-xl rounded-lg bg-card border-2 border-primary min-w-[150px]">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="p-2 bg-primary/10 rounded-md">
-          <Database className="w-5 h-5 text-primary" />
-        </div>
-        <input
-          className="bg-transparent font-bold text-sm outline-none w-full"
-          value={data.label}
-          onChange={(e) => updateNodeData(id, { label: e.target.value })}
-        />
+    <div className={`sd-node sd-stock${selected ? ' selected-ring' : ''}`} title={`Stock · ${data.label}${data.unit ? ` · ${data.unit}` : ''}`}>
+      <IssueMarker id={id} />
+      <div className="sd-label">{data.label}</div>
+      <div className="sd-meta">
+        {showValue ? <span className="sd-value">{fmtNum(value)}</span> : <>initial {data.value === undefined || data.value === '' ? '—' : String(data.value)}</>}
+        {data.unit ? ` ${data.unit}` : ''}
       </div>
-      
-      <div className="space-y-1">
-        <label className="text-[10px] uppercase text-muted-foreground font-semibold">Initial Value</label>
-        <div className="flex items-center gap-2 bg-secondary/50 p-1.5 rounded border border-border/50">
-          <input
-            type="number"
-            className="bg-transparent text-xs outline-none w-full"
-            value={data.value}
-            onChange={(e) => updateNodeData(id, { value: e.target.value })}
-            placeholder="0"
-          />
-        </div>
-      </div>
-      <Handle type="target" position={Position.Top} className="w-3 h-3 bg-primary border-2 border-card" />
-      <Handle type="source" position={Position.Bottom} className="w-3 h-3 bg-primary border-2 border-card" />
-      <Handle type="target" position={Position.Left} id="inflow" className="w-3 h-3 bg-green-500 border-2 border-card" />
-      <Handle type="source" position={Position.Right} id="outflow" className="w-3 h-3 bg-red-500 border-2 border-card" />
+      {/* Order matters: React Flow resolves edges without a handle id to the first handle of each type. */}
+      <Handle type="target" position={Position.Top} className="info-port" isConnectable={false} />
+      <Handle type="source" position={Position.Bottom} className="info-port" title="Information: use this stock's value in an equation" />
+      <Handle type="target" position={Position.Left} id="inflow" className="material-port" title="Inflow port: connect a flow into this stock" />
+      <Handle type="source" position={Position.Right} id="outflow" className="material-port" title="Outflow port: connect this stock to a draining flow" />
     </div>
   );
 };
 
-export default StockNode;
+export default memo(StockNode);
