@@ -1,3 +1,5 @@
+// Stock material ports sit 28.65 px below the top; flow ports sit 16 px below.
+// Straight stock/flow rows therefore use stock.y = flow.y - 12.65.
 export const POPULATION_EXTENDED = {
   name: 'Population Dynamics (Extended)',
   description: 'A fundamental population model exploring the four drivers of change: Births, Deaths, Immigration, and Exodus. This model illustrates how even simple linear rates can create complex growth or decline patterns when multiple inflows and outflows interact.',
@@ -58,9 +60,9 @@ export const PREDATOR_PREY = {
     { id: 'predator_deaths', type: 'flow', position: { x: 1306, y: 205 }, data: { label: 'predator_deaths', equation: 'Predators * predator_death_rate' } },
 
     { id: 'v_pbr', type: 'variable', position: { x: 106, y: -219 }, data: { label: 'prey_birth_rate', value: '0.05' } },
-    { id: 'v_pred_br', type: 'variable', position: { x: 794, y: -220 }, data: { label: 'predator_birth_rate', value: '0.0002' } },
-    { id: 'v_pdr', type: 'variable', position: { x: 1311, y: -219 }, data: { label: 'predator_death_rate', value: '0.03' } },
-    { id: 'v_pr', type: 'variable', position: { x: 633, y: -218 }, data: { label: 'predation_rate', value: '0.001' } }
+    { id: 'v_pred_br', type: 'variable', position: { x: 795, y: -220 }, data: { label: 'predator_birth_rate', value: '0.0002' } },
+    { id: 'v_pdr', type: 'variable', position: { x: 1313, y: -219 }, data: { label: 'predator_death_rate', value: '0.03' } },
+    { id: 'v_pr', type: 'variable', position: { x: 632, y: -218 }, data: { label: 'predation_rate', value: '0.001' } }
   ],
   edges: [
     { id: 'e1', source: 'prey_births', target: 'prey', targetHandle: 'inflow', animated: true },
@@ -129,8 +131,8 @@ export const ADOPTION_MODEL = {
     'potential_adopters': '#10b981' // Green
   },
   nodes: [
-    { id: 'pot_adopters', type: 'stock', position: { x: 265, y: 408 }, data: { label: 'potential_adopters', value: 10000 } },
-    { id: 'adopters', type: 'stock', position: { x: 989, y: 408 }, data: { label: 'adopters', value: 0 } },
+    { id: 'pot_adopters', type: 'stock', position: { x: 265, y: 407.35 }, data: { label: 'potential_adopters', value: 10000 } },
+    { id: 'adopters', type: 'stock', position: { x: 989, y: 407.35 }, data: { label: 'adopters', value: 0 } },
 
     { id: 'adoption_rate', type: 'flow', position: { x: 681, y: 420 }, data: { label: 'adoption_rate', equation: 'sales_from_ads + word_of_mouth' } },
 
@@ -193,7 +195,7 @@ export const INVENTORY_CONTROL = {
     'Customer_Demand': '#ef4444' // Red
   },
   nodes: [
-    { id: 'inv', type: 'stock', position: { x: 249, y: 106 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
+    { id: 'inv', type: 'stock', position: { x: 249, y: 105.35 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
     { id: 'prod', type: 'flow', position: { x: -24, y: 311 }, data: { label: 'Production', equation: 'Customer_Demand + (Target_Inventory - Inventory) / Adjustment_Time', unit: 'units/week' } },
     { id: 'sales', type: 'flow', position: { x: 470, y: 118 }, data: { label: 'Sales', equation: 'Customer_Demand', unit: 'units/week' } },
 
@@ -226,10 +228,10 @@ export const WORLD3_MODEL = {
   },
   nodes: [
     // Stocks
-    { id: 'pop', type: 'stock', position: { x: 428, y: 829 }, data: { label: 'Population', value: 100 } },
-    { id: 'cap', type: 'stock', position: { x: 421, y: 306 }, data: { label: 'Industrial_Capital', value: 100 } },
-    { id: 'res', type: 'stock', position: { x: 941, y: 305 }, data: { label: 'Resources', value: 100 } },
-    { id: 'pol', type: 'stock', position: { x: 939, y: 625 }, data: { label: 'Pollution', value: 10 } },
+    { id: 'pop', type: 'stock', position: { x: 428, y: 828.35 }, data: { label: 'Population', value: 100 } },
+    { id: 'cap', type: 'stock', position: { x: 421, y: 305.35 }, data: { label: 'Industrial_Capital', value: 100 } },
+    { id: 'res', type: 'stock', position: { x: 941, y: 304.35 }, data: { label: 'Resources', value: 100 } },
+    { id: 'pol', type: 'stock', position: { x: 939, y: 624.35 }, data: { label: 'Pollution', value: 10 } },
 
     // Population Flows
     { id: 'births', type: 'flow', position: { x: 271, y: 841 }, data: { label: 'Births', equation: 'Population * 0.04' } },
@@ -379,8 +381,8 @@ export const PROJECT_BACKLOG = {
   timeUnit: 'week',
   visibleVariables: ['Backlog', 'Completed_Tasks'],
   nodes: [
-    { id: 'backlog', type: 'stock', position: { x: 254, y: 82 }, data: { label: 'Backlog', value: 200, unit: 'tasks' } },
-    { id: 'done', type: 'stock', position: { x: 763, y: 288 }, data: { label: 'Completed_Tasks', value: 0, unit: 'tasks' } },
+    { id: 'backlog', type: 'stock', position: { x: 254, y: 81.35 }, data: { label: 'Backlog', value: 200, unit: 'tasks' } },
+    { id: 'done', type: 'stock', position: { x: 763, y: 287.35 }, data: { label: 'Completed_Tasks', value: 0, unit: 'tasks' } },
     { id: 'arrivals', type: 'flow', position: { x: 107, y: 94 }, data: { label: 'new_tasks', equation: 'arrival_rate', unit: 'tasks/week' } },
     { id: 'completion', type: 'flow', position: { x: 613, y: 300 }, data: { label: 'completion', equation: 'min(team_capacity, Backlog / minimum_completion_time)', unit: 'tasks/week' } },
     { id: 'capacity', type: 'variable', position: { x: 620, y: 102 }, data: { label: 'team_capacity', equation: 'staff * productivity', unit: 'tasks/week' } },
@@ -444,7 +446,7 @@ export const SUPPLY_CHAIN_DELAY = {
   visibleVariables: ['Inventory', 'Supply_Line'],
   nodes: [
     { id: 'sl', type: 'stock', position: { x: 303, y: 49 }, data: { label: 'Supply_Line', value: 400, unit: 'units', description: 'Ordered but not yet delivered.' } },
-    { id: 'inv', type: 'stock', position: { x: 887, y: 55 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
+    { id: 'inv', type: 'stock', position: { x: 887, y: 54.35 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
     { id: 'orders', type: 'flow', position: { x: 182, y: 286 }, data: { label: 'orders', equation: 'max(0, Customer_Demand + (Target_Inventory - Inventory) / inventory_adjustment_time + supply_line_weight * (desired_supply_line - Supply_Line) / inventory_adjustment_time)', unit: 'units/week' } },
     { id: 'deliveries', type: 'flow', position: { x: 640, y: 297 }, data: { label: 'deliveries', equation: 'Supply_Line / delivery_delay', unit: 'units/week' } },
     { id: 'sales', type: 'flow', position: { x: 1100, y: 67 }, data: { label: 'sales', equation: 'Customer_Demand', unit: 'units/week' } },
