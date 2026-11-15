@@ -265,3 +265,240 @@ export const WORLD3_MODEL = {
     { id: 'i9', source: 'ic_pc', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
+
+// ---------------------------------------------------------------------------
+// Additional teaching models (units declared; no time functions, so the
+// legacy engine can still serve as a characterization reference).
+// ---------------------------------------------------------------------------
+
+export const BATHTUB = {
+  name: 'Bathtub (Goal Seeking)',
+  description: 'Water flows into a tub at a constant rate and drains faster the fuller the tub is. The level rises and settles where outflow equals inflow. This is the simplest balancing loop: the stock adjusts until its net flow is zero.',
+  maxTime: 30,
+  timeUnit: 'minute',
+  visibleVariables: ['Water', 'faucet', 'drain'],
+  nodes: [
+    { id: 'water', type: 'stock', position: { x: 260, y: 120 }, data: { label: 'Water', value: 20, unit: 'liters', description: 'Water in the tub.' } },
+    { id: 'faucet', type: 'flow', position: { x: 60, y: 138 }, data: { label: 'faucet', equation: 'inflow_rate', unit: 'liters/minute' } },
+    { id: 'drain', type: 'flow', position: { x: 540, y: 138 }, data: { label: 'drain', equation: 'Water / drain_time', unit: 'liters/minute' } },
+    { id: 'inflow_rate', type: 'variable', position: { x: 70, y: 320 }, data: { label: 'inflow_rate', value: '12', unit: 'liters/minute' } },
+    { id: 'drain_time', type: 'variable', position: { x: 550, y: 320 }, data: { label: 'drain_time', value: '5', unit: 'minute', description: 'Average time water stays in the tub.' } },
+  ],
+  edges: [
+    { id: 'm1', source: 'faucet', target: 'water', targetHandle: 'inflow' },
+    { id: 'm2', source: 'water', sourceHandle: 'outflow', target: 'drain' },
+    { id: 'i1', source: 'inflow_rate', target: 'faucet', targetHandle: 'info' },
+    { id: 'i2', source: 'water', target: 'drain', targetHandle: 'info' },
+    { id: 'i3', source: 'drain_time', target: 'drain', targetHandle: 'info' },
+  ],
+};
+
+export const SAVINGS_ACCOUNT = {
+  name: 'Savings Account (Compound Interest)',
+  description: 'A balance earns interest in proportion to its size, a reinforcing loop, while a fixed amount is withdrawn every year. If interest exceeds withdrawals the balance grows exponentially; if not, it declines. Interest is compounded continuously.',
+  maxTime: 40,
+  timeUnit: 'year',
+  visibleVariables: ['Balance', 'interest', 'withdrawals'],
+  nodes: [
+    { id: 'balance', type: 'stock', position: { x: 260, y: 120 }, data: { label: 'Balance', value: 1000, unit: 'EUR' } },
+    { id: 'interest', type: 'flow', position: { x: 60, y: 138 }, data: { label: 'interest', equation: 'Balance * interest_rate', unit: 'EUR/year' } },
+    { id: 'withdrawals', type: 'flow', position: { x: 540, y: 138 }, data: { label: 'withdrawals', equation: 'annual_withdrawal', unit: 'EUR/year' } },
+    { id: 'interest_rate', type: 'variable', position: { x: 70, y: 320 }, data: { label: 'interest_rate', value: '0.05', unit: '1/year' } },
+    { id: 'annual_withdrawal', type: 'variable', position: { x: 550, y: 320 }, data: { label: 'annual_withdrawal', value: '20', unit: 'EUR/year' } },
+  ],
+  edges: [
+    { id: 'm1', source: 'interest', target: 'balance', targetHandle: 'inflow' },
+    { id: 'm2', source: 'balance', sourceHandle: 'outflow', target: 'withdrawals' },
+    { id: 'i1', source: 'balance', target: 'interest', targetHandle: 'info' },
+    { id: 'i2', source: 'interest_rate', target: 'interest', targetHandle: 'info' },
+    { id: 'i3', source: 'annual_withdrawal', target: 'withdrawals', targetHandle: 'info' },
+  ],
+};
+
+export const COFFEE_COOLING = {
+  name: 'Coffee Cooling (Newton)',
+  description: 'A cup of coffee loses heat in proportion to the difference between its temperature and the room. The gap closes exponentially: fast at first, then ever more slowly. The time constant is the time needed to close about 63 % of the gap.',
+  maxTime: 60,
+  timeUnit: 'minute',
+  visibleVariables: ['Coffee_Temperature'],
+  nodes: [
+    { id: 'coffee', type: 'stock', position: { x: 120, y: 120 }, data: { label: 'Coffee_Temperature', value: 90, unit: 'degC' } },
+    { id: 'cooling', type: 'flow', position: { x: 460, y: 138 }, data: { label: 'cooling', equation: '(Coffee_Temperature - Room_Temperature) / cooling_time', unit: 'degC/minute' } },
+    { id: 'room', type: 'variable', position: { x: 300, y: 330 }, data: { label: 'Room_Temperature', value: '20', unit: 'degC' } },
+    { id: 'tau', type: 'variable', position: { x: 560, y: 330 }, data: { label: 'cooling_time', value: '10', unit: 'minute' } },
+  ],
+  edges: [
+    { id: 'm1', source: 'coffee', sourceHandle: 'outflow', target: 'cooling' },
+    { id: 'i1', source: 'coffee', target: 'cooling', targetHandle: 'info' },
+    { id: 'i2', source: 'room', target: 'cooling', targetHandle: 'info' },
+    { id: 'i3', source: 'tau', target: 'cooling', targetHandle: 'info' },
+  ],
+};
+
+export const CUSTOMER_BASE = {
+  name: 'Customer Base (Referrals and Churn)',
+  description: 'A company gains customers through marketing and referrals from existing customers, and loses a fixed fraction every month. Referrals form a reinforcing loop, churn a balancing loop. Because churn outweighs referrals here, the customer base settles at an equilibrium.',
+  maxTime: 120,
+  timeUnit: 'month',
+  visibleVariables: ['Customers', 'acquisition', 'churn'],
+  nodes: [
+    { id: 'customers', type: 'stock', position: { x: 280, y: 120 }, data: { label: 'Customers', value: 0, unit: 'customers' } },
+    { id: 'acquisition', type: 'flow', position: { x: 60, y: 138 }, data: { label: 'acquisition', equation: 'marketing_reach + Customers * referral_rate', unit: 'customers/month' } },
+    { id: 'churn', type: 'flow', position: { x: 580, y: 138 }, data: { label: 'churn', equation: 'Customers * churn_fraction', unit: 'customers/month' } },
+    { id: 'reach', type: 'variable', position: { x: 0, y: 330 }, data: { label: 'marketing_reach', value: '100', unit: 'customers/month' } },
+    { id: 'referral', type: 'variable', position: { x: 220, y: 330 }, data: { label: 'referral_rate', value: '0.02', unit: '1/month' } },
+    { id: 'churnf', type: 'variable', position: { x: 600, y: 330 }, data: { label: 'churn_fraction', value: '0.05', unit: '1/month' } },
+  ],
+  edges: [
+    { id: 'm1', source: 'acquisition', target: 'customers', targetHandle: 'inflow' },
+    { id: 'm2', source: 'customers', sourceHandle: 'outflow', target: 'churn' },
+    { id: 'i1', source: 'reach', target: 'acquisition', targetHandle: 'info' },
+    { id: 'i2', source: 'referral', target: 'acquisition', targetHandle: 'info' },
+    { id: 'i3', source: 'customers', target: 'acquisition', targetHandle: 'info' },
+    { id: 'i4', source: 'customers', target: 'churn', targetHandle: 'info' },
+    { id: 'i5', source: 'churnf', target: 'churn', targetHandle: 'info' },
+  ],
+};
+
+export const PROJECT_BACKLOG = {
+  name: 'Project Backlog (Capacity)',
+  description: 'Tasks arrive at a steady rate and a team completes them. Completion is limited either by the team capacity or by how fast the backlog can be worked through. If capacity exceeds arrivals the backlog shrinks to a small working level; if not, it grows without limit and the bottleneck is the team.',
+  maxTime: 52,
+  timeUnit: 'week',
+  visibleVariables: ['Backlog', 'Completed_Tasks'],
+  nodes: [
+    { id: 'backlog', type: 'stock', position: { x: 220, y: 120 }, data: { label: 'Backlog', value: 200, unit: 'tasks' } },
+    { id: 'done', type: 'stock', position: { x: 680, y: 120 }, data: { label: 'Completed_Tasks', value: 0, unit: 'tasks' } },
+    { id: 'arrivals', type: 'flow', position: { x: 20, y: 138 }, data: { label: 'new_tasks', equation: 'arrival_rate', unit: 'tasks/week' } },
+    { id: 'completion', type: 'flow', position: { x: 480, y: 138 }, data: { label: 'completion', equation: 'min(team_capacity, Backlog / minimum_completion_time)', unit: 'tasks/week' } },
+    { id: 'capacity', type: 'variable', position: { x: 420, y: 330 }, data: { label: 'team_capacity', equation: 'staff * productivity', unit: 'tasks/week' } },
+    { id: 'staff', type: 'variable', position: { x: 300, y: 470 }, data: { label: 'staff', value: '4', unit: 'people' } },
+    { id: 'prod', type: 'variable', position: { x: 540, y: 470 }, data: { label: 'productivity', value: '2.5', unit: 'tasks/(person*week)' } },
+    { id: 'mct', type: 'variable', position: { x: 660, y: 330 }, data: { label: 'minimum_completion_time', value: '2', unit: 'week' } },
+    { id: 'arr', type: 'variable', position: { x: 30, y: 330 }, data: { label: 'arrival_rate', value: '8', unit: 'tasks/week' } },
+  ],
+  edges: [
+    { id: 'm1', source: 'arrivals', target: 'backlog', targetHandle: 'inflow' },
+    { id: 'm2', source: 'backlog', sourceHandle: 'outflow', target: 'completion' },
+    { id: 'm3', source: 'completion', target: 'done', targetHandle: 'inflow' },
+    { id: 'i1', source: 'arr', target: 'arrivals', targetHandle: 'info' },
+    { id: 'i2', source: 'capacity', target: 'completion', targetHandle: 'info' },
+    { id: 'i3', source: 'backlog', target: 'completion', targetHandle: 'info' },
+    { id: 'i4', source: 'mct', target: 'completion', targetHandle: 'info' },
+    { id: 'i5', source: 'staff', target: 'capacity', targetHandle: 'info' },
+    { id: 'i6', source: 'prod', target: 'capacity', targetHandle: 'info' },
+  ],
+};
+
+export const HIRING_PIPELINE = {
+  name: 'Hiring Pipeline (Aging Chain)',
+  description: 'New hires spend months as trainees before becoming experienced staff, who eventually quit. Hiring replaces quits and closes the gap to a target workforce. The training delay means the experienced workforce lags behind hiring decisions.',
+  maxTime: 60,
+  timeUnit: 'month',
+  visibleVariables: ['Trainees', 'Experienced', 'hiring'],
+  nodes: [
+    { id: 'trainees', type: 'stock', position: { x: 220, y: 120 }, data: { label: 'Trainees', value: 20, unit: 'people' } },
+    { id: 'experienced', type: 'stock', position: { x: 640, y: 120 }, data: { label: 'Experienced', value: 100, unit: 'people' } },
+    { id: 'hiring', type: 'flow', position: { x: 20, y: 138 }, data: { label: 'hiring', equation: 'max(0, quits + (target_workforce - Trainees - Experienced) / hiring_delay)', unit: 'people/month' } },
+    { id: 'training', type: 'flow', position: { x: 450, y: 138 }, data: { label: 'training_completion', equation: 'Trainees / training_time', unit: 'people/month' } },
+    { id: 'quits', type: 'flow', position: { x: 880, y: 138 }, data: { label: 'quits', equation: 'Experienced * quit_fraction', unit: 'people/month' } },
+    { id: 'target', type: 'variable', position: { x: 0, y: 340 }, data: { label: 'target_workforce', value: '200', unit: 'people' } },
+    { id: 'hdelay', type: 'variable', position: { x: 160, y: 340 }, data: { label: 'hiring_delay', value: '3', unit: 'month' } },
+    { id: 'ttime', type: 'variable', position: { x: 440, y: 340 }, data: { label: 'training_time', value: '6', unit: 'month' } },
+    { id: 'qf', type: 'variable', position: { x: 880, y: 340 }, data: { label: 'quit_fraction', value: '0.03', unit: '1/month' } },
+  ],
+  edges: [
+    { id: 'm1', source: 'hiring', target: 'trainees', targetHandle: 'inflow' },
+    { id: 'm2', source: 'trainees', sourceHandle: 'outflow', target: 'training' },
+    { id: 'm3', source: 'training', target: 'experienced', targetHandle: 'inflow' },
+    { id: 'm4', source: 'experienced', sourceHandle: 'outflow', target: 'quits' },
+    { id: 'i1', source: 'quits', target: 'hiring', targetHandle: 'info', sourceHandle: 'info' },
+    { id: 'i2', source: 'target', target: 'hiring', targetHandle: 'info' },
+    { id: 'i3', source: 'hdelay', target: 'hiring', targetHandle: 'info' },
+    { id: 'i4', source: 'trainees', target: 'hiring', targetHandle: 'info' },
+    { id: 'i5', source: 'experienced', target: 'hiring', targetHandle: 'info' },
+    { id: 'i6', source: 'trainees', target: 'training', targetHandle: 'info' },
+    { id: 'i7', source: 'ttime', target: 'training', targetHandle: 'info' },
+    { id: 'i8', source: 'experienced', target: 'quits', targetHandle: 'info' },
+    { id: 'i9', source: 'qf', target: 'quits', targetHandle: 'info' },
+  ],
+};
+
+export const SUPPLY_CHAIN_DELAY = {
+  name: 'Supply Chain with Delivery Delay',
+  description: 'A retailer orders to replace sales and to correct its inventory, but orders take weeks to arrive. Ignoring the orders already in the pipeline (the supply line) makes the manager over-order, so inventory overshoots and oscillates. This is the structure behind the bullwhip effect.',
+  maxTime: 80,
+  timeUnit: 'week',
+  visibleVariables: ['Inventory', 'Supply_Line'],
+  nodes: [
+    { id: 'sl', type: 'stock', position: { x: 220, y: 120 }, data: { label: 'Supply_Line', value: 400, unit: 'units', description: 'Ordered but not yet delivered.' } },
+    { id: 'inv', type: 'stock', position: { x: 660, y: 120 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
+    { id: 'orders', type: 'flow', position: { x: 20, y: 138 }, data: { label: 'orders', equation: 'max(0, Customer_Demand + (Target_Inventory - Inventory) / inventory_adjustment_time + supply_line_weight * (desired_supply_line - Supply_Line) / inventory_adjustment_time)', unit: 'units/week' } },
+    { id: 'deliveries', type: 'flow', position: { x: 460, y: 138 }, data: { label: 'deliveries', equation: 'Supply_Line / delivery_delay', unit: 'units/week' } },
+    { id: 'sales', type: 'flow', position: { x: 900, y: 138 }, data: { label: 'sales', equation: 'Customer_Demand', unit: 'units/week' } },
+    { id: 'dsl', type: 'variable', position: { x: 230, y: 340 }, data: { label: 'desired_supply_line', equation: 'Customer_Demand * delivery_delay', unit: 'units' } },
+    { id: 'demand', type: 'variable', position: { x: 900, y: 340 }, data: { label: 'Customer_Demand', value: '100', unit: 'units/week' } },
+    { id: 'target', type: 'variable', position: { x: 660, y: 340 }, data: { label: 'Target_Inventory', value: '400', unit: 'units' } },
+    { id: 'iat', type: 'variable', position: { x: 0, y: 340 }, data: { label: 'inventory_adjustment_time', value: '2', unit: 'week' } },
+    { id: 'delay', type: 'variable', position: { x: 460, y: 340 }, data: { label: 'delivery_delay', value: '4', unit: 'week' } },
+    { id: 'slw', type: 'variable', position: { x: 0, y: 480 }, data: { label: 'supply_line_weight', value: '0', unit: 'dimensionless', description: '0 = the manager ignores orders in transit; 1 = accounts for them fully.' } },
+  ],
+  edges: [
+    { id: 'm1', source: 'orders', target: 'sl', targetHandle: 'inflow' },
+    { id: 'm2', source: 'sl', sourceHandle: 'outflow', target: 'deliveries' },
+    { id: 'm3', source: 'deliveries', target: 'inv', targetHandle: 'inflow' },
+    { id: 'm4', source: 'inv', sourceHandle: 'outflow', target: 'sales' },
+    { id: 'i1', source: 'demand', target: 'orders', targetHandle: 'info' },
+    { id: 'i2', source: 'target', target: 'orders', targetHandle: 'info' },
+    { id: 'i3', source: 'inv', target: 'orders', targetHandle: 'info' },
+    { id: 'i4', source: 'iat', target: 'orders', targetHandle: 'info' },
+    { id: 'i5', source: 'slw', target: 'orders', targetHandle: 'info' },
+    { id: 'i6', source: 'dsl', target: 'orders', targetHandle: 'info' },
+    { id: 'i7', source: 'sl', target: 'orders', targetHandle: 'info' },
+    { id: 'i8', source: 'sl', target: 'deliveries', targetHandle: 'info' },
+    { id: 'i9', source: 'delay', target: 'deliveries', targetHandle: 'info' },
+    { id: 'i10', source: 'demand', target: 'sales', targetHandle: 'info' },
+    { id: 'i11', source: 'demand', target: 'dsl', targetHandle: 'info' },
+    { id: 'i12', source: 'delay', target: 'dsl', targetHandle: 'info' },
+  ],
+};
+
+export const FISHERY = {
+  name: 'Fishery (Overshoot and Collapse)',
+  description: 'Fish regenerate logistically. The fishing fleet grows by reinvesting part of its catch and shrinks as boats are retired. Because the fleet responds to past catches, it keeps growing after the fish stock has started to fall: the fishery overshoots its sustainable yield and the catch collapses before the fleet adjusts.',
+  maxTime: 60,
+  timeUnit: 'year',
+  visibleVariables: ['Fish', 'Boats', 'harvest'],
+  nodes: [
+    { id: 'fish', type: 'stock', position: { x: 260, y: 120 }, data: { label: 'Fish', value: 900, unit: 'tons' } },
+    { id: 'boats', type: 'stock', position: { x: 260, y: 480 }, data: { label: 'Boats', value: 5, unit: 'boats' } },
+    { id: 'regen', type: 'flow', position: { x: 40, y: 138 }, data: { label: 'regeneration', equation: 'Fish * regeneration_rate * (1 - Fish / carrying_capacity)', unit: 'tons/year' } },
+    { id: 'harvest', type: 'flow', position: { x: 560, y: 138 }, data: { label: 'harvest', equation: 'Boats * catch_per_boat * Fish / carrying_capacity', unit: 'tons/year' } },
+    { id: 'buy', type: 'flow', position: { x: 40, y: 498 }, data: { label: 'boat_purchases', equation: 'harvest * reinvestment_fraction / boat_price', unit: 'boats/year' } },
+    { id: 'retire', type: 'flow', position: { x: 560, y: 498 }, data: { label: 'boat_retirement', equation: 'Boats / boat_lifetime', unit: 'boats/year' } },
+    { id: 'rr', type: 'variable', position: { x: 0, y: 320 }, data: { label: 'regeneration_rate', value: '0.5', unit: '1/year' } },
+    { id: 'cc', type: 'variable', position: { x: 300, y: 320 }, data: { label: 'carrying_capacity', value: '1000', unit: 'tons' } },
+    { id: 'cpb', type: 'variable', position: { x: 760, y: 320 }, data: { label: 'catch_per_boat', value: '20', unit: 'tons/(boat*year)' } },
+    { id: 'rf', type: 'variable', position: { x: 0, y: 660 }, data: { label: 'reinvestment_fraction', value: '0.15', unit: 'dimensionless', description: 'Share of the catch value spent on new boats.' } },
+    { id: 'price', type: 'variable', position: { x: 260, y: 660 }, data: { label: 'boat_price', value: '5', unit: 'tons/boat', description: 'Value of a boat, measured in tons of catch.' } },
+    { id: 'life', type: 'variable', position: { x: 760, y: 660 }, data: { label: 'boat_lifetime', value: '10', unit: 'year' } },
+  ],
+  edges: [
+    { id: 'm1', source: 'regen', target: 'fish', targetHandle: 'inflow' },
+    { id: 'm2', source: 'fish', sourceHandle: 'outflow', target: 'harvest' },
+    { id: 'm3', source: 'buy', target: 'boats', targetHandle: 'inflow' },
+    { id: 'm4', source: 'boats', sourceHandle: 'outflow', target: 'retire' },
+    { id: 'i1', source: 'fish', target: 'regen', targetHandle: 'info' },
+    { id: 'i2', source: 'rr', target: 'regen', targetHandle: 'info' },
+    { id: 'i3', source: 'cc', target: 'regen', targetHandle: 'info' },
+    { id: 'i4', source: 'boats', target: 'harvest', targetHandle: 'info' },
+    { id: 'i5', source: 'cpb', target: 'harvest', targetHandle: 'info' },
+    { id: 'i6', source: 'fish', target: 'harvest', targetHandle: 'info' },
+    { id: 'i7', source: 'cc', target: 'harvest', targetHandle: 'info' },
+    { id: 'i8', source: 'harvest', sourceHandle: 'info', target: 'buy', targetHandle: 'info' },
+    { id: 'i9', source: 'rf', target: 'buy', targetHandle: 'info' },
+    { id: 'i10', source: 'price', target: 'buy', targetHandle: 'info' },
+    { id: 'i11', source: 'boats', target: 'retire', targetHandle: 'info' },
+    { id: 'i12', source: 'life', target: 'retire', targetHandle: 'info' },
+  ],
+};
