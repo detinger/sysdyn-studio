@@ -96,6 +96,10 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Elements added from the toolbar are placed in free space (`placement.js`); fit-to-view zoom is capped at 100 %.
 - Browser-verified: the build challenge can be completed using only the toolbar and inspector, without dragging on the canvas.
 
+### Canvas layout of the new examples
+- The eight new examples and the five challenge starting models were re-laid out following the hand-tuned originals (predator–prey, SIR, population): parameters on a top row, stocks in the middle, flows on a lower row in the gaps between stocks (lower still when a flow has many inputs). Parameters connect from their bottom port, so their arrows are straight and vertical; stocks connect from their bottom port down to flow tops. Every information link therefore points downward, and pipes become clean L-shaped steps.
+- Positions only; equations, ids and behaviour are unchanged (all tests and Python/R parity unchanged).
+
 ### Theory with live figures
 - The Theory page has 8 figures with 13 charts. There are three notation drawings: stock-and-flow anatomy with units, material vs. information, and reinforcing/balancing loop diagrams with polarity signs. Four figures are live, with sliders: accumulation, equilibrium, delay and overshoot, and Euler vs RK4 against the exact solution. A gallery shows six behaviour modes, each computed from a library model with a button to open it.
 - Every chart is computed by the real solver (`src/features/learning/miniModels.js`); sliders change a copy, never the open model. Charts are themed SVG (`MiniChart.jsx`), not Recharts, so the Theory page stays at 29 kB.
