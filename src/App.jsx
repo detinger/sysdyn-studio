@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import useStore from './store';
 import Sidebar from './components/Sidebar';
@@ -7,9 +7,11 @@ import Toasts from './components/ui/Toasts';
 import Canvas from './features/modeler/Canvas';
 import ModelerToolbar from './features/modeler/ModelerToolbar';
 import Inspector from './features/modeler/Inspector';
-import EquationsView from './features/equations/EquationsView';
-import TheoryView from './features/learning/TheoryView';
-import LibraryView from './features/library/LibraryView';
+
+// Secondary pages load on demand to keep the initial bundle small.
+const EquationsView = lazy(() => import('./features/equations/EquationsView'));
+const TheoryView = lazy(() => import('./features/learning/TheoryView'));
+const LibraryView = lazy(() => import('./features/library/LibraryView'));
 import { restoreDraft, startAutosave } from './state/persistence';
 
 const COLLAPSE_KEY = 'sds.sidebar.collapsed';
@@ -85,9 +87,11 @@ export default function App() {
               </div>
             </div>
           </ReactFlowProvider>
-          {route === 'equations' && <EquationsView />}
-          {route === 'theory' && <TheoryView />}
-          {route === 'library' && <LibraryView />}
+          <Suspense fallback={<div className="empty" role="status">Loading…</div>}>
+            {route === 'equations' && <EquationsView />}
+            {route === 'theory' && <TheoryView />}
+            {route === 'library' && <LibraryView />}
+          </Suspense>
         </main>
       </div>
       <Toasts />

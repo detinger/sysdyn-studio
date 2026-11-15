@@ -24,7 +24,7 @@ This document records what was verified, what was wrong, what changed, and what 
 
 | Check | Before | After |
 |---|---|---|
-| `npm run build` | Passes; 1.42 MB JS chunk warning | Passes; 1.55 MB chunk warning (math.js full bundle, see §7) |
+| `npm run build` | Passes; 1.42 MB single JS chunk (size warning) | Passes, no warning: app 162 kB + vendor chunks (React 190, React Flow 200, Recharts 302, math.js parser 309 kB); Equations, Theory, Library and the code dialog load on demand |
 | `npm run lint` | **32 errors, 1 warning** (unused imports, escapes, one real "component created during render" bug in `SimulationPanel`) | **0 errors, 0 warnings** |
 | Tests | none | `npm test`: 66 pass, 16 skipped; with interpreters configured (below): **82 / 82 pass** |
 | Browser | not checked | Light/dark, all pages, inventory workflow, scenario comparison, undo, reload, 800 px layout exercised in Chrome via Playwright; no runtime errors (one dev-only React Flow StrictMode warning, §7) |
@@ -107,12 +107,11 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - **TypeScript:** stay on JavaScript for now (no user-visible gain, high churn). The pure domain modules (`src/domain/**`) are documented and self-contained. Next step: add a `tsconfig.json` with `checkJs` for `src/domain`, then rename domain files to `.ts`. UI later.
 - **React Flow:** keep `reactflow` 11. A migration to `@xyflow/react` 12 is separate work with its own regression pass.
 - **Persistence:** a single draft in `localStorage` (PLAN.md targets IndexedDB for a multi-model library; that comes with the library feature).
-- **math.js:** used only for parsing and TeX. Importing the full bundle accounts for most of the 1.5 MB chunk. Next step: build a minimal instance (`create({ parseDependencies })`) or lazy-load the Equations page.
+- **math.js:** a parse-only instance (`create({ parseDependencies })`), so evaluation, units and matrices are not even reachable from the app.
 
 ## 7. Known issues
 
 - React Flow 11 logs error #002 ("new nodeTypes or edgeTypes object") in development under React 19 StrictMode, because `useMemo` runs twice. The types are module constants; production builds do not log it.
-- Bundle size warning (see §6).
 
 ## 8. Reference screenshots
 

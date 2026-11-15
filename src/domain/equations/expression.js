@@ -7,7 +7,11 @@
  * units (an undefined symbol `m` silently becomes "metre"), matrices, strings
  * and function definitions. Nothing here uses eval / new Function.
  */
-import { parse } from 'mathjs';
+import { create, parseDependencies } from 'mathjs';
+
+// Parse-only math.js instance: keeps the bundle small and makes it impossible
+// to reach math.js evaluation, units or matrices from this module.
+const { parse } = create({ parseDependencies });
 
 /** Name of the reserved symbol that holds the current simulation time. */
 export const TIME_SYMBOL = 'time';

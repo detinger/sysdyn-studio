@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { lazy, Suspense, useRef, useState, useEffect } from 'react';
 import { useReactFlow } from 'reactflow';
 import { Undo2, Redo2, Maximize, ShieldCheck, Play, Download, Upload, ChevronDown, FileJson, FileSpreadsheet, FileCode, FilePlus } from 'lucide-react';
 import useStore from '../../store';
@@ -8,7 +8,7 @@ import { generatePythonCode } from '../../pythonExporter';
 import { generateRCode } from '../../rExporter';
 import { runToCsv } from '../../domain/simulation/runModel';
 import { downloadText, fileSafe } from '../../utils/download';
-import ExportDialog from './ExportDialog';
+const ExportDialog = lazy(() => import('./ExportDialog'));
 
 const PALETTE = [
   { type: 'stock', label: 'Stock', icon: <StockGlyph />, hint: 'Accumulation (level)' },
@@ -151,7 +151,11 @@ export default function ModelerToolbar() {
           }}
         />
       </div>
-      {code && <ExportDialog {...code} onClose={() => setCode(null)} />}
+      {code && (
+        <Suspense fallback={null}>
+          <ExportDialog {...code} onClose={() => setCode(null)} />
+        </Suspense>
+      )}
     </div>
   );
 }
