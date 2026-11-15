@@ -102,6 +102,7 @@ const useStore = create((set, get) => {
       simConfig: { ...DEFAULT_CONFIG, ...state.simulation },
       view: { visibleVariables: null, colors: {}, ...state.view },
       revision: s.revision + 1,
+      layoutRevision: s.layoutRevision + 1,
       run: null,
       baseline: null,
       playback: { index: 0, isPlaying: false, speed: s.playback.speed },
@@ -116,6 +117,7 @@ const useStore = create((set, get) => {
   return {
     ...emptyModel(),
     revision: 0,
+    layoutRevision: 0,
     dirty: false,
     savedAt: null,
     history: { past: [], future: [], lastGroup: null, lastAt: 0 },

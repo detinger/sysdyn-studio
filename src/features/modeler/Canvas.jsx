@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import ReactFlow, { Background, Controls, ControlButton, MiniMap, useReactFlow, useStoreApi, internalsSymbol } from 'reactflow';
+import ReactFlow, { Background, Controls, ControlButton, MiniMap, useReactFlow, useStoreApi, useNodesInitialized, useUpdateNodeInternals, internalsSymbol } from 'reactflow';
 import { Plus, Map as MapIcon } from 'lucide-react';
 import useStore from '../../store';
 import StockNode from '../../components/nodes/StockNode';
@@ -10,6 +10,7 @@ import { LegendLine, StockGlyph, ValveGlyph, AuxGlyph } from '../../components/u
 import { EXAMPLE_LIBRARY } from '../library/catalog';
 import ChallengeCard from '../challenges/ChallengeCard';
 import { snapPosition } from './snap';
+import { straightenMaterialRows } from './straighten';
 
 /** Snap distance in screen pixels (converted to flow units with the current zoom). */
 const SNAP_PX = 10;
@@ -25,6 +26,33 @@ export default function Canvas() {
   const onNodesChangeStore = useStore((s) => s.onNodesChange);
   const rfStore = useStoreApi();
   const altDown = useRef(false);
+  const alignedLayout = useRef(null);
+  const initialized = useNodesInitialized();
+  const updateNodeInternals = useUpdateNodeInternals();
+  const layoutRevision = useStore((s) => s.layoutRevision);
+
+  // Refresh measurements after opening/restoring a model, including models with
+  // reused node ids. Correct the saved positions once, not while the user edits.
+  useEffect(() => {
+    if (!initialized || alignedLayout.current === layoutRevision) return;
+    const ids = useStore.getState().nodes.map((n) => n.id);
+    updateNodeInternals(ids);
+    const frame = requestAnimationFrame(() => {
+      const { nodes: currentNodes, edges: currentEdges } = useStore.getState();
+      const lookup = (id) => {
+        const n = rfStore.getState().nodeInternals.get(id);
+        return n ? { bounds: n[internalsSymbol]?.handleBounds } : null;
+      };
+      const changes = straightenMaterialRows({ nodes: currentNodes, edges: currentEdges, lookup });
+      alignedLayout.current = layoutRevision;
+      if (changes.length) {
+        useStore.getState().onNodeDragStart(); // keep the correction undoable
+        onNodesChangeStore(changes);
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [initialized, layoutRevision, updateNodeInternals, rfStore, onNodesChangeStore]);
+
 
   useEffect(() => {
     const onKey = (e) => { altDown.current = e.altKey; };
