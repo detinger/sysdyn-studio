@@ -735,7 +735,7 @@ system-dynamics-studio/
 - [x] Add synchronized time cursor, data table and CSV export.
 - [x] Implement baseline vs. intervention scenario model.
 - [ ] Add side-by-side and overlaid comparisons. *(overlay and comparison table done; side-by-side pending)*
-- [ ] Build parameter sweeps and simple sensitivity views.
+- [x] Build parameter sweeps and simple sensitivity views.
 - [ ] Add interpretation prompts and run provenance to reports. *(compare view and CSV header; no report export yet)*
 
 **Acceptance:** Students reproduce a scenario comparison and identify which parameter changed, under identical numerical settings.

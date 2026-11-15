@@ -84,6 +84,11 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Stocks / Flows / Variables tabs (one axis per tab, units on the axis), time cursor, failure marker, solver caption, data table with the current row highlighted, CSV with provenance header.
 - Baseline vs. intervention: "Set as baseline", dashed overlay, parameter-difference table, stock metrics (final, peak and time, minimum), fairness checks (method, dt, horizon, constraint, initial values, added or removed elements) and run provenance.
 
+### Phase 4 — experiments (second slice)
+- `src/domain/scenarios/sweep.js`: sweep grids (linear/log, validated), sweep runs sharing one solver configuration, and local one-at-a-time elasticities ranked by size. Tested against closed forms (inventory final level, decay elasticity −k·t).
+- Experiment tab with sweep chart and table and a sensitivity ranking, both labelled as exploratory and marked stale when the model changes.
+- The results panel is resizable (drag, or arrow keys on the focused handle) and remembers its height.
+
 ### Phase 5 (started)
 - Model library with search and level filters, previews drawn from each model's **actual simulated trajectories**, teaching notes (concepts, intended behaviour, prompts, limitations). World3 is labelled as a teaching sketch, not the calibrated model.
 - Contextual "Explain" tab generated from the element's real connections.
@@ -97,7 +102,7 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 | C Validator | Mostly done | No dimensional algebra *inside* expressions (only declared stock/flow units are compared); no division-by-zero or domain hazard analysis before running (caught at run time with time and element) |
 | D Simulation | Mostly done | No Web Worker or cancel (runs are capped at 200,000 steps); output interval = dt; no run trace |
 | E Analysis | Partial | No phase plots, reference curves, settling or oscillation measures |
-| F Experiments | First slice | One baseline; no sweeps, sensitivity, Monte Carlo or policy schedules (`step`/`ramp`/`pulse` exist as time functions) |
+| F Experiments | Partial | One baseline; parameter sweeps (linear/log, up to 50 runs) and one-at-a-time ±10 % sensitivity ranking done; no two-parameter grids, Monte Carlo or policy schedules (`step`/`ramp`/`pulse` exist as time functions) |
 | G Challenges | Not started | |
 | H Library | Partial | Teaching metadata added; units declared only for Inventory; no beginner/advanced variants |
 | I Export | Mostly done | JSON, CSV, Python and R verified; no SVG/PNG, equation report or XMILE |

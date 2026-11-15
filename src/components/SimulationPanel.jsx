@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import ResizeHandle, { usePanelHeight } from './ui/ResizeHandle';
 import {
   Play, Pause, RotateCcw, StepForward, StepBack, ChevronDown, ChevronUp, Pin, PinOff, FileSpreadsheet, CircleAlert, TriangleAlert, LineChart as LineIcon,
 } from 'lucide-react';
@@ -10,6 +11,7 @@ import { fmtNum } from '../utils/format';
 import { runToCsv } from '../domain/simulation/runModel';
 import { downloadText, fileSafe } from '../utils/download';
 import { compareRuns } from '../domain/scenarios/compare';
+import ExperimentPanel from '../features/experiments/ExperimentPanel';
 
 const PALETTE = ['chart-1', 'chart-2', 'chart-3', 'chart-4', 'chart-5', 'chart-6'];
 const TOKENS = [...PALETTE, 'chart-grid', 'chart-axis', 'chart-muted', 'chart-surface', 'border', 'text', 'text-muted', 'error', 'accent', 'bg-elevated'];
@@ -62,6 +64,7 @@ export default function SimulationPanel() {
   const selectedId = useStore((s) => s.selectedId);
   const tokens = useTokens(TOKENS);
   const [collapsed, setCollapsed] = useState(false);
+  const [height, setHeight] = usePanelHeight('sds.results.height', 300);
   const [tab, setTab] = useState('stocks');
 
   const colorOf = useSeriesColors(run, view.colors, tokens);
@@ -98,6 +101,7 @@ export default function SimulationPanel() {
     { id: 'variables', label: 'Variables' },
     { id: 'table', label: 'Table' },
     { id: 'compare', label: 'Compare', badge: baseline ? <span className="badge badge-primary">Baseline</span> : null },
+    { id: 'experiment', label: 'Experiment' },
   ];
 
   const status = !run
@@ -110,6 +114,7 @@ export default function SimulationPanel() {
 
   return (
     <section className={`results${collapsed ? ' collapsed' : ''}`} aria-label="Simulation results">
+      {!collapsed && <ResizeHandle height={height} onChange={setHeight} label="Resize results panel" />}
       <div className="sim-controls">
         <button className="btn btn-sm btn-primary" onClick={() => runSimulation()} title="Solve the model (Ctrl/⌘ Enter)"><LineIcon size={16} /> Run</button>
         <span className="toolbar-sep" />
@@ -150,7 +155,7 @@ export default function SimulationPanel() {
         </button>
       </div>
 
-      <div className="results-body">
+      <div className={`results-body${tab === 'experiment' ? ' wide' : ''}`} style={{ height }}>
         <div className="results-main">
           <Tabs tabs={tabs} value={tab} onChange={setTab} compact label="Result views" />
           {run && !run.completed && (
@@ -159,7 +164,9 @@ export default function SimulationPanel() {
               <div><strong>{run.failure.message}</strong> The data below stop at the last valid step. Inspect the equation of the named element.</div>
             </div>
           )}
-          {!run ? (
+          {tab === 'experiment' ? (
+            <ExperimentPanel />
+          ) : !run ? (
             <div className="empty" style={{ flex: 1 }}>
               <Play size={28} aria-hidden="true" />
               <div><strong>Nothing to show yet.</strong></div>
@@ -190,7 +197,7 @@ export default function SimulationPanel() {
             </div>
           )}
         </div>
-        <div className="results-side">
+        <div className="results-side" hidden={tab === 'experiment'}>
           <CurrentLevels run={run} index={index} groups={groups} colorOf={colorOf} tokens={tokens} t={t} unit={unit} stale={stale} />
         </div>
       </div>
