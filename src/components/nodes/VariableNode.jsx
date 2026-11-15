@@ -1,37 +1,44 @@
-import React from 'react';
+import { memo } from 'react';
 import { Handle, Position } from 'reactflow';
-import { Variable } from 'lucide-react';
-import useStore from '../../store';
+import { variableExpression } from '../../domain/model/semantics';
+import { parseExpression, isNumericLiteral } from '../../domain/equations/expression';
+import { fmtNum } from '../../utils/format';
+import { IssueMarker } from './nodeCommon';
+import { usePlaybackValue, useRunStale } from './hooks';
 
-const VariableNode = ({ id, data }) => {
-  const updateNodeData = useStore((state) => state.updateNodeData);
-
+/** Auxiliary (circle) or parameter (circle with constant bar). All ports carry information. */
+const VariableNode = ({ id, data, selected }) => {
+  const expr = variableExpression(data);
+  const isParam = isNumericLiteral(parseExpression(expr).ast);
+  const value = usePlaybackValue(id);
+  const stale = useRunStale();
   return (
-    <div className="px-4 py-3 shadow-xl rounded-lg bg-card border-2 border-yellow-500 min-w-[150px]">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="p-2 bg-yellow-500/10 rounded-md">
-          <Variable className="w-5 h-5 text-yellow-500" />
+    <div className={`sd-node sd-var${isParam ? ' param' : ''}${selected ? ' selected-ring' : ''}`} title={`${isParam ? 'Parameter' : 'Auxiliary'} · ${data.label}${data.unit ? ` · ${data.unit}` : ''} = ${expr}`}>
+      <IssueMarker id={id} />
+      <div className="below">
+        <div className="sd-label">{data.label}</div>
+        <div className={value !== undefined && !stale && !isParam ? 'sd-value' : 'sd-meta'}>
+          {isParam ? expr : value !== undefined && !stale ? fmtNum(value) : ''}
+          {data.unit && (isParam || (value !== undefined && !stale)) ? ` ${data.unit}` : ''}
         </div>
-        <input
-          className="bg-transparent font-bold text-sm outline-none w-full"
-          value={data.label}
-          onChange={(e) => updateNodeData(id, { label: e.target.value })}
-        />
       </div>
-      <div className="flex items-center gap-2 bg-secondary/50 p-1.5 rounded border border-border/50">
-        <input
-          className="bg-transparent text-xs outline-none w-full text-center"
-          value={data.value || data.equation}
-          onChange={(e) => updateNodeData(id, { value: e.target.value, equation: e.target.value })}
-          placeholder="Value or Eq"
-        />
-      </div>
-      <Handle type="target" position={Position.Left} className="w-3 h-3 bg-yellow-500 border-2 border-card" />
-      <Handle type="source" position={Position.Right} className="w-3 h-3 bg-yellow-500 border-2 border-card" />
-      <Handle type="target" position={Position.Top} className="w-3 h-3 bg-yellow-500 border-2 border-card" />
-      <Handle type="source" position={Position.Bottom} className="w-3 h-3 bg-yellow-500 border-2 border-card" />
+      {/*
+        Every side can both receive and send information. Order matters:
+        - Edges saved without a handle id attach to the FIRST target (Left) and
+          the FIRST source (Right), as in models created before these ports existed.
+        - Sources come after targets so they sit on top: dragging from any side
+          starts a link; dropping onto any side ends one.
+      */}
+      <Handle type="target" position={Position.Left} className="info-port" />
+      <Handle type="target" position={Position.Right} id="in-right" className="info-port" />
+      <Handle type="target" position={Position.Bottom} id="in-bottom" className="info-port" />
+      <Handle type="target" position={Position.Top} id="info" className="info-port" />
+      <Handle type="source" position={Position.Right} className="info-port" />
+      <Handle type="source" position={Position.Bottom} id="info" className="info-port" />
+      <Handle type="source" position={Position.Top} id="out-top" className="info-port" />
+      <Handle type="source" position={Position.Left} id="out-left" className="info-port" />
     </div>
   );
 };
 
-export default VariableNode;
+export default memo(VariableNode);

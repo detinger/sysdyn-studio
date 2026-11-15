@@ -1,41 +1,43 @@
-import React from 'react';
+import { memo } from 'react';
 import { Handle, Position } from 'reactflow';
-import { MoveRight } from 'lucide-react';
+import { Cloud } from 'lucide-react';
 import useStore from '../../store';
+import { ValveGlyph } from '../ui/Glyphs';
+import { fmtNum } from '../../utils/format';
+import { IssueMarker } from './nodeCommon';
+import { usePlaybackValue, useRunStale } from './hooks';
 
-const FlowNode = ({ id, data }) => {
-  const updateNodeData = useStore((state) => state.updateNodeData);
-
+/** Flow (rate): a valve on a pipe. Open ends are drawn as clouds (model boundary). */
+const FlowNode = ({ id, data, selected }) => {
+  const ends = useStore((s) => {
+    let src = false;
+    let tgt = false;
+    s.edges.forEach((e) => {
+      if (e.target === id && e.data?.kind === 'outflow') src = true;
+      if (e.source === id && e.data?.kind === 'inflow') tgt = true;
+    });
+    return `${src ? 1 : 0}${tgt ? 1 : 0}`;
+  });
+  const value = usePlaybackValue(id);
+  const stale = useRunStale();
   return (
-    <div className="px-4 py-3 shadow-xl rounded-lg bg-card border-2 border-red-500 min-w-[150px]">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="p-2 bg-red-500/10 rounded-md">
-          <MoveRight className="w-5 h-5 text-red-500" />
-        </div>
-        <input
-          className="bg-transparent font-bold text-sm outline-none w-full"
-          value={data.label}
-          onChange={(e) => updateNodeData(id, { label: e.target.value })}
-        />
+    <div className={`sd-node sd-flow${selected ? ' selected-ring' : ''}`} title={`Flow · ${data.label}${data.unit ? ` · ${data.unit}` : ''}${data.equation ? ` = ${data.equation}` : ''}`}>
+      <IssueMarker id={id} />
+      {ends[0] === '0' && (<><span className="cloud-pipe left" /><Cloud size={22} className="cloud left" aria-label="Source outside the model boundary" /></>)}
+      {ends[1] === '0' && (<><span className="cloud-pipe right" /><Cloud size={22} className="cloud right" aria-label="Sink outside the model boundary" /></>)}
+      <ValveGlyph size={36} />
+      <div className="below">
+        <div className="sd-label">{data.label}</div>
+        {value !== undefined && !stale && <div className="sd-value">{fmtNum(value)}{data.unit ? ` ${data.unit}` : ''}</div>}
       </div>
-
-      <div className="space-y-1">
-        <label className="text-[10px] uppercase text-muted-foreground font-semibold">Equation</label>
-        <div className="flex items-center gap-2 bg-secondary/50 p-1.5 rounded border border-border/50">
-          <input
-            className="bg-transparent text-xs outline-none w-full"
-            value={data.equation}
-            onChange={(e) => updateNodeData(id, { equation: e.target.value })}
-            placeholder="e.g. Rate * Variable"
-          />
-        </div>
-      </div>
-      <Handle type="target" position={Position.Left} className="w-3 h-3 bg-red-500 border-2 border-card" />
-      <Handle type="source" position={Position.Right} className="w-3 h-3 bg-red-500 border-2 border-card" />
-      <Handle type="target" position={Position.Top} id="info" className="w-3 h-3 bg-yellow-500 border-2 border-card border-dashed" />
-      <Handle type="source" position={Position.Bottom} id="info" className="w-3 h-3 bg-yellow-500 border-2 border-card border-dashed" />
+      <Handle type="target" position={Position.Left} className="material-port" title="Material in: from a stock's outflow port" />
+      <Handle type="source" position={Position.Right} className="material-port" title="Material out: into a stock's inflow port" />
+      <Handle type="target" position={Position.Top} id="info" className="info-port" title="Information in: values this rate depends on" />
+      {/* Information can also arrive from below; the source is rendered last so dragging from the bottom starts a link. */}
+      <Handle type="target" position={Position.Bottom} id="info-bottom" className="info-port" title="Information in (from below)" />
+      <Handle type="source" position={Position.Bottom} id="info" className="info-port" title="Information out" />
     </div>
   );
 };
 
-export default FlowNode;
+export default memo(FlowNode);

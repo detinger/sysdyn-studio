@@ -1,0 +1,138 @@
+/*
+ * Design tokens — exact BPMN Studio values (STYLE.md §2, §3, §4, §7.1, §8.1, §10).
+ * Every colour in the app must come from these variables.
+ *
+ * Extension (documented in docs/architecture/current-state.md): --chart-4 … --chart-6
+ * extend the three-colour chart palette for models with more than three series.
+ * They are used only after --chart-1..3 and always together with a legend.
+ */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f6f9;
+  --bg-elevated: #ffffff;
+  --bg-subtle: #eef1f5;
+  --bg-sunken: #e6eaf0;
+  --bg-hover: #e9eef5;
+  --border: #d6dce5;
+  --border-strong: #b7c1cf;
+  --text: #17202c;
+  --text-muted: #4b5867;
+  --text-subtle: #6b7787;
+  --text-on-primary: #ffffff;
+  --text-on-accent: #1d1205;
+  --primary: #1f5f8b;
+  --primary-hover: #184d72;
+  --primary-soft: #e3eef7;
+  --primary-strong: #123b59;
+  --accent: #d9822b;
+  --accent-soft: #fbeedd;
+  --error: #c0392b;
+  --error-soft: #fbe9e7;
+  --warning: #b7791f;
+  --warning-soft: #fdf3dc;
+  --recommendation: #2b6cb0;
+  --recommendation-soft: #e6f0fa;
+  --info: #5a6779;
+  --info-soft: #eef1f5;
+  --success: #2f855a;
+  --success-soft: #e3f4ea;
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #8a5cc2;
+  --chart-5: #b8860b;
+  --chart-6: #c2417a;
+  --chart-grid: #e1e0d9;
+  --chart-axis: #c3c2b7;
+  --chart-muted: #898781;
+  --chart-surface: #ffffff;
+  --canvas-bg: #ffffff;
+  --sd-stroke: #22242a;
+  --sd-fill: #ffffff;
+  --sd-label: #22242a;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow: 0 2px 8px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.16);
+  --focus-ring: 0 0 0 3px rgba(31, 95, 139, 0.35);
+  --font-sans: 'Inter', 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Code highlighting (export dialog) */
+  --code-bg: #f6f8fa;
+  --code-comment: #6b7787;
+  --code-keyword: #8a3ffc;
+  --code-string: #2f855a;
+  --code-number: #b7791f;
+  --code-function: #1f5f8b;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0f141b;
+  --bg-elevated: #171e27;
+  --bg-subtle: #1c2430;
+  --bg-sunken: #121821;
+  --bg-hover: #233042;
+  --border: #2b3645;
+  --border-strong: #3b4a5e;
+  --text: #e6ebf1;
+  --text-muted: #b2bdcb;
+  --text-subtle: #8a97a8;
+  --text-on-primary: #0b1520;
+  --text-on-accent: #1d1205;
+  --primary: #5aa7d8;
+  --primary-hover: #7ab9e3;
+  --primary-soft: #16314a;
+  --primary-strong: #a8d3ef;
+  --accent: #f0a457;
+  --accent-soft: #3a2a17;
+  --error: #f2776a;
+  --error-soft: #3b1d1a;
+  --warning: #e8b45a;
+  --warning-soft: #3a2d14;
+  --recommendation: #79b2ec;
+  --recommendation-soft: #172a40;
+  --info: #a3afbf;
+  --info-soft: #1f2833;
+  --success: #6fcf97;
+  --success-soft: #16301f;
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #a27fd6;
+  --chart-5: #c99a2e;
+  --chart-6: #d0628f;
+  --chart-grid: #2c2c2a;
+  --chart-axis: #383835;
+  --chart-muted: #898781;
+  --chart-surface: #171e27;
+  --canvas-bg: #141a22;
+  --sd-stroke: #d7dee8;
+  --sd-fill: #1b232d;
+  --sd-label: #e6ebf1;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+  --focus-ring: 0 0 0 3px rgba(90, 167, 216, 0.45);
+
+  --code-bg: #121821;
+  --code-comment: #8a97a8;
+  --code-keyword: #c39bff;
+  --code-string: #6fcf97;
+  --code-number: #e8b45a;
+  --code-function: #7ab9e3;
+}
+
+:root {
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+  --sidebar-w: 232px;
+  --sidebar-w-collapsed: 64px;
+  --toolbar-h: 56px;
+  --inspector-w: 420px;
+}

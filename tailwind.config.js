@@ -1,52 +1,35 @@
 /** @type {import('tailwindcss').Config} */
+// Colours map to the semantic CSS tokens in src/styles/tokens.css (STYLE.md §2).
+// Do not add raw palette colours here.
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
+        bg: 'var(--bg)',
+        elevated: 'var(--bg-elevated)',
+        subtle: 'var(--bg-subtle)',
+        sunken: 'var(--bg-sunken)',
+        hover: 'var(--bg-hover)',
+        border: 'var(--border)',
+        'border-strong': 'var(--border-strong)',
+        text: 'var(--text)',
+        muted: 'var(--text-muted)',
+        'text-subtle': 'var(--text-subtle)',
+        primary: 'var(--primary)',
+        'primary-soft': 'var(--primary-soft)',
+        accent: 'var(--accent)',
+        'accent-soft': 'var(--accent-soft)',
+        error: 'var(--error)',
+        warning: 'var(--warning)',
+        success: 'var(--success)',
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
+      borderRadius: { sm: 'var(--radius-sm)', DEFAULT: 'var(--radius)', lg: 'var(--radius-lg)' },
+      fontFamily: { sans: 'var(--font-sans)', mono: 'var(--font-mono)' },
     },
   },
+  // Preflight is off: src/styles/global.css owns element-level base styles,
+  // so headings and controls follow STYLE.md instead of Tailwind's reset.
+  corePlugins: { preflight: false },
   plugins: [],
-}
+};
