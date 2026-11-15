@@ -96,6 +96,10 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Elements added from the toolbar are placed in free space (`placement.js`); fit-to-view zoom is capped at 100 %.
 - Browser-verified: the build challenge can be completed using only the toolbar and inspector, without dragging on the canvas.
 
+### Home page
+- Home is the start screen (sidebar first item; the brand mark also links to it). It shows the open model with its validation and run status, any active challenge or baseline, challenge progress by level, the learning workflow as links, and what is stored in this browser.
+- Local data: every key starts with `sds.` (`src/state/storage.js` lists them with sizes). Home can reset challenge progress, or clear all app data after a confirmation dialog: autosave is suspended, all `sds.` keys are removed (other sites' keys are untouched) and the app reloads empty. Tested in `tests/unit/storage.test.js` and in the browser.
+
 ### Phase 5 — examples and challenge catalogue
 - Eight new examples, each checked numerically before inclusion (equilibria, overshoot sizes) and covered automatically by the example tests: validation, simulation to the stop time, agreement with the legacy engine, and Python/R parity.
 - The assessment engine compares against a challenge's starting model (`onlyChanged`: only named parameters may change, matched by name), follows dependencies transitively, computes RMSE against observations, and computes expected values with the student's own solver settings (so Euler and RK4 solutions are both judged fairly).

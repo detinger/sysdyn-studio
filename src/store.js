@@ -118,7 +118,7 @@ const useStore = create((set, get) => {
     playback: { index: 0, isPlaying: false, speed: 5 },
     hiddenLines: {},
     toasts: [],
-    view_route: 'modeler',
+    view_route: 'home',
     challenge: null, // { id, answers, hintsShown, revealed }
 
     // ---------- navigation ----------

@@ -43,12 +43,21 @@ export function restoreDraft() {
 }
 
 let timer = null;
+let suspended = false;
+
+/** Stop autosaving (used before clearing local data and reloading). */
+export function suspendAutosave() {
+  suspended = true;
+  clearTimeout(timer);
+}
+
 export function startAutosave() {
   return useStore.subscribe((state, prev) => {
-    if (!state.dirty) return;
+    if (suspended || !state.dirty) return;
     if (state.nodes === prev.nodes && state.edges === prev.edges && state.meta === prev.meta && state.simConfig === prev.simConfig && state.view === prev.view && prev.dirty) return;
     clearTimeout(timer);
     timer = setTimeout(() => {
+      if (suspended) return;
       const doc = useStore.getState().exportDocument();
       if (write(DRAFT_KEY, JSON.stringify(doc))) useStore.getState().markSaved();
     }, 600);

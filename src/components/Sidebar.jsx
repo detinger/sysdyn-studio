@@ -1,4 +1,4 @@
-import { Workflow, Sigma, BookOpen, Library, Target, Upload, PanelLeftClose, PanelLeftOpen, Sun, Moon, Monitor } from 'lucide-react';
+import { House, Workflow, Sigma, BookOpen, Library, Target, Upload, PanelLeftClose, PanelLeftOpen, Sun, Moon, Monitor } from 'lucide-react';
 import { useRef } from 'react';
 import useStore from '../store';
 import { useTheme } from '../app/theme';
@@ -6,6 +6,7 @@ import { BrandGlyph } from './ui/Glyphs';
 
 const NAV = [
   { group: 'Workspace', items: [
+    { id: 'home', label: 'Home', icon: House },
     { id: 'modeler', label: 'Modeler', icon: Workflow },
     { id: 'equations', label: 'Equations', icon: Sigma },
   ] },
@@ -35,11 +36,13 @@ export default function Sidebar({ collapsed, onToggle }) {
   return (
     <nav className="sidebar" aria-label="Main navigation">
       <div className="brand">
-        <span className="brand-mark"><BrandGlyph /></span>
-        <span className="brand-text">
-          <div className="brand-name">System Dynamics Studio</div>
-          <div className="brand-sub">Model · Simulate · Learn</div>
-        </span>
+        <button className="brand-btn" onClick={() => setRoute('home')} aria-label="System Dynamics Studio: go to Home" title="Home">
+          <span className="brand-mark"><BrandGlyph /></span>
+          <span className="brand-text">
+            <div className="brand-name">System Dynamics Studio</div>
+            <div className="brand-sub">Model · Simulate · Learn</div>
+          </span>
+        </button>
       </div>
       <div className="nav">
         {NAV.map((g) => (

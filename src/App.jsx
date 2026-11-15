@@ -13,6 +13,7 @@ const EquationsView = lazy(() => import('./features/equations/EquationsView'));
 const TheoryView = lazy(() => import('./features/learning/TheoryView'));
 const LibraryView = lazy(() => import('./features/library/LibraryView'));
 const ChallengesView = lazy(() => import('./features/challenges/ChallengesView'));
+const HomeView = lazy(() => import('./features/home/HomeView'));
 import { restoreDraft, startAutosave } from './state/persistence';
 
 const COLLAPSE_KEY = 'sds.sidebar.collapsed';
@@ -89,6 +90,7 @@ export default function App() {
             </div>
           </ReactFlowProvider>
           <Suspense fallback={<div className="empty" role="status">Loading…</div>}>
+            {route === 'home' && <HomeView />}
             {route === 'equations' && <EquationsView />}
             {route === 'theory' && <TheoryView />}
             {route === 'library' && <LibraryView />}
