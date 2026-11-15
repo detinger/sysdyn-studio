@@ -1,4 +1,4 @@
-import { Workflow, Sigma, BookOpen, Library, Upload, PanelLeftClose, PanelLeftOpen, Sun, Moon, Monitor } from 'lucide-react';
+import { Workflow, Sigma, BookOpen, Library, Target, Upload, PanelLeftClose, PanelLeftOpen, Sun, Moon, Monitor } from 'lucide-react';
 import { useRef } from 'react';
 import useStore from '../store';
 import { useTheme } from '../app/theme';
@@ -12,6 +12,7 @@ const NAV = [
   { group: 'Learn', items: [
     { id: 'theory', label: 'Theory', icon: BookOpen },
     { id: 'library', label: 'Model library', icon: Library },
+    { id: 'challenges', label: 'Challenges', icon: Target },
   ] },
 ];
 

@@ -119,6 +119,7 @@ const useStore = create((set, get) => {
     hiddenLines: {},
     toasts: [],
     view_route: 'modeler',
+    challenge: null, // { id, answers, hintsShown, revealed }
 
     // ---------- navigation ----------
     setRoute: (route) => set({ view_route: route }),
@@ -488,6 +489,29 @@ const useStore = create((set, get) => {
       toast('Saved as baseline. Change parameters and run again to compare.', 'success', 4000);
     },
     clearBaseline: () => set({ baseline: null }),
+
+    // ---------- challenges ----------
+    /** Start a challenge: load its starting model (or an empty one) and show its checklist. */
+    startChallenge: (challenge, startModel) => {
+      if (startModel) get().loadModel(startModel, { silent: true, asCopy: true });
+      else applyModelState({ ...emptyModel(), meta: { ...emptyModel().meta, name: challenge.title }, simulation: DEFAULT_CONFIG }, { label: null });
+      set({ challenge: { id: challenge.id, answers: {}, hintsShown: 0, revealed: false }, view_route: 'modeler', selectedId: null });
+      toast(`Challenge started: ${challenge.title}`, 'info', 3000);
+    },
+    answerChallenge: (questionId, optionId) => {
+      const c = get().challenge;
+      if (!c || c.answers[questionId]) return; // first answer counts: predict before you look
+      set({ challenge: { ...c, answers: { ...c.answers, [questionId]: optionId } } });
+    },
+    revealHint: () => {
+      const c = get().challenge;
+      if (c) set({ challenge: { ...c, hintsShown: c.hintsShown + 1 } });
+    },
+    revealExplanation: () => {
+      const c = get().challenge;
+      if (c) set({ challenge: { ...c, revealed: true } });
+    },
+    exitChallenge: () => set({ challenge: null }),
   };
 });
 

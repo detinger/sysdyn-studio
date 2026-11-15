@@ -8,6 +8,7 @@ import VariableNode from '../../components/nodes/VariableNode';
 import { MaterialEdge, InfoEdge, InvalidEdge, EdgeMarkers } from './edges';
 import { LegendLine, StockGlyph, ValveGlyph, AuxGlyph } from '../../components/ui/Glyphs';
 import { EXAMPLE_LIBRARY } from '../library/catalog';
+import ChallengeCard from '../challenges/ChallengeCard';
 
 const nodeTypes = { stock: StockNode, flow: FlowNode, variable: VariableNode };
 const edgeTypes = { material: MaterialEdge, info: InfoEdge, invalid: InvalidEdge };
@@ -31,7 +32,7 @@ export default function Canvas() {
   useEffect(() => {
     if (!focusRequest) return;
     const t = setTimeout(() => {
-      if (focusRequest.fit) rf.fitView({ padding: 0.15, duration: 250 });
+      if (focusRequest.fit) rf.fitView({ padding: 0.15, maxZoom: 1, duration: 250 });
       else if (focusRequest.id) {
         const node = rf.getNode(focusRequest.id);
         if (node) rf.fitView({ nodes: [{ id: node.id }], padding: 1.2, maxZoom: 1.2, duration: 300 });
@@ -82,7 +83,7 @@ export default function Canvas() {
         proOptions={{ hideAttribution: true }}
         minZoom={0.1}
         fitView
-        fitViewOptions={{ padding: 0.15 }}
+        fitViewOptions={{ padding: 0.15, maxZoom: 1 }}
       >
         <Background gap={20} size={1} color="var(--border)" />
         <Controls position="top-left" showInteractive={false}>
@@ -112,6 +113,8 @@ export default function Canvas() {
         <span className="flex items-center gap-1"><LegendLine kind="material" /> Material</span>
         <span className="flex items-center gap-1"><LegendLine kind="info" /> Information</span>
       </div>
+
+      <ChallengeCard />
 
       {nodes.length === 0 && (
         <div className="canvas-empty">

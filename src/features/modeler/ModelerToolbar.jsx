@@ -8,6 +8,7 @@ import { generatePythonCode } from '../../pythonExporter';
 import { generateRCode } from '../../rExporter';
 import { runToCsv } from '../../domain/simulation/runModel';
 import { downloadText, fileSafe } from '../../utils/download';
+import { findFreePosition } from './placement';
 const ExportDialog = lazy(() => import('./ExportDialog'));
 
 const PALETTE = [
@@ -63,8 +64,8 @@ export default function ModelerToolbar() {
   const addAtCenter = (type) => {
     const el = document.querySelector('.canvas-wrap');
     const r = el ? el.getBoundingClientRect() : { left: 0, top: 0, width: 600, height: 400 };
-    const k = useStore.getState().nodes.length % 6; // fan out so new elements do not stack exactly
-    const p = rf.screenToFlowPosition({ x: r.left + r.width / 2 - 60 + k * 24, y: r.top + r.height / 2 - 40 + k * 18 });
+    const center = rf.screenToFlowPosition({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+    const p = findFreePosition(useStore.getState().nodes, type, center);
     addNode(type, p);
   };
 

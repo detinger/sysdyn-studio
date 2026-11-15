@@ -89,7 +89,14 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Experiment tab with sweep chart and table and a sensitivity ranking, both labelled as exploratory and marked stale when the model changes.
 - The results panel is resizable (drag, or arrow keys on the focused handle) and remembers its height.
 
-### Phase 5 (started)
+### Phase 5 — challenges (first slice)
+- `src/domain/assessment/rubric.js`: semantic checks over the model (stocks by initial value, inflow/outflow rates evaluated at the start time, parameter use, units, validation, simulated behaviour). Names and positions are never compared; a run of an older revision does not count.
+- `src/data/challenges.js`: build, fix and predict challenges. Each check gives feedback on what to change. Hints are revealed one at a time, and the explanation appears on completion or after all hints. In the predict challenge, the first answer counts.
+- Challenges page, live checklist card on the canvas, progress kept in `sds.progress.v1` with a reset option.
+- Elements added from the toolbar are placed in free space (`placement.js`); fit-to-view zoom is capped at 100 %.
+- Browser-verified: the build challenge can be completed using only the toolbar and inspector, without dragging on the canvas.
+
+### Phase 5 (library and explanations)
 - Model library with search and level filters, previews drawn from each model's **actual simulated trajectories**, teaching notes (concepts, intended behaviour, prompts, limitations). World3 is labelled as a teaching sketch, not the calibrated model.
 - Contextual "Explain" tab generated from the element's real connections.
 
@@ -103,7 +110,7 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 | D Simulation | Mostly done | No Web Worker or cancel (runs are capped at 200,000 steps); output interval = dt; no run trace |
 | E Analysis | Partial | No phase plots, reference curves, settling or oscillation measures |
 | F Experiments | Partial | One baseline; parameter sweeps (linear/log, up to 50 runs) and one-at-a-time ±10 % sensitivity ranking done; no two-parameter grids, Monte Carlo or policy schedules (`step`/`ramp`/`pulse` exist as time functions) |
-| G Challenges | Not started | |
+| G Challenges | First slice | Three challenges (build the §5.2 inventory lab, fix a broken cooling model, predict the Bass S-curve), with semantic checks, progressive hints, explanations and local progress; no explain/compare/calibrate/policy challenges or authoring tool yet |
 | H Library | Partial | Teaching metadata added; units declared only for Inventory; no beginner/advanced variants |
 | I Export | Mostly done | JSON, CSV, Python and R verified; no SVG/PNG, equation report or XMILE |
 

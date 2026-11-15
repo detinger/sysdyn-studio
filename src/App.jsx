@@ -12,6 +12,7 @@ import Inspector from './features/modeler/Inspector';
 const EquationsView = lazy(() => import('./features/equations/EquationsView'));
 const TheoryView = lazy(() => import('./features/learning/TheoryView'));
 const LibraryView = lazy(() => import('./features/library/LibraryView'));
+const ChallengesView = lazy(() => import('./features/challenges/ChallengesView'));
 import { restoreDraft, startAutosave } from './state/persistence';
 
 const COLLAPSE_KEY = 'sds.sidebar.collapsed';
@@ -91,6 +92,7 @@ export default function App() {
             {route === 'equations' && <EquationsView />}
             {route === 'theory' && <TheoryView />}
             {route === 'library' && <LibraryView />}
+            {route === 'challenges' && <ChallengesView />}
           </Suspense>
         </main>
       </div>
