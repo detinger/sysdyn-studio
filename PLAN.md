@@ -744,8 +744,8 @@ system-dynamics-studio/
 
 - [ ] Rework theory into interactive progressive lessons.
 - [ ] Add contextual element/concept encyclopedia and micro simulations.
-- [ ] Turn seven README examples into documented, tested lesson models.
-- [ ] Implement build/fix/predict/explain/compare challenges. *(build, fix and predict done, one each; explain and compare pending)*
+- [x] Turn seven README examples into documented, tested lesson models. *(plus eight new examples)*
+- [x] Implement build/fix/predict/explain/compare challenges. *(18 challenges, easy to advanced)*
 - [x] Build rubric-based assessment with progressive hints.
 - [x] Save local learning progress and provide reset options.
 

@@ -12,6 +12,7 @@ import { runToCsv } from '../domain/simulation/runModel';
 import { downloadText, fileSafe } from '../utils/download';
 import { compareRuns } from '../domain/scenarios/compare';
 import ExperimentPanel from '../features/experiments/ExperimentPanel';
+import { findChallenge } from '../data/challenges';
 
 const PALETTE = ['chart-1', 'chart-2', 'chart-3', 'chart-4', 'chart-5', 'chart-6'];
 const TOKENS = [...PALETTE, 'chart-grid', 'chart-axis', 'chart-muted', 'chart-surface', 'border', 'text', 'text-muted', 'error', 'accent', 'bg-elevated'];
@@ -62,6 +63,7 @@ export default function SimulationPanel() {
   const clearBaseline = useStore((s) => s.clearBaseline);
   const select = useStore((s) => s.select);
   const selectedId = useStore((s) => s.selectedId);
+  const reference = useStore((s) => (s.challenge ? findChallenge(s.challenge.id)?.reference : null));
   const tokens = useTokens(TOKENS);
   const [collapsed, setCollapsed] = useState(false);
   const [height, setHeight] = usePanelHeight('sds.results.height', 300);
@@ -189,6 +191,7 @@ export default function SimulationPanel() {
               onSelect={(id) => select(id)}
               selectedId={selectedId}
               unit={unit}
+              reference={reference}
             />
           )}
           {run && (
@@ -205,7 +208,7 @@ export default function SimulationPanel() {
   );
 }
 
-function TrendChart({ run, series, index, baseline, colorOf, tokens, isVisible, toggle, onSelect, selectedId, unit }) {
+function TrendChart({ run, series, index, baseline, colorOf, tokens, isVisible, toggle, onSelect, selectedId, unit, reference }) {
   const idx = useMemo(() => sampleIndices(index, run.times.length), [index, run]);
   const rows = useMemo(() => idx.map((i) => {
     const row = { time: run.times[i] };
@@ -225,6 +228,7 @@ function TrendChart({ run, series, index, baseline, colorOf, tokens, isVisible, 
 
   if (!series.length) return <div className="empty" style={{ flex: 1 }}><div className="hint">This model has no elements of this kind.</div></div>;
   const visible = series.filter(isVisible);
+  const refSeries = reference && visible.some((e) => e.name === reference.stock) ? reference.points.map((p) => ({ time: p.t, obs: p.v })) : null;
   const units = [...new Set(visible.map((e) => e.unit || ''))];
   const yLabel = units.length === 1 && units[0] ? units[0] : '';
   const mixed = units.length > 1 && units.every(Boolean);
@@ -249,6 +253,7 @@ function TrendChart({ run, series, index, baseline, colorOf, tokens, isVisible, 
           </button>
         ))}
         {baseline && <span className="hint" style={{ alignSelf: 'center', marginLeft: 6 }}>Solid: current run · Dashed: baseline</span>}
+        {refSeries && <span className="hint" style={{ alignSelf: 'center', marginLeft: 6 }}>Dots: observed {reference.stock}</span>}
         {mixed && <span className="hint" style={{ alignSelf: 'center', marginLeft: 6 }}>Different units share this axis: compare shapes, not magnitudes.</span>}
       </div>
       <div className="chart-area">
@@ -286,6 +291,9 @@ function TrendChart({ run, series, index, baseline, colorOf, tokens, isVisible, 
             {baseRows && visible.filter((e) => baseline.run.series[e.id]).map((e) => (
               <Line key={`b-${e.id}`} data={baseRows} dataKey={e.id} name={`${e.name} (baseline)`} type="linear" stroke={colorOf[e.id]} strokeOpacity={0.75} strokeDasharray="6 4" strokeWidth={1.5} dot={false} isAnimationActive={false} />
             ))}
+            {refSeries && (
+              <Line data={refSeries} dataKey="obs" name={`Observed ${reference.stock}`} stroke="none" isAnimationActive={false} dot={{ r: 3.5, fill: tokens.text, stroke: tokens['bg-elevated'], strokeWidth: 1 }} activeDot={{ r: 5 }} legendType="circle" />
+            )}
             <ReferenceLine x={run.times[index]} stroke={tokens.accent} strokeWidth={1} />
             {!run.completed && run.failure.time !== undefined && (
               <ReferenceLine x={run.failure.time} stroke={tokens.error} strokeDasharray="3 3" label={{ value: 'stopped', fill: tokens.error, fontSize: 11, position: 'top' }} />

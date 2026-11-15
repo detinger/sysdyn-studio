@@ -2,9 +2,24 @@ import { useEffect, useMemo, useState } from 'react';
 import { CircleCheck, Circle, Lightbulb, X, ChevronDown, ChevronUp, Trophy, BookOpen } from 'lucide-react';
 import useStore from '../../store';
 import { useValidation } from '../../state/validation';
-import { findChallenge } from '../../data/challenges';
+import { findChallenge, startModelOf } from '../../data/challenges';
 import { makeContext, evaluateChallenge } from '../../domain/assessment/rubric';
 import { markCompleted } from '../../state/progress';
+
+function Question({ q, given, onAnswer }) {
+  return (
+    <fieldset className="challenge-q">
+      <legend className="label">{q.prompt}</legend>
+      {q.options.map((o) => (
+        <label key={o.id} className="check" style={{ margin: '4px 0' }}>
+          <input type="radio" name={q.id} value={o.id} checked={given === o.id} disabled={!!given} onChange={() => onAnswer(q.id, o.id)} />
+          <span style={given && o.id === q.correct ? { color: 'var(--success)', fontWeight: 600 } : given === o.id ? { color: 'var(--error)' } : undefined}>{o.label}</span>
+        </label>
+      ))}
+      {given && <p className="hint" style={{ margin: '6px 0 0' }}>{q.why[given]}</p>}
+    </fieldset>
+  );
+}
 
 /** Checklist overlay for the active challenge, evaluated live against the model. */
 export default function ChallengeCard() {
@@ -23,7 +38,7 @@ export default function ChallengeCard() {
 
   const result = useMemo(() => {
     if (!challenge) return null;
-    return evaluateChallenge(challenge, makeContext({ validation, run, config, revision, answers: state.answers }));
+    return evaluateChallenge(challenge, makeContext({ validation, run, config, revision, answers: state.answers, startModel: startModelOf(challenge) }));
   }, [challenge, validation, run, config, revision, state]);
 
   useEffect(() => {
@@ -33,15 +48,14 @@ export default function ChallengeCard() {
   }, [result?.complete, challenge, toast]);
 
   if (!challenge || !result) return null;
-  const q = challenge.question;
-  const given = q && state.answers[q.id];
+  const questions = challenge.questions || [];
   const showExplanation = state.revealed || result.complete;
 
   return (
     <aside className="challenge-card card" aria-label={`Challenge: ${challenge.title}`}>
       <div className="flex items-center justify-between gap-2">
         <div style={{ minWidth: 0 }}>
-          <div className="eyebrow">{challenge.type}</div>
+          <div className="eyebrow">{challenge.level} · {challenge.type}</div>
           <div style={{ fontWeight: 650 }}>{challenge.title}</div>
         </div>
         <div className="flex gap-1 items-center">
@@ -56,22 +70,22 @@ export default function ChallengeCard() {
           {challenge.constraints.length > 0 && (
             <ul className="hint" style={{ margin: '0 0 8px', paddingLeft: 18 }}>{challenge.constraints.map((c) => <li key={c}>{c}</li>)}</ul>
           )}
-          {q && (
-            <fieldset className="challenge-q">
-              <legend className="label">{q.prompt}</legend>
-              {q.options.map((o) => (
-                <label key={o.id} className="check" style={{ margin: '4px 0' }}>
-                  <input type="radio" name={q.id} value={o.id} checked={given === o.id} disabled={!!given} onChange={() => answer(q.id, o.id)} />
-                  <span style={given && o.id === q.correct ? { color: 'var(--success)', fontWeight: 600 } : given === o.id ? { color: 'var(--error)' } : undefined}>{o.label}</span>
-                </label>
-              ))}
-              {given && <p className="hint" style={{ margin: '6px 0 0' }}>{q.why[given]}</p>}
-            </fieldset>
+          {challenge.reference && (
+            <details style={{ margin: '0 0 8px', fontSize: 12 }}>
+              <summary className="label" style={{ cursor: 'pointer' }}>Observed data ({challenge.reference.points.length} points)</summary>
+              <div className="table-wrap" style={{ marginTop: 6, maxHeight: 160 }}>
+                <table className="table">
+                  <thead><tr><th className="n">time</th><th className="n">{challenge.reference.stock} ({challenge.reference.unit})</th></tr></thead>
+                  <tbody>{challenge.reference.points.map((p) => <tr key={p.t}><td className="n">{p.t}</td><td className="n">{p.v}</td></tr>)}</tbody>
+                </table>
+              </div>
+            </details>
           )}
+          {questions.map((q) => <Question key={q.id} q={q} given={state.answers[q.id]} onAnswer={answer} />)}
           <ul className="challenge-checks">
             {result.results.map((r) => (
               <li key={r.id}>
-                {r.pass ? <CircleCheck size={16} className="sev-success" style={{ color: 'var(--success)' }} aria-label="Done" /> : <Circle size={16} style={{ color: 'var(--text-subtle)' }} aria-label="Not yet" />}
+                {r.pass ? <CircleCheck size={16} style={{ color: 'var(--success)' }} aria-label="Done" /> : <Circle size={16} style={{ color: 'var(--text-subtle)' }} aria-label="Not yet" />}
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 550 }}>{r.label}</div>
                   {r.feedback && <div className="hint">{r.feedback}</div>}

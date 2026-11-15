@@ -96,6 +96,11 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Elements added from the toolbar are placed in free space (`placement.js`); fit-to-view zoom is capped at 100 %.
 - Browser-verified: the build challenge can be completed using only the toolbar and inspector, without dragging on the canvas.
 
+### Phase 5 — examples and challenge catalogue
+- Eight new examples, each checked numerically before inclusion (equilibria, overshoot sizes) and covered automatically by the example tests: validation, simulation to the stop time, agreement with the legacy engine, and Python/R parity.
+- The assessment engine compares against a challenge's starting model (`onlyChanged`: only named parameters may change, matched by name), follows dependencies transitively, computes RMSE against observations, and computes expected values with the student's own solver settings (so Euler and RK4 solutions are both judged fairly).
+- 18 challenges (`src/data/challenges.js`); `tests/unit/challenges.test.js` solves each one with a reference solution and checks that its starting state is incomplete. Thresholds were set from measured runs (for example, the Euler lab passes at dt = 0.02 with 2.5 % error and fails at 0.05 with 6.2 %).
+
 ### Phase 5 (library and explanations)
 - Model library with search and level filters, previews drawn from each model's **actual simulated trajectories**, teaching notes (concepts, intended behaviour, prompts, limitations). World3 is labelled as a teaching sketch, not the calibrated model.
 - Contextual "Explain" tab generated from the element's real connections.
@@ -110,8 +115,8 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 | D Simulation | Mostly done | No Web Worker or cancel (runs are capped at 200,000 steps); output interval = dt; no run trace |
 | E Analysis | Partial | No phase plots, reference curves, settling or oscillation measures |
 | F Experiments | Partial | One baseline; parameter sweeps (linear/log, up to 50 runs) and one-at-a-time ±10 % sensitivity ranking done; no two-parameter grids, Monte Carlo or policy schedules (`step`/`ramp`/`pulse` exist as time functions) |
-| G Challenges | First slice | Three challenges (build the §5.2 inventory lab, fix a broken cooling model, predict the Bass S-curve), with semantic checks, progressive hints, explanations and local progress; no explain/compare/calibrate/policy challenges or authoring tool yet |
-| H Library | Partial | Teaching metadata added; units declared only for Inventory; no beginner/advanced variants |
+| G Challenges | Mostly done | 18 challenges in three levels (6 easy, 6 intermediate, 6 advanced) covering all nine PLAN challenge types: build, fix, identify, predict, explain feedback, numerical lab, calibrate (with observed data on the chart), policy design and comparison. Every challenge is tested to be incomplete at its start and solvable by a reference solution. No authoring UI; no free-text reasoning assessment |
+| H Library | Mostly done | 15 examples (the original 7 plus bathtub, coffee cooling, savings, customer base, project backlog, hiring pipeline, supply chain with delay, fishery), all with teaching notes; the 8 new ones declare units. No beginner/advanced variants |
 | I Export | Mostly done | JSON, CSV, Python and R verified; no SVG/PNG, equation report or XMILE |
 
 ## 6. Decisions
