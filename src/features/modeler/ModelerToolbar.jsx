@@ -1,6 +1,6 @@
 import { lazy, Suspense, useRef, useState, useEffect } from 'react';
 import { useReactFlow } from 'reactflow';
-import { Undo2, Redo2, Maximize, PanelRightClose, PanelRightOpen, ShieldCheck, Play, Download, Upload, ChevronDown, FileJson, FileSpreadsheet, FileCode, FilePlus } from 'lucide-react';
+import { Undo2, Redo2, Maximize, PanelRightClose, PanelRightOpen, ShieldCheck, Download, ChevronDown, FileJson, FileSpreadsheet, FileCode } from 'lucide-react';
 import useStore from '../../store';
 import { useValidation } from '../../state/validation';
 import { StockGlyph, ValveGlyph, AuxGlyph } from '../../components/ui/Glyphs';
@@ -34,11 +34,8 @@ export default function ModelerToolbar() {
   const redo = useStore((s) => s.redo);
   const canUndo = useStore((s) => s.history.past.length > 0);
   const canRedo = useStore((s) => s.history.future.length > 0);
-  const runSimulation = useStore((s) => s.runSimulation);
   const select = useStore((s) => s.select);
   const requestFit = useStore((s) => s.requestFit);
-  const importText = useStore((s) => s.importText);
-  const newModel = useStore((s) => s.newModel);
   const hasRun = useStore((s) => !!s.run);
   const inspectorOpen = useStore((s) => s.inspectorOpen);
   const toggleInspector = useStore((s) => s.toggleInspector);
@@ -46,7 +43,6 @@ export default function ModelerToolbar() {
   const v = useValidation();
   const [menu, setMenu] = useState(false);
   const [code, setCode] = useState(null);
-  const fileRef = useRef(null);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -130,7 +126,6 @@ export default function ModelerToolbar() {
           <ShieldCheck size={16} /> Validate
           {errors ? <span className="badge badge-error">{errors}</span> : warnings ? <span className="badge badge-warning">{warnings}</span> : <span className="badge badge-success">OK</span>}
         </button>
-        <button className="btn btn-sm btn-primary" onClick={() => runSimulation()} title="Solve the model and play back the result (Ctrl/⌘ Enter)"><Play size={16} /> Run simulation</button>
         <div className="menu-wrap" ref={menuRef}>
           <button className="btn btn-sm" aria-haspopup="menu" aria-expanded={menu} onClick={() => setMenu((m) => !m)}><Download size={16} /> Export <ChevronDown size={14} /></button>
           {menu && (
@@ -140,24 +135,9 @@ export default function ModelerToolbar() {
               <div className="menu-sep" />
               <button role="menuitem" className="menu-item" onClick={() => doExport('python')}><FileCode size={16} /> Python code (SciPy)</button>
               <button role="menuitem" className="menu-item" onClick={() => doExport('r')}><FileCode size={16} /> R code (deSolve)</button>
-              <div className="menu-sep" />
-              <button role="menuitem" className="menu-item" onClick={() => { setMenu(false); fileRef.current?.click(); }}><Upload size={16} /> Import model…</button>
-              <button role="menuitem" className="menu-item" onClick={() => { setMenu(false); newModel(); }}><FilePlus size={16} /> New empty model</button>
             </div>
           )}
         </div>
-        <input
-          ref={fileRef}
-          type="file"
-          accept=".json,application/json"
-          className="sr-only"
-          aria-label="Import model file"
-          onChange={async (e) => {
-            const f = e.target.files?.[0];
-            if (f) importText(await f.text());
-            e.target.value = '';
-          }}
-        />
       </div>
       {code && (
         <Suspense fallback={null}>

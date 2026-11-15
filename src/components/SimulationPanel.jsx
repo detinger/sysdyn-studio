@@ -118,7 +118,7 @@ export default function SimulationPanel() {
     <section className={`results${collapsed ? ' collapsed' : ''}`} aria-label="Simulation results">
       {!collapsed && <ResizeHandle height={height} onChange={setHeight} label="Resize results panel" />}
       <div className="sim-controls">
-        <button className="btn btn-sm btn-primary" onClick={() => runSimulation()} title="Solve the model (Ctrl/⌘ Enter)"><LineIcon size={16} /> Run</button>
+        <button className="btn btn-sm btn-primary" onClick={() => runSimulation()} title="Solve the model (Ctrl/⌘ Enter)"><LineIcon size={16} /> {stale ? 'Run again' : 'Run simulation'}</button>
         <span className="toolbar-sep" />
         <button className="btn btn-sm btn-icon" onClick={() => stepPlayback(-1)} disabled={!run} aria-label="Step back" title="Step back"><StepBack size={16} /></button>
         <button className="btn btn-sm btn-icon" onClick={() => (playback.isPlaying ? pause() : play())} disabled={!run} aria-label={playback.isPlaying ? 'Pause playback' : 'Play back results'} title={playback.isPlaying ? 'Pause' : 'Play'}>
@@ -462,4 +462,3 @@ function ComparePanel({ run, baseline, pinBaseline }) {
     </div>
   );
 }
-
