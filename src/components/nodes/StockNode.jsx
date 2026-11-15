@@ -22,6 +22,8 @@ const StockNode = ({ id, data, selected }) => {
       <Handle type="source" position={Position.Bottom} className="info-port" title="Information: use this stock's value in an equation" />
       <Handle type="target" position={Position.Left} id="inflow" className="material-port" title="Inflow port: connect a flow into this stock" />
       <Handle type="source" position={Position.Right} id="outflow" className="material-port" title="Outflow port: connect this stock to a draining flow" />
+      {/* Information can also leave from the top. Rendered last so it sits above the (non-connectable) top target. */}
+      <Handle type="source" position={Position.Top} id="info-top" className="info-port" title="Information: use this stock's value in an equation" />
     </div>
   );
 };

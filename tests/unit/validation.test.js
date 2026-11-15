@@ -110,3 +110,15 @@ describe('information ports on every side', () => {
     expect(v.issues.map((i) => i.code)).not.toContain('link.missing');
   });
 });
+
+describe('stock information port at the top', () => {
+  it('a link from the top of a stock is an information link', () => {
+    const m = {
+      nodes: [F.stock('s', 'S', 1), F.flow('f', 'F', 'S * k'), F.variable('k', 'k', 0.1), F.variable('a', 'a', 'S * 2')],
+      edges: [F.outflow('s', 'f'), F.info('k', 'f'), { id: 'top', source: 's', sourceHandle: 'info-top', target: 'f', targetHandle: 'info-bottom' }, { id: 'top2', source: 's', sourceHandle: 'info-top', target: 'a', targetHandle: 'in-bottom' }],
+    };
+    const v = validateModel(m.nodes, m.edges, cfg);
+    expect(v.domain.infoLinks.map((l) => l.id)).toEqual(expect.arrayContaining(['top', 'top2']));
+    expect(v.domain.invalidLinks).toEqual([]);
+  });
+});
