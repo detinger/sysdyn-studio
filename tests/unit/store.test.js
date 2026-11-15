@@ -130,6 +130,18 @@ describe('simulation and playback', () => {
   });
 });
 
+describe('inspector visibility', () => {
+  it('toggles, and reopens when a run is blocked so the errors are visible', () => {
+    S().setInspectorOpen(true);
+    S().toggleInspector();
+    expect(S().inspectorOpen).toBe(false);
+    S().updateNodeData(node('Sales').id, { equation: 'DemandRate * 2' });
+    expect(S().runSimulation()).toBeNull();
+    expect(S().inspectorOpen).toBe(true);
+    expect(S().selectedId).toBeNull();
+  });
+});
+
 describe('documents', () => {
   it('round-trips the current model through export/import', () => {
     const doc = S().exportDocument();

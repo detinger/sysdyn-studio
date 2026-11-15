@@ -56,7 +56,8 @@ export default function Canvas() {
   const isValidConnection = useCallback((c) => checkConnection(c).ok, [checkConnection]);
 
   const onNodeDoubleClick = useCallback(() => {
-    window.dispatchEvent(new CustomEvent('sds:focus-inspector'));
+    useStore.getState().setInspectorOpen(true);
+    setTimeout(() => window.dispatchEvent(new CustomEvent('sds:focus-inspector')), 0);
   }, []);
 
   const inventory = EXAMPLE_LIBRARY.find((x) => x.key === 'INVENTORY_CONTROL');

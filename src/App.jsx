@@ -26,6 +26,11 @@ function useShortcuts() {
       const mod = e.metaKey || e.ctrlKey;
       if (!mod) return;
       const s = useStore.getState();
+      if (e.key === '\\') {
+        e.preventDefault();
+        s.toggleInspector();
+        return;
+      }
       if (e.key === 'Enter') {
         e.preventDefault();
         s.runSimulation();
@@ -47,6 +52,7 @@ function useShortcuts() {
 
 export default function App() {
   const route = useStore((s) => s.view_route);
+  const inspectorOpen = useStore((s) => s.inspectorOpen);
   const [collapsed, setCollapsed] = useState(() => {
     try {
       return localStorage.getItem(COLLAPSE_KEY) === '1';
@@ -82,7 +88,7 @@ export default function App() {
           <ReactFlowProvider>
             <div className={route === 'modeler' ? undefined : 'offstage'} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }} aria-hidden={route !== 'modeler'} inert={route !== 'modeler'}>
               <ModelerToolbar />
-              <div className="modeler">
+              <div className={`modeler${inspectorOpen ? '' : ' no-inspector'}`}>
                 <Canvas />
                 <Inspector />
                 <SimulationPanel />

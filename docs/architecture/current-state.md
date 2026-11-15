@@ -96,6 +96,10 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Elements added from the toolbar are placed in free space (`placement.js`); fit-to-view zoom is capped at 100 %.
 - Browser-verified: the build challenge can be completed using only the toolbar and inspector, without dragging on the canvas.
 
+### Collapsible inspector
+- The right-hand inspector can be hidden with the toolbar toggle or Ctrl/⌘ + \\, and the choice is remembered (`sds.inspector.open`). Hiding it widens the canvas by about half at 1440 px.
+- It stays hidden on a single click, so selecting is not disruptive. It reopens when it is clearly needed: double-click an element (name field focused), the Validate button, or a run blocked by errors (shown on the Validate tab). It stays mounted while hidden, so its tab and scroll state survive.
+
 ### Home page
 - Home is the start screen (sidebar first item; the brand mark also links to it). It shows the open model with its validation and run status, any active challenge or baseline, challenge progress by level, the learning workflow as links, and what is stored in this browser.
 - Local data: every key starts with `sds.` (`src/state/storage.js` lists them with sizes). Home can reset challenge progress, or clear all app data after a confirmation dialog: autosave is suspended, all `sds.` keys are removed (other sites' keys are untouched) and the app reloads empty. Tested in `tests/unit/storage.test.js` and in the browser.

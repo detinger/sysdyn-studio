@@ -1,6 +1,6 @@
 import { lazy, Suspense, useRef, useState, useEffect } from 'react';
 import { useReactFlow } from 'reactflow';
-import { Undo2, Redo2, Maximize, ShieldCheck, Play, Download, Upload, ChevronDown, FileJson, FileSpreadsheet, FileCode, FilePlus } from 'lucide-react';
+import { Undo2, Redo2, Maximize, PanelRightClose, PanelRightOpen, ShieldCheck, Play, Download, Upload, ChevronDown, FileJson, FileSpreadsheet, FileCode, FilePlus } from 'lucide-react';
 import useStore from '../../store';
 import { useValidation } from '../../state/validation';
 import { StockGlyph, ValveGlyph, AuxGlyph } from '../../components/ui/Glyphs';
@@ -40,6 +40,9 @@ export default function ModelerToolbar() {
   const importText = useStore((s) => s.importText);
   const newModel = useStore((s) => s.newModel);
   const hasRun = useStore((s) => !!s.run);
+  const inspectorOpen = useStore((s) => s.inspectorOpen);
+  const toggleInspector = useStore((s) => s.toggleInspector);
+  const setInspectorOpen = useStore((s) => s.setInspectorOpen);
   const v = useValidation();
   const [menu, setMenu] = useState(false);
   const [code, setCode] = useState(null);
@@ -109,6 +112,9 @@ export default function ModelerToolbar() {
         <button className="btn btn-sm btn-icon btn-ghost" onClick={undo} disabled={!canUndo} aria-label="Undo" title="Undo (Ctrl/⌘ Z)"><Undo2 size={16} /></button>
         <button className="btn btn-sm btn-icon btn-ghost" onClick={redo} disabled={!canRedo} aria-label="Redo" title="Redo (Ctrl/⌘ Shift Z)"><Redo2 size={16} /></button>
         <button className="btn btn-sm btn-icon btn-ghost" onClick={requestFit} aria-label="Fit model to view" title="Fit to model"><Maximize size={16} /></button>
+        <button className="btn btn-sm btn-icon btn-ghost" onClick={toggleInspector} aria-pressed={inspectorOpen} aria-label={inspectorOpen ? 'Hide inspector' : 'Show inspector'} title={`${inspectorOpen ? 'Hide' : 'Show'} inspector (Ctrl/⌘ \\)`}>
+          {inspectorOpen ? <PanelRightClose size={16} /> : <PanelRightOpen size={16} />}
+        </button>
       </div>
       <span className="toolbar-spacer" />
       <div className="toolbar-group">
@@ -116,6 +122,7 @@ export default function ModelerToolbar() {
           className="btn btn-sm"
           onClick={() => {
             select(null, { focus: false });
+            setInspectorOpen(true);
             setTimeout(() => window.dispatchEvent(new CustomEvent('sds:open-validation')), 0);
           }}
           title="Show validation results"

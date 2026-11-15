@@ -35,6 +35,15 @@ const stopAnimation = () => {
 
 const DEFAULT_NAMES = { stock: 'Stock', flow: 'flow', variable: 'variable' };
 
+const INSPECTOR_KEY = 'sds.inspector.open';
+const readInspectorOpen = () => {
+  try {
+    return globalThis.localStorage?.getItem(INSPECTOR_KEY) !== '0';
+  } catch {
+    return true;
+  }
+};
+
 const emptyModel = () => ({
   nodes: [],
   edges: [],
@@ -112,6 +121,7 @@ const useStore = create((set, get) => {
     history: { past: [], future: [], lastGroup: null, lastAt: 0 },
     selectedId: null,
     focusRequest: null,
+    inspectorOpen: readInspectorOpen(),
     run: null,
     lastValidationBlocked: null,
     baseline: null,
@@ -123,6 +133,17 @@ const useStore = create((set, get) => {
 
     // ---------- navigation ----------
     setRoute: (route) => set({ view_route: route }),
+
+    /** Show or hide the right-hand inspector (remembered in this browser). */
+    setInspectorOpen: (open) => {
+      try {
+        globalThis.localStorage?.setItem(INSPECTOR_KEY, open ? '1' : '0');
+      } catch {
+        /* preference lasts for this session */
+      }
+      set({ inspectorOpen: open });
+    },
+    toggleInspector: () => get().setInspectorOpen(!get().inspectorOpen),
 
     // ---------- toasts ----------
     toast,
@@ -404,7 +425,8 @@ const useStore = create((set, get) => {
       const { run, validation } = runModel(nodes, edges, simConfig, { modelRevision: revision });
       if (!run) {
         const n = validation.issues.filter((i) => i.severity === 'error').length;
-        set({ lastValidationBlocked: Date.now() });
+        set({ lastValidationBlocked: Date.now(), selectedId: null });
+        get().setInspectorOpen(true); // the explanation lives in the inspector
         toast(`The model has ${n} error${n === 1 ? '' : 's'}. Fix ${n === 1 ? 'it' : 'them'} before running.`, 'error');
         return null;
       }

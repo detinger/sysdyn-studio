@@ -12,6 +12,7 @@ const KNOWN = {
   'sds.theme': { label: 'Theme preference', group: 'preferences' },
   'sds.sidebar.collapsed': { label: 'Sidebar collapsed', group: 'preferences' },
   'sds.results.height': { label: 'Results panel height', group: 'preferences' },
+  'sds.inspector.open': { label: 'Inspector shown or hidden', group: 'preferences' },
 };
 
 /** @returns {Array<{ key, label, group, bytes }>} entries currently stored */

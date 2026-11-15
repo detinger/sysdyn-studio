@@ -1,6 +1,8 @@
 /* Stock-and-flow canvas notation (STYLE.md §7). */
 
 .modeler { display: grid; grid-template-columns: minmax(0, 1fr) var(--inspector-w); grid-template-rows: minmax(0, 1fr) auto; flex: 1; min-height: 0; }
+.modeler.no-inspector { grid-template-columns: minmax(0, 1fr); }
+.modeler.no-inspector .inspector { display: none; }
 .canvas-wrap { position: relative; min-width: 0; min-height: 0; background: var(--canvas-bg); }
 .inspector { grid-row: 1 / span 2; grid-column: 2; border-left: 1px solid var(--border); background: var(--bg-elevated); display: flex; flex-direction: column; min-height: 0; min-width: 0; }
 .inspector-head { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); }
