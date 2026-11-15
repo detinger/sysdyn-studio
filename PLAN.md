@@ -699,8 +699,8 @@ system-dynamics-studio/
 - [x] Apply complete light/dark states to React Flow custom nodes and handles.
 - [x] Define versioned domain model independent of canvas positions.
 - [x] Implement model import/export and safe data migrations.
-- [ ] Stabilize model revisions and undo/redo. *(implemented; verified in browser, no automated UI test yet)*
-- [ ] Add UI component and domain-contract tests. *(domain-contract tests done; UI component tests pending)*
+- [x] Stabilize model revisions and undo/redo.
+- [ ] Add UI component and domain-contract tests. *(domain-contract and store behaviour tests done; rendered-component tests pending)*
 
 **Acceptance:** A model can be created, exported, imported and run without semantic changes; the UI follows the BPMN Studio visual language in both themes.
 
@@ -723,7 +723,7 @@ system-dynamics-studio/
 - [x] Centralize pure derivative evaluation and immutable simulation results.
 - [x] Correct handling of `dt`, start/end, reporting timestamps and failure states.
 - [ ] Introduce worker execution and cancellation if needed for performance. *(not yet needed: runs capped at 200k steps)*
-- [ ] Link play/pause/scrub/step to stored numerical trace. *(implemented; verified in browser, no automated UI test yet)*
+- [x] Link play/pause/scrub/step to stored numerical trace.
 - [x] Add analytical tests for constant inflow/decay, conservation, logistic and SIR.
 - [x] Show numerical settings and reproducibility metadata in results.
 
