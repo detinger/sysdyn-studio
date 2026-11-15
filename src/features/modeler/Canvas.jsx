@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import ReactFlow, { Background, Controls, ControlButton, MiniMap, useReactFlow } from 'reactflow';
+import ReactFlow, { Background, Controls, ControlButton, MiniMap, useReactFlow, useStoreApi, internalsSymbol } from 'reactflow';
 import { Plus, Map as MapIcon } from 'lucide-react';
 import useStore from '../../store';
 import StockNode from '../../components/nodes/StockNode';
@@ -9,6 +9,10 @@ import { MaterialEdge, InfoEdge, InvalidEdge, EdgeMarkers } from './edges';
 import { LegendLine, StockGlyph, ValveGlyph, AuxGlyph } from '../../components/ui/Glyphs';
 import { EXAMPLE_LIBRARY } from '../library/catalog';
 import ChallengeCard from '../challenges/ChallengeCard';
+import { snapPosition } from './snap';
+
+/** Snap distance in screen pixels (converted to flow units with the current zoom). */
+const SNAP_PX = 10;
 
 const nodeTypes = { stock: StockNode, flow: FlowNode, variable: VariableNode };
 const edgeTypes = { material: MaterialEdge, info: InfoEdge, invalid: InvalidEdge };
@@ -18,7 +22,40 @@ export default function Canvas() {
   const rf = useReactFlow();
   const nodes = useStore((s) => s.nodes);
   const edges = useStore((s) => s.edges);
-  const onNodesChange = useStore((s) => s.onNodesChange);
+  const onNodesChangeStore = useStore((s) => s.onNodesChange);
+  const rfStore = useStoreApi();
+  const altDown = useRef(false);
+
+  useEffect(() => {
+    const onKey = (e) => { altDown.current = e.altKey; };
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('keyup', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('keyup', onKey);
+    };
+  }, []);
+
+  /** While dragging a single node, straighten nearly straight connections (hold Alt to place freely). */
+  const onNodesChange = useCallback((changes) => {
+    const drags = changes.filter((c) => c.type === 'position' && c.dragging && c.position);
+    if (drags.length === 1 && !altDown.current) {
+      const c = drags[0];
+      const { nodeInternals, transform } = rfStore.getState();
+      const lookup = (id) => {
+        const n = nodeInternals.get(id);
+        if (!n) return null;
+        return { position: id === c.id ? c.position : n.positionAbsolute || n.position, bounds: n[internalsSymbol]?.handleBounds };
+      };
+      const r = snapPosition({ nodeId: c.id, position: c.position, edges: useStore.getState().edges, lookup, threshold: SNAP_PX / (transform?.[2] || 1) });
+      if (r.snappedX || r.snappedY) {
+        const snapped = { ...c, position: r.position, positionAbsolute: r.position };
+        onNodesChangeStore(changes.map((x) => (x === c ? snapped : x)));
+        return;
+      }
+    }
+    onNodesChangeStore(changes);
+  }, [rfStore, onNodesChangeStore]);
   const onEdgesChange = useStore((s) => s.onEdgesChange);
   const onConnect = useStore((s) => s.onConnect);
   const onSelectionChange = useStore((s) => s.onSelectionChange);

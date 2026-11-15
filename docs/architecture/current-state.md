@@ -96,6 +96,10 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Elements added from the toolbar are placed in free space (`placement.js`); fit-to-view zoom is capped at 100 %.
 - Browser-verified: the build challenge can be completed using only the toolbar and inspector, without dragging on the canvas.
 
+### Snapping connections straight
+- While a single node is dragged, any connection whose two ports face each other on the same axis (left/right, or top/bottom) snaps straight when it is within 10 screen pixels of straight. Ports on perpendicular sides are ignored. Hold Alt/Option to place freely; multi-selection drags are never snapped.
+- Pure geometry in `src/features/modeler/snap.js` (tested in `tests/unit/snap.test.js`), using the port positions React Flow measures. Browser-verified: the pipe and the information link snap to 0.00 px offset; with Alt, the node stays where dropped.
+
 ### Information ports on every side
 - Variables can send and receive information on all four sides; flows can receive information at the top and the bottom. New ports have their own ids (`out-top`, `out-left`, `in-right`, `in-bottom` on variables; `info-bottom` on flows), and the original ports keep their order, so existing models and files render unchanged.
 - Sending and receiving ports share each position. Sending ports sit on top so a drag can start anywhere; while a drag from a sending port is in progress they become click-through, because React Flow resolves the drop to the element under the pointer. Verified by real drags in the browser.
