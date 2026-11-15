@@ -96,6 +96,10 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Elements added from the toolbar are placed in free space (`placement.js`); fit-to-view zoom is capped at 100 %.
 - Browser-verified: the build challenge can be completed using only the toolbar and inspector, without dragging on the canvas.
 
+### Information ports on every side
+- Variables can send and receive information on all four sides; flows can receive information at the top and the bottom. New ports have their own ids (`out-top`, `out-left`, `in-right`, `in-bottom` on variables; `info-bottom` on flows), and the original ports keep their order, so existing models and files render unchanged.
+- Sending and receiving ports share each position. Sending ports sit on top so a drag can start anywhere; while a drag from a sending port is in progress they become click-through, because React Flow resolves the drop to the element under the pointer. Verified by real drags in the browser.
+
 ### Canvas layout of the new examples
 - The eight new examples and the five challenge starting models were re-laid out following the hand-tuned originals (predator–prey, SIR, population): parameters on a top row, stocks in the middle, flows on a lower row in the gaps between stocks (lower still when a flow has many inputs). Parameters connect from their bottom port, so their arrows are straight and vertical; stocks connect from their bottom port down to flow tops. Every information link therefore points downward, and pipes become clean L-shaped steps.
 - The seven original examples got the same grid, keeping their structure (SIR staircase, predator–prey crossing, population's merged inflows and outflows). Their parameters, which previously had no information links, are now connected from directly above, so the diagrams match the equations and the validator's "missing information link" recommendations for them are resolved. Adoption and World3 changed most: their stocks and auxiliaries were positioned so that links had to loop upward.

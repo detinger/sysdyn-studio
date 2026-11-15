@@ -98,3 +98,15 @@ describe('model validation', () => {
     expect(codes(validateModel(m.nodes, m.edges, cfg))).toContain('initial.dynamic');
   });
 });
+
+describe('information ports on every side', () => {
+  it('links into a flow from below, and from any side of a variable, are information links', () => {
+    const m = {
+      nodes: [F.stock('s', 'S', 1), F.flow('f', 'F', 'S * k'), F.variable('k', 'k', 0.1)],
+      edges: [F.outflow('s', 'f'), { id: 'a', source: 'k', sourceHandle: 'out-top', target: 'f', targetHandle: 'info-bottom' }, { id: 'b', source: 's', target: 'f', targetHandle: 'info' }],
+    };
+    const v = validateModel(m.nodes, m.edges, cfg);
+    expect(v.domain.infoLinks.map((l) => l.id).sort()).toEqual(['a', 'b']);
+    expect(v.issues.map((i) => i.code)).not.toContain('link.missing');
+  });
+});

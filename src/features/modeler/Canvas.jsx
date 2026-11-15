@@ -28,6 +28,9 @@ export default function Canvas() {
   const focusRequest = useStore((s) => s.focusRequest);
   const loadModel = useStore((s) => s.loadModel);
   const [showMap, setShowMap] = useState(false);
+  // While a link is dragged from a sending port, information ports that only send
+  // become click-through so the receiving port stacked underneath can take the drop.
+  const [connectingFrom, setConnectingFrom] = useState(null);
 
   useEffect(() => {
     if (!focusRequest) return;
@@ -63,7 +66,7 @@ export default function Canvas() {
   const inventory = EXAMPLE_LIBRARY.find((x) => x.key === 'INVENTORY_CONTROL');
 
   return (
-    <div className="canvas-wrap" ref={wrapper} aria-label="Stock-and-flow canvas">
+    <div className={`canvas-wrap${connectingFrom === 'source' ? ' sd-connecting' : ''}`} ref={wrapper} aria-label="Stock-and-flow canvas">
       <EdgeMarkers />
       <ReactFlow
         nodes={nodes}
@@ -73,6 +76,8 @@ export default function Canvas() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onConnectStart={(_, p) => setConnectingFrom(p?.handleType || null)}
+        onConnectEnd={() => setConnectingFrom(null)}
         onSelectionChange={onSelectionChange}
         onNodeDragStart={onNodeDragStart}
         onNodeDoubleClick={onNodeDoubleClick}

@@ -33,6 +33,8 @@ const FlowNode = ({ id, data, selected }) => {
       <Handle type="target" position={Position.Left} className="material-port" title="Material in: from a stock's outflow port" />
       <Handle type="source" position={Position.Right} className="material-port" title="Material out: into a stock's inflow port" />
       <Handle type="target" position={Position.Top} id="info" className="info-port" title="Information in: values this rate depends on" />
+      {/* Information can also arrive from below; the source is rendered last so dragging from the bottom starts a link. */}
+      <Handle type="target" position={Position.Bottom} id="info-bottom" className="info-port" title="Information in (from below)" />
       <Handle type="source" position={Position.Bottom} id="info" className="info-port" title="Information out" />
     </div>
   );

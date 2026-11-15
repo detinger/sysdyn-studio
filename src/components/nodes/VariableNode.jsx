@@ -22,10 +22,21 @@ const VariableNode = ({ id, data, selected }) => {
           {data.unit && (isParam || (value !== undefined && !stale)) ? ` ${data.unit}` : ''}
         </div>
       </div>
+      {/*
+        Every side can both receive and send information. Order matters:
+        - Edges saved without a handle id attach to the FIRST target (Left) and
+          the FIRST source (Right), as in models created before these ports existed.
+        - Sources come after targets so they sit on top: dragging from any side
+          starts a link; dropping onto any side ends one.
+      */}
       <Handle type="target" position={Position.Left} className="info-port" />
-      <Handle type="source" position={Position.Right} className="info-port" />
+      <Handle type="target" position={Position.Right} id="in-right" className="info-port" />
+      <Handle type="target" position={Position.Bottom} id="in-bottom" className="info-port" />
       <Handle type="target" position={Position.Top} id="info" className="info-port" />
+      <Handle type="source" position={Position.Right} className="info-port" />
       <Handle type="source" position={Position.Bottom} id="info" className="info-port" />
+      <Handle type="source" position={Position.Top} id="out-top" className="info-port" />
+      <Handle type="source" position={Position.Left} id="out-left" className="info-port" />
     </div>
   );
 };
