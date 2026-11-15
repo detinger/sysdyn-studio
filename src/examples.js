@@ -7,19 +7,19 @@ export const POPULATION_EXTENDED = {
     'Population': '#3b82f6'
   },
   nodes: [
-    { id: 'pop', type: 'stock', position: { x: 350, y: 250 }, data: { label: 'Population', value: 1000 } },
+    { id: 'pop', type: 'stock', position: { x: 450, y: 0 }, data: { label: 'Population', value: 1000 } },
 
     // Flows
-    { id: 'immigration', type: 'flow', position: { x: 0, y: 50 }, data: { label: 'Immigration', equation: 'Population * immigration_rate' } },
-    { id: 'births', type: 'flow', position: { x: 0, y: 500 }, data: { label: 'Births', equation: 'Population * birth_rate' } },
-    { id: 'deaths', type: 'flow', position: { x: 850, y: 450 }, data: { label: 'Deaths', equation: 'Population * death_rate' } },
-    { id: 'exodus', type: 'flow', position: { x: 800, y: 750 }, data: { label: 'Exodus', equation: 'Population * exodus_fraction' } },
+    { id: 'immigration', type: 'flow', position: { x: 0, y: 180 }, data: { label: 'Immigration', equation: 'Population * immigration_rate' } },
+    { id: 'births', type: 'flow', position: { x: 0, y: 440 }, data: { label: 'Births', equation: 'Population * birth_rate' } },
+    { id: 'deaths', type: 'flow', position: { x: 900, y: 180 }, data: { label: 'Deaths', equation: 'Population * death_rate' } },
+    { id: 'exodus', type: 'flow', position: { x: 900, y: 440 }, data: { label: 'Exodus', equation: 'Population * exodus_fraction' } },
 
     // Variables
-    { id: 'v_br', type: 'variable', position: { x: -250, y: 250 }, data: { label: 'birth_rate', value: '0.03' } },
-    { id: 'v_ir', type: 'variable', position: { x: -250, y: -150 }, data: { label: 'immigration_rate', value: '0.08' } },
-    { id: 'v_dr', type: 'variable', position: { x: 600, y: 100 }, data: { label: 'death_rate', value: '0.04' } },
-    { id: 'v_ef', type: 'variable', position: { x: 400, y: 580 }, data: { label: 'exodus_fraction', value: '0.06' } }
+    { id: 'v_br', type: 'variable', position: { x: -200, y: 280 }, data: { label: 'birth_rate', value: '0.03' } },
+    { id: 'v_ir', type: 'variable', position: { x: 7, y: -220 }, data: { label: 'immigration_rate', value: '0.08' } },
+    { id: 'v_dr', type: 'variable', position: { x: 907, y: -220 }, data: { label: 'death_rate', value: '0.04' } },
+    { id: 'v_ef', type: 'variable', position: { x: 1100, y: 280 }, data: { label: 'exodus_fraction', value: '0.06' } }
   ],
   edges: [
     // Physical Flows
@@ -29,13 +29,14 @@ export const POPULATION_EXTENDED = {
     { id: 'e4', source: 'pop', sourceHandle: 'outflow', target: 'exodus', animated: true },
 
     // Info Links
-    { id: 'i1', source: 'v_ir', target: 'immigration', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i1', sourceHandle: 'info', source: 'v_ir', target: 'immigration', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'i2', source: 'v_br', target: 'births', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'i3', source: 'pop', target: 'births', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'i4', source: 'pop', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i5', source: 'v_dr', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i5', sourceHandle: 'info', source: 'v_dr', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'i6', source: 'pop', target: 'exodus', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i7', source: 'v_ef', target: 'exodus', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'i7', sourceHandle: 'info', source: 'v_ef', target: 'exodus', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i8', source: 'pop', target: 'immigration', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
 
@@ -49,17 +50,17 @@ export const PREDATOR_PREY = {
     'Predators': '#ef4444'   // Red
   },
   nodes: [
-    { id: 'prey', type: 'stock', position: { x: -150, y: 100 }, data: { label: 'Prey', value: 100 } },
-    { id: 'predators', type: 'stock', position: { x: 300, y: 100 }, data: { label: 'Predators', value: 20 } },
-    { id: 'prey_births', type: 'flow', position: { x: -520, y: 480 }, data: { label: 'prey_births', equation: 'Prey * prey_birth_rate' } },
-    { id: 'prey_deaths', type: 'flow', position: { x: 400, y: 680 }, data: { label: 'prey_deaths', equation: 'Prey * Predators * predation_rate' } },
-    { id: 'predator_births', type: 'flow', position: { x: -200, y: 670 }, data: { label: 'predator_births', equation: 'Prey * Predators * predator_birth_rate' } },
-    { id: 'predator_deaths', type: 'flow', position: { x: 680, y: 480 }, data: { label: 'predator_deaths', equation: 'Predators * predator_death_rate' } },
+    { id: 'prey', type: 'stock', position: { x: 300, y: 0 }, data: { label: 'Prey', value: 100 } },
+    { id: 'predators', type: 'stock', position: { x: 1000, y: 0 }, data: { label: 'Predators', value: 20 } },
+    { id: 'prey_births', type: 'flow', position: { x: 80, y: 300 }, data: { label: 'prey_births', equation: 'Prey * prey_birth_rate' } },
+    { id: 'prey_deaths', type: 'flow', position: { x: 650, y: 460 }, data: { label: 'prey_deaths', equation: 'Prey * Predators * predation_rate' } },
+    { id: 'predator_births', type: 'flow', position: { x: 750, y: 300 }, data: { label: 'predator_births', equation: 'Prey * Predators * predator_birth_rate' } },
+    { id: 'predator_deaths', type: 'flow', position: { x: 1380, y: 300 }, data: { label: 'predator_deaths', equation: 'Predators * predator_death_rate' } },
 
-    { id: 'v_pbr', type: 'variable', position: { x: -400, y: -150 }, data: { label: 'prey_birth_rate', value: '0.05' } },
-    { id: 'v_pred_br', type: 'variable', position: { x: -80, y: -150 }, data: { label: 'predator_birth_rate', value: '0.0002' } },
-    { id: 'v_pdr', type: 'variable', position: { x: 230, y: -150 }, data: { label: 'predator_death_rate', value: '0.03' } },
-    { id: 'v_pr', type: 'variable', position: { x: 540, y: -150 }, data: { label: 'predation_rate', value: '0.001' } }
+    { id: 'v_pbr', type: 'variable', position: { x: 87, y: -220 }, data: { label: 'prey_birth_rate', value: '0.05' } },
+    { id: 'v_pred_br', type: 'variable', position: { x: 757, y: -220 }, data: { label: 'predator_birth_rate', value: '0.0002' } },
+    { id: 'v_pdr', type: 'variable', position: { x: 1387, y: -220 }, data: { label: 'predator_death_rate', value: '0.03' } },
+    { id: 'v_pr', type: 'variable', position: { x: 657, y: -360 }, data: { label: 'predation_rate', value: '0.001' } }
   ],
   edges: [
     { id: 'e1', source: 'prey_births', target: 'prey', targetHandle: 'inflow', animated: true },
@@ -72,7 +73,11 @@ export const PREDATOR_PREY = {
     { id: 'e7', source: 'predators', target: 'prey_deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'e8', source: 'prey', target: 'predator_births', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'e9', source: 'predators', target: 'predator_births', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e10', source: 'predators', target: 'predator_deaths', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'e10', source: 'predators', target: 'predator_deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p1', source: 'v_pbr', sourceHandle: 'info', target: 'prey_births', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p2', source: 'v_pr', sourceHandle: 'info', target: 'prey_deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p3', source: 'v_pred_br', sourceHandle: 'info', target: 'predator_births', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p4', source: 'v_pdr', sourceHandle: 'info', target: 'predator_deaths', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
 
@@ -87,16 +92,16 @@ export const SIR_MODEL = {
     'Recovered': '#10b981'    // Green
   },
   nodes: [
-    { id: 'susceptible', type: 'stock', position: { x: -350, y: 50 }, data: { label: 'Susceptible', value: 990 } },
-    { id: 'infected', type: 'stock', position: { x: 400, y: 50 }, data: { label: 'Infected', value: 10 } },
-    { id: 'recovered', type: 'stock', position: { x: 1200, y: 50 }, data: { label: 'Recovered', value: 0 } },
+    { id: 'susceptible', type: 'stock', position: { x: 300, y: 0 }, data: { label: 'Susceptible', value: 990 } },
+    { id: 'infected', type: 'stock', position: { x: 1000, y: 0 }, data: { label: 'Infected', value: 10 } },
+    { id: 'recovered', type: 'stock', position: { x: 1700, y: 0 }, data: { label: 'Recovered', value: 0 } },
 
-    { id: 'infection_rate', type: 'flow', position: { x: 25, y: 350 }, data: { label: 'infection_rate', equation: 'Susceptible * Infected * infection_probability / total_pop' } },
-    { id: 'recovery_rate', type: 'flow', position: { x: 775, y: 350 }, data: { label: 'recovery_rate', equation: 'Infected / recovery_delay' } },
+    { id: 'infection_rate', type: 'flow', position: { x: 650, y: 300 }, data: { label: 'infection_rate', equation: 'Susceptible * Infected * infection_probability / total_pop' } },
+    { id: 'recovery_rate', type: 'flow', position: { x: 1350, y: 300 }, data: { label: 'recovery_rate', equation: 'Infected / recovery_delay' } },
 
-    { id: 'v_tp', type: 'variable', position: { x: 25, y: 700 }, data: { label: 'total_pop', value: '1000' } },
-    { id: 'v_ip', type: 'variable', position: { x: 400, y: 700 }, data: { label: 'infection_probability', value: '0.4' } },
-    { id: 'v_rd', type: 'variable', position: { x: 775, y: 700 }, data: { label: 'recovery_delay', value: '10' } }
+    { id: 'v_tp', type: 'variable', position: { x: 820, y: -220 }, data: { label: 'total_pop', value: '1000' } },
+    { id: 'v_ip', type: 'variable', position: { x: 657, y: -220 }, data: { label: 'infection_probability', value: '0.4' } },
+    { id: 'v_rd', type: 'variable', position: { x: 1357, y: -220 }, data: { label: 'recovery_delay', value: '10' } }
   ],
   edges: [
     { id: 'e1', source: 'susceptible', sourceHandle: 'outflow', target: 'infection_rate', animated: true },
@@ -106,7 +111,10 @@ export const SIR_MODEL = {
 
     { id: 'e5', source: 'susceptible', target: 'infection_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'e6', source: 'infected', target: 'infection_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e7', source: 'infected', target: 'recovery_rate', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'e7', source: 'infected', target: 'recovery_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p1', source: 'v_ip', sourceHandle: 'info', target: 'infection_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p2', source: 'v_tp', sourceHandle: 'info', target: 'infection_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p3', source: 'v_rd', sourceHandle: 'info', target: 'recovery_rate', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
 
@@ -121,28 +129,32 @@ export const ADOPTION_MODEL = {
     'potential_adopters': '#10b981' // Green
   },
   nodes: [
-    { id: 'pot_adopters', type: 'stock', position: { x: -150, y: 800 }, data: { label: 'potential_adopters', value: 10000 } },
-    { id: 'adopters', type: 'stock', position: { x: 900, y: 800 }, data: { label: 'adopters', value: 0 } },
+    { id: 'pot_adopters', type: 'stock', position: { x: 150, y: 0 }, data: { label: 'potential_adopters', value: 10000 } },
+    { id: 'adopters', type: 'stock', position: { x: 1100, y: 0 }, data: { label: 'adopters', value: 0 } },
 
-    { id: 'adoption_rate', type: 'flow', position: { x: 375, y: 650 }, data: { label: 'adoption_rate', equation: 'sales_from_ads + word_of_mouth' } },
+    { id: 'adoption_rate', type: 'flow', position: { x: 700, y: 420 }, data: { label: 'adoption_rate', equation: 'sales_from_ads + word_of_mouth' } },
 
-    { id: 'wom', type: 'variable', position: { x: -100, y: 250 }, data: { label: 'word_of_mouth', equation: 'potential_adopters * (adopters / total_population) * contact_rate * adoption_fraction' } },
-    { id: 'sales_ads', type: 'variable', position: { x: -100, y: 400 }, data: { label: 'sales_from_ads', equation: 'potential_adopters * ads_effectiveness' } },
+    { id: 'wom', type: 'variable', position: { x: 840, y: 230 }, data: { label: 'word_of_mouth', equation: 'potential_adopters * (adopters / total_population) * contact_rate * adoption_fraction' } },
+    { id: 'sales_ads', type: 'variable', position: { x: 400, y: 230 }, data: { label: 'sales_from_ads', equation: 'potential_adopters * ads_effectiveness' } },
 
-    { id: 'v_tp', type: 'variable', position: { x: 600, y: 150 }, data: { label: 'total_population', value: '10000' } },
-    { id: 'v_af', type: 'variable', position: { x: 900, y: 150 }, data: { label: 'adoption_fraction', value: '0.015' } },
-    { id: 'v_ae', type: 'variable', position: { x: 600, y: 300 }, data: { label: 'ads_effectiveness', value: '0.015' } },
-    { id: 'v_cr', type: 'variable', position: { x: 900, y: 300 }, data: { label: 'contact_rate', value: '100' } }
+    { id: 'v_tp', type: 'variable', position: { x: 660, y: -220 }, data: { label: 'total_population', value: '10000' } },
+    { id: 'v_af', type: 'variable', position: { x: 900, y: -220 }, data: { label: 'adoption_fraction', value: '0.015' } },
+    { id: 'v_ae', type: 'variable', position: { x: 407, y: -220 }, data: { label: 'ads_effectiveness', value: '0.015' } },
+    { id: 'v_cr', type: 'variable', position: { x: 780, y: -220 }, data: { label: 'contact_rate', value: '100' } }
   ],
   edges: [
     { id: 'e1', source: 'pot_adopters', sourceHandle: 'outflow', target: 'adoption_rate', animated: true },
     { id: 'e2', source: 'adoption_rate', target: 'adopters', targetHandle: 'inflow', animated: true },
 
-    { id: 'e3', source: 'sales_ads', target: 'adoption_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e4', source: 'wom', target: 'adoption_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'e3', sourceHandle: 'info', source: 'sales_ads', target: 'adoption_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'e4', sourceHandle: 'info', source: 'wom', target: 'adoption_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'e5', source: 'pot_adopters', target: 'sales_ads', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'e6', source: 'pot_adopters', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e7', source: 'adopters', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'e7', source: 'adopters', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p1', source: 'v_ae', sourceHandle: 'info', target: 'sales_ads', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p2', source: 'v_tp', sourceHandle: 'info', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p3', source: 'v_cr', sourceHandle: 'info', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'p4', source: 'v_af', sourceHandle: 'info', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
 
@@ -156,16 +168,16 @@ export const CARRYING_CAPACITY = {
     'Carrying_Capacity': '#ef4444' // Red
   },
   nodes: [
-    { id: 'pop', type: 'stock', position: { x: 800, y: 450 }, data: { label: 'Population', value: 10 } },
-    { id: 'net_growth', type: 'flow', position: { x: 350, y: 750 }, data: { label: 'Net_Growth', equation: 'Population * Growth_Rate * (1 - (Population / Carrying_Capacity))' } },
-    { id: 'v_gr', type: 'variable', position: { x: 0, y: 300 }, data: { label: 'Growth_Rate', value: '0.1' } },
-    { id: 'v_cc', type: 'variable', position: { x: 0, y: 500 }, data: { label: 'Carrying_Capacity', value: '1000' } }
+    { id: 'pop', type: 'stock', position: { x: 400, y: 0 }, data: { label: 'Population', value: 10 } },
+    { id: 'net_growth', type: 'flow', position: { x: 180, y: 280 }, data: { label: 'Net_Growth', equation: 'Population * Growth_Rate * (1 - (Population / Carrying_Capacity))' } },
+    { id: 'v_gr', type: 'variable', position: { x: 40, y: -200 }, data: { label: 'Growth_Rate', value: '0.1' } },
+    { id: 'v_cc', type: 'variable', position: { x: 187, y: -200 }, data: { label: 'Carrying_Capacity', value: '1000' } }
   ],
   edges: [
     { id: 'e1', source: 'net_growth', target: 'pop', targetHandle: 'inflow', animated: true },
     { id: 'e2', source: 'pop', target: 'net_growth', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e3', source: 'v_gr', target: 'net_growth', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e4', source: 'v_cc', target: 'net_growth', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'e3', sourceHandle: 'info', source: 'v_gr', target: 'net_growth', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'e4', sourceHandle: 'info', source: 'v_cc', target: 'net_growth', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
 
@@ -181,23 +193,23 @@ export const INVENTORY_CONTROL = {
     'Customer_Demand': '#ef4444' // Red
   },
   nodes: [
-    { id: 'inv', type: 'stock', position: { x: 700, y: 500 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
-    { id: 'prod', type: 'flow', position: { x: 250, y: 750 }, data: { label: 'Production', equation: 'Customer_Demand + (Target_Inventory - Inventory) / Adjustment_Time', unit: 'units/week' } },
-    { id: 'sales', type: 'flow', position: { x: 1200, y: 750 }, data: { label: 'Sales', equation: 'Customer_Demand', unit: 'units/week' } },
+    { id: 'inv', type: 'stock', position: { x: 400, y: 0 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
+    { id: 'prod', type: 'flow', position: { x: 180, y: 300 }, data: { label: 'Production', equation: 'Customer_Demand + (Target_Inventory - Inventory) / Adjustment_Time', unit: 'units/week' } },
+    { id: 'sales', type: 'flow', position: { x: 760, y: 300 }, data: { label: 'Sales', equation: 'Customer_Demand', unit: 'units/week' } },
 
-    { id: 'v_ti', type: 'variable', position: { x: -150, y: 350 }, data: { label: 'Target_Inventory', value: '500', unit: 'units' } },
-    { id: 'v_at', type: 'variable', position: { x: -150, y: 500 }, data: { label: 'Adjustment_Time', value: '5', unit: 'week' } },
-    { id: 'v_cd', type: 'variable', position: { x: -150, y: 200 }, data: { label: 'Customer_Demand', value: '100', unit: 'units/week' } }
+    { id: 'v_ti', type: 'variable', position: { x: 20, y: -220 }, data: { label: 'Target_Inventory', value: '500', unit: 'units' } },
+    { id: 'v_at', type: 'variable', position: { x: 187, y: -220 }, data: { label: 'Adjustment_Time', value: '5', unit: 'week' } },
+    { id: 'v_cd', type: 'variable', position: { x: -160, y: -220 }, data: { label: 'Customer_Demand', value: '100', unit: 'units/week' } }
   ],
   edges: [
     { id: 'e1', source: 'prod', target: 'inv', targetHandle: 'inflow', animated: true },
     { id: 'e2', source: 'inv', sourceHandle: 'outflow', target: 'sales', animated: true },
 
-    { id: 'e3', source: 'v_cd', target: 'prod', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'e3', sourceHandle: 'info', source: 'v_cd', target: 'prod', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'e4', source: 'v_cd', target: 'sales', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'e5', source: 'inv', target: 'prod', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e6', source: 'v_ti', target: 'prod', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e7', source: 'v_at', target: 'prod', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'e6', sourceHandle: 'info', source: 'v_ti', target: 'prod', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'e7', sourceHandle: 'info', source: 'v_at', target: 'prod', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
 
@@ -214,27 +226,27 @@ export const WORLD3_MODEL = {
   },
   nodes: [
     // Stocks
-    { id: 'pop', type: 'stock', position: { x: 300, y: 1100 }, data: { label: 'Population', value: 100 } },
-    { id: 'cap', type: 'stock', position: { x: 300, y: 650 }, data: { label: 'Industrial_Capital', value: 100 } },
-    { id: 'res', type: 'stock', position: { x: 900, y: 300 }, data: { label: 'Resources', value: 100 } },
-    { id: 'pol', type: 'stock', position: { x: 1050, y: 650 }, data: { label: 'Pollution', value: 10 } },
+    { id: 'pop', type: 'stock', position: { x: 200, y: 700 }, data: { label: 'Population', value: 100 } },
+    { id: 'cap', type: 'stock', position: { x: 200, y: 0 }, data: { label: 'Industrial_Capital', value: 100 } },
+    { id: 'res', type: 'stock', position: { x: 1150, y: 0 }, data: { label: 'Resources', value: 100 } },
+    { id: 'pol', type: 'stock', position: { x: 1150, y: 700 }, data: { label: 'Pollution', value: 10 } },
 
     // Population Flows
-    { id: 'births', type: 'flow', position: { x: -250, y: 900 }, data: { label: 'Births', equation: 'Population * 0.04' } },
-    { id: 'deaths', type: 'flow', position: { x: 750, y: 1200 }, data: { label: 'Deaths', equation: 'Population * (0.01 + Pollution * 0.0001 + 0.05 / (Ind_Cap_Per_Capita + 0.1))' } },
+    { id: 'births', type: 'flow', position: { x: 0, y: 1000 }, data: { label: 'Births', equation: 'Population * 0.04' } },
+    { id: 'deaths', type: 'flow', position: { x: 760, y: 1000 }, data: { label: 'Deaths', equation: 'Population * (0.01 + Pollution * 0.0001 + 0.05 / (Ind_Cap_Per_Capita + 0.1))' } },
 
     // Capital Flows
-    { id: 'investment', type: 'flow', position: { x: -100, y: 450 }, data: { label: 'Investment', equation: 'Ind_Output * 0.1' } },
-    { id: 'depreciation', type: 'flow', position: { x: 700, y: 750 }, data: { label: 'Depreciation', equation: 'Industrial_Capital * 0.05' } },
+    { id: 'investment', type: 'flow', position: { x: 0, y: 300 }, data: { label: 'Investment', equation: 'Ind_Output * 0.1' } },
+    { id: 'depreciation', type: 'flow', position: { x: 760, y: 300 }, data: { label: 'Depreciation', equation: 'Industrial_Capital * 0.05' } },
 
     // Resource & Pollution Flows
-    { id: 'res_usage', type: 'flow', position: { x: 1450, y: 450 }, data: { label: 'Resource_Usage', equation: 'Ind_Output * 0.01' } },
-    { id: 'pol_gen', type: 'flow', position: { x: 600, y: 450 }, data: { label: 'Pollution_Gen', equation: 'Ind_Output * 0.05' } },
-    { id: 'pol_abs', type: 'flow', position: { x: 1450, y: 950 }, data: { label: 'Pollution_Abs', equation: 'Pollution * 0.1' } },
+    { id: 'res_usage', type: 'flow', position: { x: 1500, y: 300 }, data: { label: 'Resource_Usage', equation: 'Ind_Output * 0.01' } },
+    { id: 'pol_gen', type: 'flow', position: { x: 920, y: 1000 }, data: { label: 'Pollution_Gen', equation: 'Ind_Output * 0.05' } },
+    { id: 'pol_abs', type: 'flow', position: { x: 1500, y: 1000 }, data: { label: 'Pollution_Abs', equation: 'Pollution * 0.1' } },
 
     // Variables
-    { id: 'ind_out', type: 'variable', position: { x: -450, y: 0 }, data: { label: 'Ind_Output', equation: 'Industrial_Capital * (Resources / 100)' } },
-    { id: 'ic_pc', type: 'variable', position: { x: 300, y: 900 }, data: { label: 'Ind_Cap_Per_Capita', equation: 'Industrial_Capital / Population' } }
+    { id: 'ind_out', type: 'variable', position: { x: 680, y: 150 }, data: { label: 'Ind_Output', equation: 'Industrial_Capital * (Resources / 100)' } },
+    { id: 'ic_pc', type: 'variable', position: { x: 440, y: 860 }, data: { label: 'Ind_Cap_Per_Capita', equation: 'Industrial_Capital / Population' } }
   ],
   edges: [
     // Physical Flows
@@ -257,12 +269,12 @@ export const WORLD3_MODEL = {
     { id: 'i4', source: 'pop', target: 'ic_pc', targetHandle: 'info', animated: true, className: 'info-edge' },
 
     // Info Links -> Flows
-    { id: 'i5', source: 'ind_out', target: 'investment', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i6', source: 'ind_out', target: 'res_usage', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i7', source: 'ind_out', target: 'pol_gen', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i5', sourceHandle: 'info', source: 'ind_out', target: 'investment', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i6', sourceHandle: 'info', source: 'ind_out', target: 'res_usage', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i7', sourceHandle: 'info', source: 'ind_out', target: 'pol_gen', targetHandle: 'info', animated: true, className: 'info-edge' },
 
     { id: 'i8', source: 'pol', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i9', source: 'ic_pc', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'i9', sourceHandle: 'info', source: 'ic_pc', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
 
