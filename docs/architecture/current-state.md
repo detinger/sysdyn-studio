@@ -96,6 +96,11 @@ SD_PYTHON=/path/to/python SD_RSCRIPT=Rscript SD_R_LIBS=/path/to/Rlib npm test
 - Elements added from the toolbar are placed in free space (`placement.js`); fit-to-view zoom is capped at 100 %.
 - Browser-verified: the build challenge can be completed using only the toolbar and inspector, without dragging on the canvas.
 
+### Theory with live figures
+- The Theory page has 8 figures with 13 charts. There are three notation drawings: stock-and-flow anatomy with units, material vs. information, and reinforcing/balancing loop diagrams with polarity signs. Four figures are live, with sliders: accumulation, equilibrium, delay and overshoot, and Euler vs RK4 against the exact solution. A gallery shows six behaviour modes, each computed from a library model with a button to open it.
+- Every chart is computed by the real solver (`src/features/learning/miniModels.js`); sliders change a copy, never the open model. Charts are themed SVG (`MiniChart.jsx`), not Recharts, so the Theory page stays at 29 kB.
+- New sections: Accumulation, Equilibrium, Behaviour modes, Delays and oscillation. Figure models are tested in `tests/unit/theory-figures.test.js`. The accumulation figure uses Euler on purpose: it is exact for piecewise-constant flows, whereas RK4 samples the step mid-interval (the test caught a 0.08 offset).
+
 ### Collapsible inspector
 - The right-hand inspector can be hidden with the toolbar toggle or Ctrl/⌘ + \\, and the choice is remembered (`sds.inspector.open`). Hiding it widens the canvas by about half at 1440 px.
 - It stays hidden on a single click, so selecting is not disruptive. It reopens when it is clearly needed: double-click an element (name field focused), the Validate button, or a run blocked by errors (shown on the Validate tab). It stays mounted while hidden, so its tab and scroll state survive.
