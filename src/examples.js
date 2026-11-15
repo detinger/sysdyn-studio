@@ -7,19 +7,19 @@ export const POPULATION_EXTENDED = {
     'Population': '#3b82f6'
   },
   nodes: [
-    { id: 'pop', type: 'stock', position: { x: 450, y: 0 }, data: { label: 'Population', value: 1000 } },
+    { id: 'pop', type: 'stock', position: { x: 388, y: 289 }, data: { label: 'Population', value: 1000 } },
 
     // Flows
-    { id: 'immigration', type: 'flow', position: { x: 0, y: 180 }, data: { label: 'Immigration', equation: 'Population * immigration_rate' } },
-    { id: 'births', type: 'flow', position: { x: 0, y: 440 }, data: { label: 'Births', equation: 'Population * birth_rate' } },
-    { id: 'deaths', type: 'flow', position: { x: 900, y: 180 }, data: { label: 'Deaths', equation: 'Population * death_rate' } },
-    { id: 'exodus', type: 'flow', position: { x: 900, y: 440 }, data: { label: 'Exodus', equation: 'Population * exodus_fraction' } },
+    { id: 'immigration', type: 'flow', position: { x: 109, y: 106 }, data: { label: 'Immigration', equation: 'Population * immigration_rate' } },
+    { id: 'births', type: 'flow', position: { x: 108, y: 487 }, data: { label: 'Births', equation: 'Population * birth_rate' } },
+    { id: 'deaths', type: 'flow', position: { x: 769, y: 492 }, data: { label: 'Deaths', equation: 'Population * death_rate' } },
+    { id: 'exodus', type: 'flow', position: { x: 768, y: 108 }, data: { label: 'Exodus', equation: 'Population * exodus_fraction' } },
 
     // Variables
-    { id: 'v_br', type: 'variable', position: { x: -200, y: 280 }, data: { label: 'birth_rate', value: '0.03' } },
-    { id: 'v_ir', type: 'variable', position: { x: 7, y: -220 }, data: { label: 'immigration_rate', value: '0.08' } },
-    { id: 'v_dr', type: 'variable', position: { x: 907, y: -220 }, data: { label: 'death_rate', value: '0.04' } },
-    { id: 'v_ef', type: 'variable', position: { x: 1100, y: 280 }, data: { label: 'exodus_fraction', value: '0.06' } }
+    { id: 'v_br', type: 'variable', position: { x: 34, y: 333 }, data: { label: 'birth_rate', value: '0.03' } },
+    { id: 'v_ir', type: 'variable', position: { x: 41, y: -7 }, data: { label: 'immigration_rate', value: '0.08' } },
+    { id: 'v_dr', type: 'variable', position: { x: 861, y: 339 }, data: { label: 'death_rate', value: '0.04' } },
+    { id: 'v_ef', type: 'variable', position: { x: 859, y: -5 }, data: { label: 'exodus_fraction', value: '0.06' } }
   ],
   edges: [
     // Physical Flows
@@ -30,13 +30,13 @@ export const POPULATION_EXTENDED = {
 
     // Info Links
     { id: 'i1', sourceHandle: 'info', source: 'v_ir', target: 'immigration', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i2', source: 'v_br', target: 'births', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i2', source: 'v_br', sourceHandle: 'info', target: 'births', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'i3', source: 'pop', target: 'births', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'i4', source: 'pop', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'i5', sourceHandle: 'info', source: 'v_dr', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i6', source: 'pop', target: 'exodus', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i6', source: 'pop', sourceHandle: 'info-top', target: 'exodus', targetHandle: 'info-bottom', animated: true, className: 'info-edge' },
     { id: 'i7', sourceHandle: 'info', source: 'v_ef', target: 'exodus', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i8', source: 'pop', target: 'immigration', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'i8', source: 'pop', sourceHandle: 'info-top', target: 'immigration', targetHandle: 'info-bottom', animated: true, className: 'info-edge' }
   ]
 };
 
@@ -52,15 +52,15 @@ export const PREDATOR_PREY = {
   nodes: [
     { id: 'prey', type: 'stock', position: { x: 300, y: 0 }, data: { label: 'Prey', value: 100 } },
     { id: 'predators', type: 'stock', position: { x: 1000, y: 0 }, data: { label: 'Predators', value: 20 } },
-    { id: 'prey_births', type: 'flow', position: { x: 80, y: 300 }, data: { label: 'prey_births', equation: 'Prey * prey_birth_rate' } },
-    { id: 'prey_deaths', type: 'flow', position: { x: 650, y: 460 }, data: { label: 'prey_deaths', equation: 'Prey * Predators * predation_rate' } },
-    { id: 'predator_births', type: 'flow', position: { x: 750, y: 300 }, data: { label: 'predator_births', equation: 'Prey * Predators * predator_birth_rate' } },
-    { id: 'predator_deaths', type: 'flow', position: { x: 1380, y: 300 }, data: { label: 'predator_deaths', equation: 'Predators * predator_death_rate' } },
+    { id: 'prey_births', type: 'flow', position: { x: 99, y: 206 }, data: { label: 'prey_births', equation: 'Prey * prey_birth_rate' } },
+    { id: 'prey_deaths', type: 'flow', position: { x: 625, y: 203 }, data: { label: 'prey_deaths', equation: 'Prey * Predators * predation_rate' } },
+    { id: 'predator_births', type: 'flow', position: { x: 788, y: 203 }, data: { label: 'predator_births', equation: 'Prey * Predators * predator_birth_rate' } },
+    { id: 'predator_deaths', type: 'flow', position: { x: 1306, y: 205 }, data: { label: 'predator_deaths', equation: 'Predators * predator_death_rate' } },
 
-    { id: 'v_pbr', type: 'variable', position: { x: 87, y: -220 }, data: { label: 'prey_birth_rate', value: '0.05' } },
-    { id: 'v_pred_br', type: 'variable', position: { x: 757, y: -220 }, data: { label: 'predator_birth_rate', value: '0.0002' } },
-    { id: 'v_pdr', type: 'variable', position: { x: 1387, y: -220 }, data: { label: 'predator_death_rate', value: '0.03' } },
-    { id: 'v_pr', type: 'variable', position: { x: 657, y: -360 }, data: { label: 'predation_rate', value: '0.001' } }
+    { id: 'v_pbr', type: 'variable', position: { x: 106, y: -219 }, data: { label: 'prey_birth_rate', value: '0.05' } },
+    { id: 'v_pred_br', type: 'variable', position: { x: 794, y: -220 }, data: { label: 'predator_birth_rate', value: '0.0002' } },
+    { id: 'v_pdr', type: 'variable', position: { x: 1311, y: -219 }, data: { label: 'predator_death_rate', value: '0.03' } },
+    { id: 'v_pr', type: 'variable', position: { x: 633, y: -218 }, data: { label: 'predation_rate', value: '0.001' } }
   ],
   edges: [
     { id: 'e1', source: 'prey_births', target: 'prey', targetHandle: 'inflow', animated: true },
@@ -129,18 +129,18 @@ export const ADOPTION_MODEL = {
     'potential_adopters': '#10b981' // Green
   },
   nodes: [
-    { id: 'pot_adopters', type: 'stock', position: { x: 150, y: 0 }, data: { label: 'potential_adopters', value: 10000 } },
-    { id: 'adopters', type: 'stock', position: { x: 1100, y: 0 }, data: { label: 'adopters', value: 0 } },
+    { id: 'pot_adopters', type: 'stock', position: { x: 265, y: 408 }, data: { label: 'potential_adopters', value: 10000 } },
+    { id: 'adopters', type: 'stock', position: { x: 989, y: 408 }, data: { label: 'adopters', value: 0 } },
 
-    { id: 'adoption_rate', type: 'flow', position: { x: 700, y: 420 }, data: { label: 'adoption_rate', equation: 'sales_from_ads + word_of_mouth' } },
+    { id: 'adoption_rate', type: 'flow', position: { x: 681, y: 420 }, data: { label: 'adoption_rate', equation: 'sales_from_ads + word_of_mouth' } },
 
-    { id: 'wom', type: 'variable', position: { x: 840, y: 230 }, data: { label: 'word_of_mouth', equation: 'potential_adopters * (adopters / total_population) * contact_rate * adoption_fraction' } },
-    { id: 'sales_ads', type: 'variable', position: { x: 400, y: 230 }, data: { label: 'sales_from_ads', equation: 'potential_adopters * ads_effectiveness' } },
+    { id: 'wom', type: 'variable', position: { x: 795, y: 221 }, data: { label: 'word_of_mouth', equation: 'potential_adopters * (adopters / total_population) * contact_rate * adoption_fraction' } },
+    { id: 'sales_ads', type: 'variable', position: { x: 495, y: 164 }, data: { label: 'sales_from_ads', equation: 'potential_adopters * ads_effectiveness' } },
 
-    { id: 'v_tp', type: 'variable', position: { x: 660, y: -220 }, data: { label: 'total_population', value: '10000' } },
-    { id: 'v_af', type: 'variable', position: { x: 900, y: -220 }, data: { label: 'adoption_fraction', value: '0.015' } },
-    { id: 'v_ae', type: 'variable', position: { x: 407, y: -220 }, data: { label: 'ads_effectiveness', value: '0.015' } },
-    { id: 'v_cr', type: 'variable', position: { x: 780, y: -220 }, data: { label: 'contact_rate', value: '100' } }
+    { id: 'v_tp', type: 'variable', position: { x: 630, y: 60 }, data: { label: 'total_population', value: '10000' } },
+    { id: 'v_af', type: 'variable', position: { x: 952, y: 58 }, data: { label: 'adoption_fraction', value: '0.015' } },
+    { id: 'v_ae', type: 'variable', position: { x: 355, y: 57 }, data: { label: 'ads_effectiveness', value: '0.015' } },
+    { id: 'v_cr', type: 'variable', position: { x: 795, y: 59 }, data: { label: 'contact_rate', value: '100' } }
   ],
   edges: [
     { id: 'e1', source: 'pot_adopters', sourceHandle: 'outflow', target: 'adoption_rate', animated: true },
@@ -148,10 +148,10 @@ export const ADOPTION_MODEL = {
 
     { id: 'e3', sourceHandle: 'info', source: 'sales_ads', target: 'adoption_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'e4', sourceHandle: 'info', source: 'wom', target: 'adoption_rate', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e5', source: 'pot_adopters', target: 'sales_ads', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e6', source: 'pot_adopters', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'e7', source: 'adopters', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'p1', source: 'v_ae', sourceHandle: 'info', target: 'sales_ads', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'e5', source: 'pot_adopters', sourceHandle: 'info-top', target: 'sales_ads', animated: true, className: 'info-edge' },
+    { id: 'e6', source: 'pot_adopters', sourceHandle: 'info-top', target: 'wom', animated: true, className: 'info-edge' },
+    { id: 'e7', source: 'adopters', sourceHandle: 'info-top', target: 'wom', targetHandle: 'in-right', animated: true, className: 'info-edge' },
+    { id: 'p1', source: 'v_ae', target: 'sales_ads', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'p2', source: 'v_tp', sourceHandle: 'info', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'p3', source: 'v_cr', sourceHandle: 'info', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' },
     { id: 'p4', source: 'v_af', sourceHandle: 'info', target: 'wom', targetHandle: 'info', animated: true, className: 'info-edge' }
@@ -168,10 +168,10 @@ export const CARRYING_CAPACITY = {
     'Carrying_Capacity': '#ef4444' // Red
   },
   nodes: [
-    { id: 'pop', type: 'stock', position: { x: 400, y: 0 }, data: { label: 'Population', value: 10 } },
+    { id: 'pop', type: 'stock', position: { x: 447, y: 68 }, data: { label: 'Population', value: 10 } },
     { id: 'net_growth', type: 'flow', position: { x: 180, y: 280 }, data: { label: 'Net_Growth', equation: 'Population * Growth_Rate * (1 - (Population / Carrying_Capacity))' } },
-    { id: 'v_gr', type: 'variable', position: { x: 40, y: -200 }, data: { label: 'Growth_Rate', value: '0.1' } },
-    { id: 'v_cc', type: 'variable', position: { x: 187, y: -200 }, data: { label: 'Carrying_Capacity', value: '1000' } }
+    { id: 'v_gr', type: 'variable', position: { x: -12, y: 67 }, data: { label: 'Growth_Rate', value: '0.1' } },
+    { id: 'v_cc', type: 'variable', position: { x: 187, y: 68 }, data: { label: 'Carrying_Capacity', value: '1000' } }
   ],
   edges: [
     { id: 'e1', source: 'net_growth', target: 'pop', targetHandle: 'inflow', animated: true },
@@ -193,13 +193,13 @@ export const INVENTORY_CONTROL = {
     'Customer_Demand': '#ef4444' // Red
   },
   nodes: [
-    { id: 'inv', type: 'stock', position: { x: 400, y: 0 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
-    { id: 'prod', type: 'flow', position: { x: 180, y: 300 }, data: { label: 'Production', equation: 'Customer_Demand + (Target_Inventory - Inventory) / Adjustment_Time', unit: 'units/week' } },
-    { id: 'sales', type: 'flow', position: { x: 760, y: 300 }, data: { label: 'Sales', equation: 'Customer_Demand', unit: 'units/week' } },
+    { id: 'inv', type: 'stock', position: { x: 249, y: 106 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
+    { id: 'prod', type: 'flow', position: { x: -24, y: 311 }, data: { label: 'Production', equation: 'Customer_Demand + (Target_Inventory - Inventory) / Adjustment_Time', unit: 'units/week' } },
+    { id: 'sales', type: 'flow', position: { x: 470, y: 118 }, data: { label: 'Sales', equation: 'Customer_Demand', unit: 'units/week' } },
 
-    { id: 'v_ti', type: 'variable', position: { x: 20, y: -220 }, data: { label: 'Target_Inventory', value: '500', unit: 'units' } },
-    { id: 'v_at', type: 'variable', position: { x: 187, y: -220 }, data: { label: 'Adjustment_Time', value: '5', unit: 'week' } },
-    { id: 'v_cd', type: 'variable', position: { x: -160, y: -220 }, data: { label: 'Customer_Demand', value: '100', unit: 'units/week' } }
+    { id: 'v_ti', type: 'variable', position: { x: -74, y: -51 }, data: { label: 'Target_Inventory', value: '500', unit: 'units' } },
+    { id: 'v_at', type: 'variable', position: { x: 73, y: -51 }, data: { label: 'Adjustment_Time', value: '5', unit: 'week' } },
+    { id: 'v_cd', type: 'variable', position: { x: -279, y: -145 }, data: { label: 'Customer_Demand', value: '100', unit: 'units/week' } }
   ],
   edges: [
     { id: 'e1', source: 'prod', target: 'inv', targetHandle: 'inflow', animated: true },
@@ -226,27 +226,27 @@ export const WORLD3_MODEL = {
   },
   nodes: [
     // Stocks
-    { id: 'pop', type: 'stock', position: { x: 200, y: 700 }, data: { label: 'Population', value: 100 } },
-    { id: 'cap', type: 'stock', position: { x: 200, y: 0 }, data: { label: 'Industrial_Capital', value: 100 } },
-    { id: 'res', type: 'stock', position: { x: 1150, y: 0 }, data: { label: 'Resources', value: 100 } },
-    { id: 'pol', type: 'stock', position: { x: 1150, y: 700 }, data: { label: 'Pollution', value: 10 } },
+    { id: 'pop', type: 'stock', position: { x: 428, y: 829 }, data: { label: 'Population', value: 100 } },
+    { id: 'cap', type: 'stock', position: { x: 421, y: 306 }, data: { label: 'Industrial_Capital', value: 100 } },
+    { id: 'res', type: 'stock', position: { x: 941, y: 305 }, data: { label: 'Resources', value: 100 } },
+    { id: 'pol', type: 'stock', position: { x: 939, y: 625 }, data: { label: 'Pollution', value: 10 } },
 
     // Population Flows
-    { id: 'births', type: 'flow', position: { x: 0, y: 1000 }, data: { label: 'Births', equation: 'Population * 0.04' } },
-    { id: 'deaths', type: 'flow', position: { x: 760, y: 1000 }, data: { label: 'Deaths', equation: 'Population * (0.01 + Pollution * 0.0001 + 0.05 / (Ind_Cap_Per_Capita + 0.1))' } },
+    { id: 'births', type: 'flow', position: { x: 271, y: 841 }, data: { label: 'Births', equation: 'Population * 0.04' } },
+    { id: 'deaths', type: 'flow', position: { x: 697, y: 841 }, data: { label: 'Deaths', equation: 'Population * (0.01 + Pollution * 0.0001 + 0.05 / (Ind_Cap_Per_Capita + 0.1))' } },
 
     // Capital Flows
-    { id: 'investment', type: 'flow', position: { x: 0, y: 300 }, data: { label: 'Investment', equation: 'Ind_Output * 0.1' } },
-    { id: 'depreciation', type: 'flow', position: { x: 760, y: 300 }, data: { label: 'Depreciation', equation: 'Industrial_Capital * 0.05' } },
+    { id: 'investment', type: 'flow', position: { x: 272, y: 318 }, data: { label: 'Investment', equation: 'Ind_Output * 0.1' } },
+    { id: 'depreciation', type: 'flow', position: { x: 704, y: 318 }, data: { label: 'Depreciation', equation: 'Industrial_Capital * 0.05' } },
 
     // Resource & Pollution Flows
-    { id: 'res_usage', type: 'flow', position: { x: 1500, y: 300 }, data: { label: 'Resource_Usage', equation: 'Ind_Output * 0.01' } },
-    { id: 'pol_gen', type: 'flow', position: { x: 920, y: 1000 }, data: { label: 'Pollution_Gen', equation: 'Ind_Output * 0.05' } },
-    { id: 'pol_abs', type: 'flow', position: { x: 1500, y: 1000 }, data: { label: 'Pollution_Abs', equation: 'Pollution * 0.1' } },
+    { id: 'res_usage', type: 'flow', position: { x: 1215, y: 317 }, data: { label: 'Resource_Usage', equation: 'Ind_Output * 0.01' } },
+    { id: 'pol_gen', type: 'flow', position: { x: 759, y: 637 }, data: { label: 'Pollution_Gen', equation: 'Ind_Output * 0.05' } },
+    { id: 'pol_abs', type: 'flow', position: { x: 1208, y: 637 }, data: { label: 'Pollution_Abs', equation: 'Pollution * 0.1' } },
 
     // Variables
-    { id: 'ind_out', type: 'variable', position: { x: 680, y: 150 }, data: { label: 'Ind_Output', equation: 'Industrial_Capital * (Resources / 100)' } },
-    { id: 'ic_pc', type: 'variable', position: { x: 440, y: 860 }, data: { label: 'Ind_Cap_Per_Capita', equation: 'Industrial_Capital / Population' } }
+    { id: 'ind_out', type: 'variable', position: { x: 766, y: 512 }, data: { label: 'Ind_Output', equation: 'Industrial_Capital * (Resources / 100)' } },
+    { id: 'ic_pc', type: 'variable', position: { x: 483, y: 635 }, data: { label: 'Ind_Cap_Per_Capita', equation: 'Industrial_Capital / Population' } }
   ],
   edges: [
     // Physical Flows
@@ -266,15 +266,15 @@ export const WORLD3_MODEL = {
     { id: 'i2', source: 'res', target: 'ind_out', targetHandle: 'info', animated: true, className: 'info-edge' },
 
     { id: 'i3', source: 'cap', target: 'ic_pc', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i4', source: 'pop', target: 'ic_pc', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i4', source: 'pop', sourceHandle: 'info-top', target: 'ic_pc', targetHandle: 'in-bottom', animated: true, className: 'info-edge' },
 
     // Info Links -> Flows
-    { id: 'i5', sourceHandle: 'info', source: 'ind_out', target: 'investment', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i6', sourceHandle: 'info', source: 'ind_out', target: 'res_usage', targetHandle: 'info', animated: true, className: 'info-edge' },
+    { id: 'i5', source: 'ind_out', sourceHandle: 'out-left', target: 'investment', targetHandle: 'info-bottom', animated: true, className: 'info-edge' },
+    { id: 'i6', source: 'ind_out', target: 'res_usage', targetHandle: 'info-bottom', animated: true, className: 'info-edge' },
     { id: 'i7', sourceHandle: 'info', source: 'ind_out', target: 'pol_gen', targetHandle: 'info', animated: true, className: 'info-edge' },
 
     { id: 'i8', source: 'pol', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' },
-    { id: 'i9', sourceHandle: 'info', source: 'ic_pc', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' }
+    { id: 'i9', source: 'ic_pc', target: 'deaths', targetHandle: 'info', animated: true, className: 'info-edge' }
   ]
 };
 
@@ -293,8 +293,8 @@ export const BATHTUB = {
     { id: 'water', type: 'stock', position: { x: 400, y: 0 }, data: { label: 'Water', value: 20, unit: 'liters', description: 'Water in the tub.' } },
     { id: 'faucet', type: 'flow', position: { x: 180, y: 280 }, data: { label: 'faucet', equation: 'inflow_rate', unit: 'liters/minute' } },
     { id: 'drain', type: 'flow', position: { x: 760, y: 280 }, data: { label: 'drain', equation: 'Water / drain_time', unit: 'liters/minute' } },
-    { id: 'inflow_rate', type: 'variable', position: { x: 187, y: -200 }, data: { label: 'inflow_rate', value: '12', unit: 'liters/minute' } },
-    { id: 'drain_time', type: 'variable', position: { x: 767, y: -200 }, data: { label: 'drain_time', value: '5', unit: 'minute', description: 'Average time water stays in the tub.' } },
+    { id: 'inflow_rate', type: 'variable', position: { x: 187, y: 0 }, data: { label: 'inflow_rate', value: '12', unit: 'liters/minute' } },
+    { id: 'drain_time', type: 'variable', position: { x: 767, y: 7 }, data: { label: 'drain_time', value: '5', unit: 'minute', description: 'Average time water stays in the tub.' } },
   ],
   edges: [
     { id: 'm1', source: 'faucet', target: 'water', targetHandle: 'inflow' },
@@ -312,11 +312,11 @@ export const SAVINGS_ACCOUNT = {
   timeUnit: 'year',
   visibleVariables: ['Balance', 'interest', 'withdrawals'],
   nodes: [
-    { id: 'balance', type: 'stock', position: { x: 400, y: 0 }, data: { label: 'Balance', value: 1000, unit: 'EUR' } },
+    { id: 'balance', type: 'stock', position: { x: 427, y: 57 }, data: { label: 'Balance', value: 1000, unit: 'EUR' } },
     { id: 'interest', type: 'flow', position: { x: 180, y: 280 }, data: { label: 'interest', equation: 'Balance * interest_rate', unit: 'EUR/year' } },
     { id: 'withdrawals', type: 'flow', position: { x: 760, y: 280 }, data: { label: 'withdrawals', equation: 'annual_withdrawal', unit: 'EUR/year' } },
-    { id: 'interest_rate', type: 'variable', position: { x: 187, y: -200 }, data: { label: 'interest_rate', value: '0.05', unit: '1/year' } },
-    { id: 'annual_withdrawal', type: 'variable', position: { x: 767, y: -200 }, data: { label: 'annual_withdrawal', value: '20', unit: 'EUR/year' } },
+    { id: 'interest_rate', type: 'variable', position: { x: 187, y: -3 }, data: { label: 'interest_rate', value: '0.05', unit: '1/year' } },
+    { id: 'annual_withdrawal', type: 'variable', position: { x: 767, y: -2 }, data: { label: 'annual_withdrawal', value: '20', unit: 'EUR/year' } },
   ],
   edges: [
     { id: 'm1', source: 'interest', target: 'balance', targetHandle: 'inflow' },
@@ -334,10 +334,10 @@ export const COFFEE_COOLING = {
   timeUnit: 'minute',
   visibleVariables: ['Coffee_Temperature'],
   nodes: [
-    { id: 'coffee', type: 'stock', position: { x: 300, y: 0 }, data: { label: 'Coffee_Temperature', value: 90, unit: 'degC' } },
+    { id: 'coffee', type: 'stock', position: { x: 251, y: 15 }, data: { label: 'Coffee_Temperature', value: 90, unit: 'degC' } },
     { id: 'cooling', type: 'flow', position: { x: 700, y: 280 }, data: { label: 'cooling', equation: '(Coffee_Temperature - Room_Temperature) / cooling_time', unit: 'degC/minute' } },
-    { id: 'room', type: 'variable', position: { x: 560, y: -200 }, data: { label: 'Room_Temperature', value: '20', unit: 'degC' } },
-    { id: 'tau', type: 'variable', position: { x: 707, y: -200 }, data: { label: 'cooling_time', value: '10', unit: 'minute' } },
+    { id: 'room', type: 'variable', position: { x: 707, y: 27 }, data: { label: 'Room_Temperature', value: '20', unit: 'degC' } },
+    { id: 'tau', type: 'variable', position: { x: 874, y: 29 }, data: { label: 'cooling_time', value: '10', unit: 'minute' } },
   ],
   edges: [
     { id: 'm1', source: 'coffee', sourceHandle: 'outflow', target: 'cooling' },
@@ -354,9 +354,9 @@ export const CUSTOMER_BASE = {
   timeUnit: 'month',
   visibleVariables: ['Customers', 'acquisition', 'churn'],
   nodes: [
-    { id: 'customers', type: 'stock', position: { x: 400, y: 0 }, data: { label: 'Customers', value: 0, unit: 'customers' } },
-    { id: 'acquisition', type: 'flow', position: { x: 180, y: 280 }, data: { label: 'acquisition', equation: 'marketing_reach + Customers * referral_rate', unit: 'customers/month' } },
-    { id: 'churn', type: 'flow', position: { x: 760, y: 280 }, data: { label: 'churn', equation: 'Customers * churn_fraction', unit: 'customers/month' } },
+    { id: 'customers', type: 'stock', position: { x: 422, y: -197 }, data: { label: 'Customers', value: 0, unit: 'customers' } },
+    { id: 'acquisition', type: 'flow', position: { x: 180, y: 13 }, data: { label: 'acquisition', equation: 'marketing_reach + Customers * referral_rate', unit: 'customers/month' } },
+    { id: 'churn', type: 'flow', position: { x: 760, y: 11 }, data: { label: 'churn', equation: 'Customers * churn_fraction', unit: 'customers/month' } },
     { id: 'reach', type: 'variable', position: { x: 40, y: -200 }, data: { label: 'marketing_reach', value: '100', unit: 'customers/month' } },
     { id: 'referral', type: 'variable', position: { x: 187, y: -200 }, data: { label: 'referral_rate', value: '0.02', unit: '1/month' } },
     { id: 'churnf', type: 'variable', position: { x: 767, y: -200 }, data: { label: 'churn_fraction', value: '0.05', unit: '1/month' } },
@@ -379,15 +379,15 @@ export const PROJECT_BACKLOG = {
   timeUnit: 'week',
   visibleVariables: ['Backlog', 'Completed_Tasks'],
   nodes: [
-    { id: 'backlog', type: 'stock', position: { x: 300, y: 0 }, data: { label: 'Backlog', value: 200, unit: 'tasks' } },
-    { id: 'done', type: 'stock', position: { x: 1000, y: 0 }, data: { label: 'Completed_Tasks', value: 0, unit: 'tasks' } },
-    { id: 'arrivals', type: 'flow', position: { x: 80, y: 300 }, data: { label: 'new_tasks', equation: 'arrival_rate', unit: 'tasks/week' } },
-    { id: 'completion', type: 'flow', position: { x: 700, y: 300 }, data: { label: 'completion', equation: 'min(team_capacity, Backlog / minimum_completion_time)', unit: 'tasks/week' } },
-    { id: 'capacity', type: 'variable', position: { x: 620, y: 140 }, data: { label: 'team_capacity', equation: 'staff * productivity', unit: 'tasks/week' } },
-    { id: 'staff', type: 'variable', position: { x: 600, y: -220 }, data: { label: 'staff', value: '4', unit: 'people' } },
-    { id: 'prod', type: 'variable', position: { x: 740, y: -220 }, data: { label: 'productivity', value: '2.5', unit: 'tasks/(person*week)' } },
-    { id: 'mct', type: 'variable', position: { x: 920, y: -220 }, data: { label: 'minimum_completion_time', value: '2', unit: 'week' } },
-    { id: 'arr', type: 'variable', position: { x: 87, y: -220 }, data: { label: 'arrival_rate', value: '8', unit: 'tasks/week' } },
+    { id: 'backlog', type: 'stock', position: { x: 254, y: 82 }, data: { label: 'Backlog', value: 200, unit: 'tasks' } },
+    { id: 'done', type: 'stock', position: { x: 763, y: 288 }, data: { label: 'Completed_Tasks', value: 0, unit: 'tasks' } },
+    { id: 'arrivals', type: 'flow', position: { x: 107, y: 94 }, data: { label: 'new_tasks', equation: 'arrival_rate', unit: 'tasks/week' } },
+    { id: 'completion', type: 'flow', position: { x: 613, y: 300 }, data: { label: 'completion', equation: 'min(team_capacity, Backlog / minimum_completion_time)', unit: 'tasks/week' } },
+    { id: 'capacity', type: 'variable', position: { x: 620, y: 102 }, data: { label: 'team_capacity', equation: 'staff * productivity', unit: 'tasks/week' } },
+    { id: 'staff', type: 'variable', position: { x: 497, y: -59 }, data: { label: 'staff', value: '4', unit: 'people' } },
+    { id: 'prod', type: 'variable', position: { x: 724, y: -54 }, data: { label: 'productivity', value: '2.5', unit: 'tasks/(person*week)' } },
+    { id: 'mct', type: 'variable', position: { x: 796, y: 103 }, data: { label: 'minimum_completion_time', value: '2', unit: 'week' } },
+    { id: 'arr', type: 'variable', position: { x: 114, y: -61 }, data: { label: 'arrival_rate', value: '8', unit: 'tasks/week' } },
   ],
   edges: [
     { id: 'm1', source: 'arrivals', target: 'backlog', targetHandle: 'inflow' },
@@ -409,15 +409,15 @@ export const HIRING_PIPELINE = {
   timeUnit: 'month',
   visibleVariables: ['Trainees', 'Experienced', 'hiring'],
   nodes: [
-    { id: 'trainees', type: 'stock', position: { x: 300, y: 0 }, data: { label: 'Trainees', value: 20, unit: 'people' } },
-    { id: 'experienced', type: 'stock', position: { x: 1000, y: 0 }, data: { label: 'Experienced', value: 100, unit: 'people' } },
-    { id: 'hiring', type: 'flow', position: { x: 80, y: 440 }, data: { label: 'hiring', equation: 'max(0, quits + (target_workforce - Trainees - Experienced) / hiring_delay)', unit: 'people/month' } },
-    { id: 'training', type: 'flow', position: { x: 700, y: 300 }, data: { label: 'training_completion', equation: 'Trainees / training_time', unit: 'people/month' } },
-    { id: 'quits', type: 'flow', position: { x: 1380, y: 300 }, data: { label: 'quits', equation: 'Experienced * quit_fraction', unit: 'people/month' } },
-    { id: 'target', type: 'variable', position: { x: -120, y: -220 }, data: { label: 'target_workforce', value: '200', unit: 'people' } },
-    { id: 'hdelay', type: 'variable', position: { x: 60, y: -220 }, data: { label: 'hiring_delay', value: '3', unit: 'month' } },
-    { id: 'ttime', type: 'variable', position: { x: 707, y: -220 }, data: { label: 'training_time', value: '6', unit: 'month' } },
-    { id: 'qf', type: 'variable', position: { x: 1387, y: -220 }, data: { label: 'quit_fraction', value: '0.03', unit: '1/month' } },
+    { id: 'trainees', type: 'stock', position: { x: 360, y: -41 }, data: { label: 'Trainees', value: 20, unit: 'people' } },
+    { id: 'experienced', type: 'stock', position: { x: 965, y: -35 }, data: { label: 'Experienced', value: 100, unit: 'people' } },
+    { id: 'hiring', type: 'flow', position: { x: 180, y: 469 }, data: { label: 'hiring', equation: 'max(0, quits + (target_workforce - Trainees - Experienced) / hiring_delay)', unit: 'people/month' } },
+    { id: 'training', type: 'flow', position: { x: 700, y: 131 }, data: { label: 'training_completion', equation: 'Trainees / training_time', unit: 'people/month' } },
+    { id: 'quits', type: 'flow', position: { x: 1216, y: 131 }, data: { label: 'quits', equation: 'Experienced * quit_fraction', unit: 'people/month' } },
+    { id: 'target', type: 'variable', position: { x: 27, y: 109 }, data: { label: 'target_workforce', value: '200', unit: 'people' } },
+    { id: 'hdelay', type: 'variable', position: { x: 187, y: 110 }, data: { label: 'hiring_delay', value: '3', unit: 'month' } },
+    { id: 'ttime', type: 'variable', position: { x: 707, y: -31 }, data: { label: 'training_time', value: '6', unit: 'month' } },
+    { id: 'qf', type: 'variable', position: { x: 1339, y: -20 }, data: { label: 'quit_fraction', value: '0.03', unit: '1/month' } },
   ],
   edges: [
     { id: 'm1', source: 'hiring', target: 'trainees', targetHandle: 'inflow' },
@@ -443,25 +443,25 @@ export const SUPPLY_CHAIN_DELAY = {
   timeUnit: 'week',
   visibleVariables: ['Inventory', 'Supply_Line'],
   nodes: [
-    { id: 'sl', type: 'stock', position: { x: 300, y: 0 }, data: { label: 'Supply_Line', value: 400, unit: 'units', description: 'Ordered but not yet delivered.' } },
-    { id: 'inv', type: 'stock', position: { x: 1000, y: 0 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
-    { id: 'orders', type: 'flow', position: { x: 80, y: 440 }, data: { label: 'orders', equation: 'max(0, Customer_Demand + (Target_Inventory - Inventory) / inventory_adjustment_time + supply_line_weight * (desired_supply_line - Supply_Line) / inventory_adjustment_time)', unit: 'units/week' } },
-    { id: 'deliveries', type: 'flow', position: { x: 700, y: 300 }, data: { label: 'deliveries', equation: 'Supply_Line / delivery_delay', unit: 'units/week' } },
-    { id: 'sales', type: 'flow', position: { x: 1380, y: 300 }, data: { label: 'sales', equation: 'Customer_Demand', unit: 'units/week' } },
-    { id: 'dsl', type: 'variable', position: { x: 490, y: 190 }, data: { label: 'desired_supply_line', equation: 'Customer_Demand * delivery_delay', unit: 'units' } },
-    { id: 'demand', type: 'variable', position: { x: 140, y: -240 }, data: { label: 'Customer_Demand', value: '100', unit: 'units/week' } },
-    { id: 'target', type: 'variable', position: { x: -60, y: -240 }, data: { label: 'Target_Inventory', value: '400', unit: 'units' } },
-    { id: 'iat', type: 'variable', position: { x: -300, y: 140 }, data: { label: 'inventory_adjustment_time', value: '2', unit: 'week' } },
-    { id: 'delay', type: 'variable', position: { x: 707, y: -240 }, data: { label: 'delivery_delay', value: '4', unit: 'week' } },
-    { id: 'slw', type: 'variable', position: { x: -300, y: -60 }, data: { label: 'supply_line_weight', value: '0', unit: 'dimensionless', description: '0 = the manager ignores orders in transit; 1 = accounts for them fully.' } },
+    { id: 'sl', type: 'stock', position: { x: 303, y: 49 }, data: { label: 'Supply_Line', value: 400, unit: 'units', description: 'Ordered but not yet delivered.' } },
+    { id: 'inv', type: 'stock', position: { x: 887, y: 55 }, data: { label: 'Inventory', value: 200, unit: 'units' } },
+    { id: 'orders', type: 'flow', position: { x: 182, y: 286 }, data: { label: 'orders', equation: 'max(0, Customer_Demand + (Target_Inventory - Inventory) / inventory_adjustment_time + supply_line_weight * (desired_supply_line - Supply_Line) / inventory_adjustment_time)', unit: 'units/week' } },
+    { id: 'deliveries', type: 'flow', position: { x: 640, y: 297 }, data: { label: 'deliveries', equation: 'Supply_Line / delivery_delay', unit: 'units/week' } },
+    { id: 'sales', type: 'flow', position: { x: 1100, y: 67 }, data: { label: 'sales', equation: 'Customer_Demand', unit: 'units/week' } },
+    { id: 'dsl', type: 'variable', position: { x: 535, y: -22 }, data: { label: 'desired_supply_line', equation: 'Customer_Demand * delivery_delay', unit: 'units' } },
+    { id: 'demand', type: 'variable', position: { x: 399, y: -180 }, data: { label: 'Customer_Demand', value: '100', unit: 'units/week' } },
+    { id: 'target', type: 'variable', position: { x: 29, y: -24 }, data: { label: 'Target_Inventory', value: '400', unit: 'units' } },
+    { id: 'iat', type: 'variable', position: { x: 30, y: 173 }, data: { label: 'inventory_adjustment_time', value: '2', unit: 'week' } },
+    { id: 'delay', type: 'variable', position: { x: 722, y: -22 }, data: { label: 'delivery_delay', value: '4', unit: 'week' } },
+    { id: 'slw', type: 'variable', position: { x: 30, y: 73 }, data: { label: 'supply_line_weight', value: '0', unit: 'dimensionless', description: '0 = the manager ignores orders in transit; 1 = accounts for them fully.' } },
   ],
   edges: [
     { id: 'm1', source: 'orders', target: 'sl', targetHandle: 'inflow' },
     { id: 'm2', source: 'sl', sourceHandle: 'outflow', target: 'deliveries' },
     { id: 'm3', source: 'deliveries', target: 'inv', targetHandle: 'inflow' },
     { id: 'm4', source: 'inv', sourceHandle: 'outflow', target: 'sales' },
-    { id: 'i1', sourceHandle: 'info', source: 'demand', target: 'orders', targetHandle: 'info' },
-    { id: 'i2', sourceHandle: 'info', source: 'target', target: 'orders', targetHandle: 'info' },
+    { id: 'i1', source: 'demand', sourceHandle: 'out-left', target: 'orders', targetHandle: 'info' },
+    { id: 'i2', source: 'target', target: 'orders', targetHandle: 'info' },
     { id: 'i3', source: 'inv', target: 'orders', targetHandle: 'info' },
     { id: 'i4', source: 'iat', target: 'orders', targetHandle: 'info' },
     { id: 'i5', source: 'slw', target: 'orders', targetHandle: 'info' },
@@ -471,7 +471,7 @@ export const SUPPLY_CHAIN_DELAY = {
     { id: 'i9', sourceHandle: 'info', source: 'delay', target: 'deliveries', targetHandle: 'info' },
     { id: 'i10', source: 'demand', target: 'sales', targetHandle: 'info' },
     { id: 'i11', source: 'demand', target: 'dsl', targetHandle: 'info' },
-    { id: 'i12', sourceHandle: 'info', source: 'delay', target: 'dsl', targetHandle: 'info' },
+    { id: 'i12', source: 'delay', sourceHandle: 'out-left', target: 'dsl', targetHandle: 'in-right' },
   ],
 };
 
@@ -482,18 +482,18 @@ export const FISHERY = {
   timeUnit: 'year',
   visibleVariables: ['Fish', 'Boats', 'harvest'],
   nodes: [
-    { id: 'fish', type: 'stock', position: { x: 300, y: 0 }, data: { label: 'Fish', value: 900, unit: 'tons' } },
-    { id: 'boats', type: 'stock', position: { x: 1100, y: 0 }, data: { label: 'Boats', value: 5, unit: 'boats' } },
-    { id: 'regen', type: 'flow', position: { x: 80, y: 300 }, data: { label: 'regeneration', equation: 'Fish * regeneration_rate * (1 - Fish / carrying_capacity)', unit: 'tons/year' } },
-    { id: 'harvest', type: 'flow', position: { x: 700, y: 300 }, data: { label: 'harvest', equation: 'Boats * catch_per_boat * Fish / carrying_capacity', unit: 'tons/year' } },
-    { id: 'buy', type: 'flow', position: { x: 880, y: 460 }, data: { label: 'boat_purchases', equation: 'harvest * reinvestment_fraction / boat_price', unit: 'boats/year' } },
-    { id: 'retire', type: 'flow', position: { x: 1380, y: 300 }, data: { label: 'boat_retirement', equation: 'Boats / boat_lifetime', unit: 'boats/year' } },
-    { id: 'rr', type: 'variable', position: { x: 40, y: -220 }, data: { label: 'regeneration_rate', value: '0.5', unit: '1/year' } },
-    { id: 'cc', type: 'variable', position: { x: 200, y: -220 }, data: { label: 'carrying_capacity', value: '1000', unit: 'tons' } },
-    { id: 'cpb', type: 'variable', position: { x: 707, y: -220 }, data: { label: 'catch_per_boat', value: '20', unit: 'tons/(boat*year)' } },
-    { id: 'rf', type: 'variable', position: { x: 887, y: -220 }, data: { label: 'reinvestment_fraction', value: '0.15', unit: 'dimensionless', description: 'Share of the catch value spent on new boats.' } },
-    { id: 'price', type: 'variable', position: { x: 1040, y: -220 }, data: { label: 'boat_price', value: '5', unit: 'tons/boat', description: 'Value of a boat, measured in tons of catch.' } },
-    { id: 'life', type: 'variable', position: { x: 1387, y: -220 }, data: { label: 'boat_lifetime', value: '10', unit: 'year' } },
+    { id: 'fish', type: 'stock', position: { x: 365, y: 46 }, data: { label: 'Fish', value: 900, unit: 'tons' } },
+    { id: 'boats', type: 'stock', position: { x: 1067, y: 13 }, data: { label: 'Boats', value: 5, unit: 'boats' } },
+    { id: 'regen', type: 'flow', position: { x: 167, y: 218 }, data: { label: 'regeneration', equation: 'Fish * regeneration_rate * (1 - Fish / carrying_capacity)', unit: 'tons/year' } },
+    { id: 'harvest', type: 'flow', position: { x: 682, y: 220 }, data: { label: 'harvest', equation: 'Boats * catch_per_boat * Fish / carrying_capacity', unit: 'tons/year' } },
+    { id: 'buy', type: 'flow', position: { x: 876, y: 353 }, data: { label: 'boat_purchases', equation: 'harvest * reinvestment_fraction / boat_price', unit: 'boats/year' } },
+    { id: 'retire', type: 'flow', position: { x: 1333, y: 350 }, data: { label: 'boat_retirement', equation: 'Boats / boat_lifetime', unit: 'boats/year' } },
+    { id: 'rr', type: 'variable', position: { x: 60, y: -9 }, data: { label: 'regeneration_rate', value: '0.5', unit: '1/year' } },
+    { id: 'cc', type: 'variable', position: { x: 174, y: -102 }, data: { label: 'carrying_capacity', value: '1000', unit: 'tons' } },
+    { id: 'cpb', type: 'variable', position: { x: 689, y: -30 }, data: { label: 'catch_per_boat', value: '20', unit: 'tons/(boat*year)' } },
+    { id: 'rf', type: 'variable', position: { x: 827, y: -103 }, data: { label: 'reinvestment_fraction', value: '0.15', unit: 'dimensionless', description: 'Share of the catch value spent on new boats.' } },
+    { id: 'price', type: 'variable', position: { x: 953, y: -151 }, data: { label: 'boat_price', value: '5', unit: 'tons/boat', description: 'Value of a boat, measured in tons of catch.' } },
+    { id: 'life', type: 'variable', position: { x: 1340, y: 6 }, data: { label: 'boat_lifetime', value: '10', unit: 'year' } },
   ],
   edges: [
     { id: 'm1', source: 'regen', target: 'fish', targetHandle: 'inflow' },
