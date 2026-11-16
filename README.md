@@ -39,6 +39,7 @@ System Dynamics Studio is a browser-based environment for building, simulating a
 *   **Python (SciPy)**: Export to Python using `scipy.integrate.odeint` and `matplotlib`. odeint is adaptive, so results agree with the app within numerical tolerance.
 *   **R (deSolve)**: Export to R using `deSolve` (same fixed-step method and time grid as the app) and `ggplot2`.
 *   Both exports are generated from the parsed equations. Optional integration tests execute them against the app's results (see `tests/integration/export-parity.test.js`).
+*   **Colab notebooks**: [colab/](colab/) contains Google Colab notebooks for six library models (SIR, World3, Bass adoption, predator–prey, supply chain, fishery). They are generated from the Python exporter; regenerate them with `npm run colab`.
 
 ## Getting Started
 
@@ -124,6 +125,7 @@ Deploy the contents of `dist/` to a static web host. No application backend is r
 | `src/store.js`, `src/state/` | App state, autosave, preferences and learning progress |
 | `src/examples.js`, `src/data/` | Teaching models and challenge definitions |
 | `src/pythonExporter.js`, `src/rExporter.js` | Executable code exporters |
+| `colab/`, `scripts/generate-colab.js` | Generated Google Colab notebooks and their generator |
 | `tests/` | Unit tests, fixtures (including the original engine used as a characterization reference) and optional Python/R execution tests |
 
 ## Storage and Current Limits
