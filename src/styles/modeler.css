@@ -60,7 +60,6 @@
 .sd-material .react-flow__edge-path { stroke: var(--sd-stroke); stroke-width: 3; }
 .sd-info .react-flow__edge-path { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 4; }
 .sd-invalid .react-flow__edge-path { stroke: var(--error); stroke-width: 1.5; stroke-dasharray: 2 4; }
-.react-flow__edge.sd-issue .react-flow__edge-path { filter: drop-shadow(0 0 2px var(--error)); }
 
 /* Nodes */
 .sd-node { position: relative; color: var(--sd-label); }

@@ -1,20 +1,14 @@
 /**
- * Legacy engine module (README era).
- *
- * `runSimulationLegacy` is the original implementation, kept verbatim as a
- * characterization reference for tests. It has known defects documented in
- * docs/architecture/current-state.md (silent zero for failing equations,
- * floating-point time drift, silent clamping of negative stocks).
- *
- * `runSimulation` keeps the old signature and row format but delegates to the
- * verified domain solver in src/domain/simulation.
+ * Original RK4 engine, kept verbatim as a characterization reference for
+ * tests/unit/examples.test.js. It is not used by the app. It has known defects
+ * documented in docs/architecture/current-state.md (silent zero for failing
+ * equations, floating-point time drift, silent clamping of negative stocks).
  */
 import { create, all } from 'mathjs';
-import { runModel, runToRows } from './domain/simulation/runModel.js';
 
 const math = create(all);
 
-export const buildModel = (nodes, edges) => {
+const buildModel = (nodes, edges) => {
   const nodeMap = {};
   nodes.forEach(node => {
     nodeMap[node.id] = node;
@@ -140,15 +134,3 @@ export const runSimulationLegacy = (nodes, edges, dt = 0.1, maxTime = 100) => {
   return data;
 };
 
-/**
- * Back-compatible entry point: returns rows [{ time, [name]: value }].
- * Throws if the model has validation errors instead of silently producing data.
- */
-export const runSimulation = (nodes, edges, dt = 0.1, maxTime = 100, method = 'rk4') => {
-  const { run, validation } = runModel(nodes, edges, { start: 0, stop: maxTime, dt, method });
-  if (!run) {
-    const errors = validation.issues.filter((i) => i.severity === 'error').map((i) => i.title);
-    throw new Error(`Model cannot be simulated: ${errors.join('; ')}`);
-  }
-  return runToRows(run);
-};

@@ -7,5 +7,3 @@ export function fmtNum(v, digits = 4) {
   const s = a >= 1000 ? v.toFixed(0) : String(+v.toPrecision(digits + (a >= 100 ? 1 : 0)));
   return s.replace('-', '−');
 }
-
-export const withUnit = (value, unit) => (unit ? `${value} ${unit}` : value);

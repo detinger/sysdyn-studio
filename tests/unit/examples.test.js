@@ -4,7 +4,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import * as EXAMPLES from '../../src/examples.js';
-import { runSimulationLegacy } from '../../src/simulationEngine.js';
+import { runSimulationLegacy } from '../fixtures/legacyEngine.js';
 import { runModel } from '../../src/domain/simulation/runModel.js';
 import { validateModel } from '../../src/domain/validation/validateModel.js';
 
